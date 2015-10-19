@@ -1,0 +1,34 @@
+<div class="question">
+    <input type="hidden" class="question_id" value="" >
+    <div class="question_field">
+        <label><span class="q-order"><%- order %>.</span></label>
+        <input placeholder="Enter your question" type="text" id="<%- questionText %>" name="<%- questionText %>"  class="required question-txt" value="">
+        <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
+            <i class="icon fa fa-trash-o"></i>
+            <span class="sr">Delete</span>
+        </a>
+    </div>
+    <h4>Choices</h4>
+    <ol type="A">
+        <li class="answer-choice">
+            <input placeholder="Choice text" type="text" id="<%- answerText %>" name="<%- answerText %>" class="required answer-txt" />
+            <% if(type == 'BFQ'){ %>
+                <select id="<%- resultChoice %>" name="<%- resultChoice %>" class="required result-choice">
+                    <option value=""> -- Choose result -- </option>
+                    <% _.each(resultChoicesOptions, function(choice) { %>
+                         <option value="<%- choice.id %>"><%- choice.name %></option>
+                    <% }); %>
+                </select>
+            <% } else { %>
+                <input placeholder="Choice Value" type="number" step="0.1" id="<%- answerValue %>" name="<%- answerValue %>" class="required answer-value" />
+                <a href="#" data-tooltip="Delete Choice" class="delete-choice delete-button action-button">
+                    <i class="icon fa fa-trash-o"></i>
+                    <span class="sr">Delete</span>
+                </a>
+            <% } %>
+        </li>
+    </ol>
+    <a href="#" class="add-new-choice button button-new" title="Click to add a new Choice">
+        <i class="icon fa fa-plus"></i>New Choice
+    </a>
+</div>

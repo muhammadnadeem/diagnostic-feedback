@@ -1,0 +1,369 @@
+{
+    "missing_questions":{
+        "step":3,
+        "questions":[]
+    },
+    "missing_ques_id_case1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":""
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_id_case2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":""
+            }
+        ]
+    },
+    "missing_ques_txt_case1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_txt_case2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_choices_case1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_choices_case2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_choice_txt_case1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_choice_txt_case2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"2.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_choice_value_case1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":""
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "missing_ques_choice_value_case2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":""
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+     "invalid_datatype_choice_value_case1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"AA"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "invalid_datatype_choice_value_case2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"BB"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    },
+    "valid":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"2.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx2"
+            }
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "missing_step":{
+        "step":"",
+        "title":"Quiz 1",
+        "type":"BFQ"
+    },
+    "missing_title":{
+        "step":1,
+        "title":"",
+        "type":"BFQ"
+    },
+    "invalid_type":{
+        "step":1,
+        "title":"Quiz 1",
+        "type":"MCQ"
+    },
+    "missing_title_type":{
+        "step":1,
+        "title":"",
+        "type":""
+    },
+    "valid_data":{
+        "step":1,
+        "title":"Test",
+        "type":"DG"
+    }
+}
