@@ -7,9 +7,11 @@ class WizardStepMixin(object):
         res = json.loads(self._block.handle('save_data', self.make_request(json.dumps({
             "step": 1,
             "title": "Test",
+            "description" : "Test description",
             "type": type
         }))).body)
         return res
+
 
     def save_buzfeed_step2(self):
         res = json.loads(self._block.handle('save_data', self.make_request(json.dumps({
