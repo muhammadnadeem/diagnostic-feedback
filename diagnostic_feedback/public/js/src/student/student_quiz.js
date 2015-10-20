@@ -1,11 +1,23 @@
-/* Javascript for MyXBlock. */
 function StudentQuiz(runtime, element) {
 
     var studentQuiz = this;
     studentQuiz.startOver = false;
     studentQuiz.clearPreviousResults = false;
 
+    /* Javascript for Student view in LMS.*/
+
     var common = new Common();
+    var form = $("#student_view_form");
+
+    //selctors for student answer
+    var currentAnswerContainer = ".current";
+    var questionId = '.question_id';
+    var selectedStudentChoice = 'input[type="radio"]:checked';
+
+    // Selector for showing result
+    var finalResult = '#response_body';
+    var actions = "ul[role='menu']";
+
 
     //selectors
     var choiceSelector = '.answer-choice';
@@ -21,35 +33,40 @@ function StudentQuiz(runtime, element) {
     }
 
     function showResult(result) {
-        if (result.success && result.msg.msg) {
-            var imgSrc = result.msg.img;
-            var resultClass = 'success';
-            var htmlBody = result.msg.html_body;
-            var html = '<div>';
+        // shows final result of student
+
+        if (result.success && result.student_result.msg) {
+            var imgSrc = result.student_result.img;
+            var htmlBody = result.student_result.html_body;
+            var html = '';
             if (imgSrc) {
-                html += '<img class="result_img" src="' + imgSrc + '" alt="Smiley face"> ' +
-                    '<p id="html_body">' + htmlBody + '</p>';
+                html = '<div><img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
+                    '<p id="html_body">' + htmlBody + '</p></div>';
             }
             else {
-                html += '<p id="html_body">' + htmlBody + '</p>';
+                html = '<div><p id="html_body">' + htmlBody + '</p></div>';
             }
-            html += '</div>';
-            $('#response_body').html(html);
+            $(finalResult).html(html);
             hideActions();
         }
     }
 
+
     function getStudentChoice() {
-        var answerContainers = $(".current");
-        var question_id = $(answerContainers).find('.question_id').val();
-        var student_choice = $(answerContainers).find('input[type="radio"]:checked').val();
-        return {'question_id': question_id, 'student_choice': student_choice};
+        //Get student selected answer of wizard current question
+
+        var id = $(currentAnswerContainer).find(questionId).val();
+        var studentChoice = $(currentAnswerContainer).find(selectedStudentChoice).val();
+        return {'question_id': id, 'student_choice': studentChoice};
     }
 
+
     function submitQuestionResponse(isLast) {
+        // this method is called on successful submission and pass the student's seleted value
+
         var answerHandlerUrl = runtime.handlerUrl(element, 'save_choice');
         var choice = getStudentChoice();
-        choice['isLast'] = isLast;
+        choice['isLast'] = isLast;  //if student given last answer of the question, this flag is true.
         choice['clearPreviousData'] = studentQuiz.clearPreviousResults;
         if(studentQuiz.clearPreviousResults) {
             studentQuiz.clearPreviousResults = false;
@@ -64,8 +81,6 @@ function StudentQuiz(runtime, element) {
     }
 
     $(function ($) {
-
-
         var form = $("#student_view_form");
 
         form.children("div").steps({
@@ -74,8 +89,7 @@ function StudentQuiz(runtime, element) {
             transitionEffect: "slideLeft",
             enableCancelButton: true,
             onStepChanging: function (event, currentIndex, newIndex) {
-                if(newIndex == $("#student_view_form section").length - 1){
-                    console.log('showing result');
+                if (newIndex == $("#student_view_form section").length - 1) {
                     return saveToServer(true);
                 } else {
                     return saveToServer(false);
@@ -100,8 +114,10 @@ function StudentQuiz(runtime, element) {
         resetActions();
 
         function saveToServer(isLast) {
+
             form.validate().settings.ignore = ":disabled,:hidden";
-            var selectedChoice = $("section.answer-choice:visible").find('input[type="radio"]:checked').val();
+            var selectedChoice = $("section.answer-choice:visible").find(selectedStudentChoice).val();
+
             // if start over button is click just return and do nothing
             if (studentQuiz.startOver){
                 studentQuiz.startOver = false;
@@ -116,8 +132,6 @@ function StudentQuiz(runtime, element) {
                     return false;
                 }
             }
-
         }
-
     });
 }
