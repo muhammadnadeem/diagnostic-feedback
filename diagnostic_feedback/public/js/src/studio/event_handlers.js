@@ -20,9 +20,9 @@ function EventHandler(runtime, element){
             imageFieldAttrs: imageFieldAttrs,
             htmlBodyFieldAttrs: htmlBodyFieldAttrs
         });
+
         $(html).insertBefore(link);
         studioCommon.initiateHtmlEditor($('#categories_panel'));
-        //$("textarea[id='"+htmlBodyFieldAttrs+"']").prev().focus();
     };
 
     handler.addNewRange = function(link, result) {
@@ -47,10 +47,10 @@ function EventHandler(runtime, element){
             imageFieldAttrs: imageFieldAttrs,
             htmlBodyFieldAttrs: htmlBodyFieldAttrs
         });
+
         $(html).insertBefore(link);
         studioCommon.initiateHtmlEditor($('#ranges_panel'));
         //studioCommon.scrollToBottom();
-        //$("textarea[id='"+htmlBodyFieldAttrs+"']").prev().focus();
     };
 
     handler.addNewQuestion = function(link, result) {
@@ -107,9 +107,4 @@ function EventHandler(runtime, element){
         });
         link.prev('ol').append(html);
     };
-
-     $(function ($) {
-
-
-    });
 }
