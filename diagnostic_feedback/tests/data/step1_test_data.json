@@ -2,26 +2,37 @@
     "missing_step":{
         "step":"",
         "title":"Quiz 1",
-        "type":"BFQ"
+        "type":"BFQ",
+        "description" : "Test description"
     },
     "missing_title":{
         "step":1,
         "title":"",
-        "type":"BFQ"
+        "type":"BFQ",
+        "description" : "Test description"
     },
     "invalid_type":{
         "step":1,
         "title":"Quiz 1",
-        "type":"MCQ"
+        "type":"MCQ",
+        "description" : "Test description"
     },
     "missing_title_type":{
         "step":1,
         "title":"",
-        "type":""
+        "type":"",
+        "description" : "Test description"
+    },
+    "missing_description":{
+        "step":1,
+        "title":"Quiz 1",
+        "type":"BFQ",
+        "description" : ""
     },
     "valid_data":{
         "step":1,
         "title":"Test",
-        "type":"DG"
+        "type":"DG",
+        "description" : "Test description"
     }
 }
