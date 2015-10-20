@@ -2,15 +2,15 @@
 function CustomValidator(runtime, element){
     // contains all additional validation logic for wizard steps
 
-    var validatorObj = this;
-    var studioCommon = new StudioCommon();
-    var common = new Common();
+    var validatorObj = this,
+    studioCommon = new StudioCommon(),
+    common = new Common(),
 
     //selectors
-    var rangeMinSelector = "input[name^='range[min]']";
-    var rangeMaxSelector = "input[name^='range[max]']";
-    var rangesPanel = '#ranges_panel';
-    var rangeSelector = '.range';
+    rangeMinSelector = "input[name^='range[min]']",
+    rangeMaxSelector = "input[name^='range[max]']",
+    rangesPanel = '#ranges_panel',
+    rangeSelector = '.range';
 
 
     validatorObj.validateMinMax = function(range){

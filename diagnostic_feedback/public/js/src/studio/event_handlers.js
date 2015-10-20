@@ -1,6 +1,6 @@
 function EventHandler(runtime, element){
-    var handler = this;
-    var studioCommon = new StudioCommon();
+    var handler = this,
+    studioCommon = new StudioCommon();
 
     handler.addNewCategory = function(link, result) {
         // Handler to add new category on step2

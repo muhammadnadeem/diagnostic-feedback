@@ -33,7 +33,7 @@ class RangeValidator(Validator):
     @classmethod
     def run_basic_validations(cls, ranges):
         valid = True
-        msg = ''
+        validation_message = ''
 
         for _range in ranges:
             name = _range.get('name')
@@ -43,32 +43,32 @@ class RangeValidator(Validator):
 
             if cls.is_empty(name):
                 valid = False
-                msg = 'name is required'
+                validation_message = 'name is required'
             elif cls.invalid_url(image):
                 valid = False
-                msg = 'image invalid url'
+                validation_message = 'image invalid url'
             elif cls.is_empty(min_value) or cls.is_empty(max_value):
                 valid = False
-                msg = 'min/max values required'
+                validation_message = 'min/max values required'
             elif cls.bigger_min_val(min_value, max_value):
                 valid = False
-                msg = 'min > max'
+                validation_message = 'min > max'
 
             if not valid:
                 break
 
-        return valid, msg
+        return valid, validation_message
 
     @classmethod
     def run_overlapping_validations(cls, ranges):
         valid = True
-        msg = ''
+        validation_message = ''
 
         for idx, _range in enumerate(ranges):
             for range2 in ranges[idx + 1: len(ranges) + 1]:
                 if cls.overlapping_ranges(_range, range2):
                     valid = False
-                    msg = 'overlapping ranges [{} - {}] & [{} - {}]'.format(_range.get('min_value'),
+                    validation_message = 'overlapping ranges [{} - {}] & [{} - {}]'.format(_range.get('min_value'),
                                                                             _range.get('max_value'),
                                                                             range2.get('min_value'),
                                                                             range2.get('max_value'))
@@ -78,7 +78,7 @@ class RangeValidator(Validator):
             if not valid:
                 break
 
-        return valid, msg
+        return valid, validation_message
 
     @classmethod
     def validate(cls, data):
@@ -93,11 +93,11 @@ class RangeValidator(Validator):
             return False, 'at least one range required'
 
         # Check basic validations
-        valid, msg = cls.run_basic_validations(ranges)
+        valid, validation_message = cls.run_basic_validations(ranges)
 
         # If all ranges pass basic validations then check for overlapping ranges
         if valid:
             return cls.run_overlapping_validations(ranges)
 
-        return valid, msg
+        return valid, validation_message
 

@@ -1,37 +1,36 @@
 function StudioCommon(runtime, element) {
-    var commonObj = this;
-    var setting = new Setting();
-    var common = new Common();
+    var commonObj = this,
+    setting = new Setting(),
 
-    //selectors
-    var loadingDiv = '.wizard-loading';
-    var editQuizPanel = '#edit_questionnaire_panel';
+    //selector
+    loadingDiv = '.wizard-loading',
+    editQuizPanel = '#edit_questionnaire_panel',
 
-    var quizTitleSelector = 'input[name="title"]';
-    var quizDescriptionSelector = 'textarea[name="description"]';
+    quizTitleSelector = 'input[name="title"]',
+    quizDescriptionSelector = 'textarea[name="description"]',
 
-    var questionPanel = '#questions_panel';
-    var questionSelector = '.question';
-    var questionOrderSelector = '.q-order';
-    var questionIdSelector = '.question_id';
-    var questionFieldsContainerSelector = '.question_field';
-    var questionTxtFieldSelector = '.question-txt';
+    questionPanel = '#questions_panel',
+    questionSelector = '.question',
+    questionOrderSelector = '.q-order',
+    questionIdSelector = '.question_id',
+    questionFieldsContainerSelector = '.question_field',
+    questionTxtFieldSelector = '.question-txt',
 
-    var categoriesPanel = "#categories_panel";
-    var categorySelector = '.category';
-    var categoryIdSelector = 'input[name*="category[id]"]';
-    var categoryNameSelector = "input[name^='category[name]']";
-    var tinyMceTextarea = '.custom_textarea';
+    categoriesPanel = "#categories_panel",
+    categorySelector = '.category',
+    categoryIdSelector = 'input[name*="category[id]"]',
+    categoryNameSelector = "input[name^='category[name]']",
+    tinyMceTextarea = '.custom_textarea',
 
-    var rangesPanel = '#ranges_panel';
+    rangesPanel = '#ranges_panel',
 
-    var allChoiceValuesInputs = '.answer-choice .answer-value';
-    var allResultChoicesDropdowns = '.answer-choice .result-choice';
-    var choiceValueSelector = 'input[name*="]value["]';
-    var choiceValueSelector2 = 'input[name*=value]';
-    var choiceValueClsSelector = '.answer-value';
-    var choiceNameSelector = 'input[name*=answer]';
-    var choiceNameClsSelector = '.answer-txt';
+    allChoiceValuesInputs = '.answer-choice .answer-value',
+    allResultChoicesDropdowns = '.answer-choice .result-choice',
+    choiceValueSelector = 'input[name*="]value["]',
+    choiceValueSelector2 = 'input[name*=value]',
+    choiceValueClsSelector = '.answer-value',
+    choiceNameSelector = 'input[name*=answer]',
+    choiceNameClsSelector = '.answer-txt';
 
     commonObj.showQuizForm = function(){
         // show quiz wizard html after popup resources loading

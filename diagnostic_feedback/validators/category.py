@@ -15,7 +15,7 @@ class CategoryValidator(Validator):
         """
         categories = data.get('categories', [])
         valid = True
-        msg = ''
+        validation_message = ''
 
         if cls.empty_list(categories):
             return False, 'at least one category required'
@@ -27,15 +27,15 @@ class CategoryValidator(Validator):
 
             if cls.is_empty(_id):
                 valid = False
-                msg = 'id is required'
+                validation_message = 'id is required'
             elif cls.is_empty(name):
                 valid = False
-                msg = 'name is required'
+                validation_message = 'name is required'
             elif cls.invalid_url(image):
                 valid = False
-                msg = 'image invalid url'
+                validation_message = 'image invalid url'
             if not valid:
                 break
 
-        return valid, msg
+        return valid, validation_message
 

@@ -16,7 +16,7 @@ class QuizValidator(Validator):
             validate only title & quiz_type
         """
         valid = True
-        msg = ''
+        validation_message = ''
 
         title = data.get('title')
         description = data.get('description')
@@ -24,13 +24,13 @@ class QuizValidator(Validator):
 
         if cls.is_empty(title):
             valid = False
-            msg = 'title is required'
+            validation_message = 'title is required'
         elif cls.is_empty(description):
             valid = False
-            msg = 'description is required'
+            validation_message = 'description is required'
         elif not quiz.quiz_type and cls.invalid_quiz_type(_type, quiz.types):
             valid = False
-            msg = 'type is invalid'
+            validation_message = 'type is invalid'
 
-        return valid, msg
+        return valid, validation_message
 
