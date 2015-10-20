@@ -14,7 +14,7 @@ class RangeValidator(Validator):
         return min and max and float(min) >= float(max)
 
     @classmethod
-    def overlapping_ranges(cls, range1, range2):
+    def overlapping_ranges_algo1(cls, range1, range2):
         """
             check if both range are overlapping
         """
@@ -27,6 +27,22 @@ class RangeValidator(Validator):
             range1 = cls.drange(float(r1_min_val), float(r1_max_val), 0.1)
             range2 = cls.drange(float(r2_min_val), float(r2_max_val), 0.1)
             return bool(set(range1) & set(range2))
+        else:
+            return True
+
+    @classmethod
+    def overlapping_ranges_algo2(cls, range1, range2):
+        """
+            check if both range are overlapping
+        """
+
+        r1_min_val = range1.get('min_value')
+        r1_max_val = range1.get('max_value')
+        r2_min_val = range2.get('min_value')
+        r2_max_val = range2.get('max_value')
+        if r1_min_val and r1_max_val and r2_min_val and r2_max_val:
+            overlapp = bool(r1_min_val <= r1_max_val and r2_min_val <= r1_max_val)
+            return overlapp
         else:
             return True
 
@@ -66,7 +82,7 @@ class RangeValidator(Validator):
 
         for idx, _range in enumerate(ranges):
             for range2 in ranges[idx + 1: len(ranges) + 1]:
-                if cls.overlapping_ranges(_range, range2):
+                if cls.overlapping_ranges_algo1(_range, range2):
                     valid = False
                     validation_message = 'overlapping ranges [{} - {}] & [{} - {}]'.format(_range.get('min_value'),
                                                                             _range.get('max_value'),

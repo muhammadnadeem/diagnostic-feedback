@@ -48,7 +48,7 @@ function CustomValidator(runtime, element){
     }
 
     // TO-DO test this logic for large ranges
-    validatorObj.validateOverlappingRanges = function(range){
+    validatorObj.validateOverlappingRangesAlgo1 = function(range){
         // validate if any two ranges are overlapping
 
         var valid = true;
@@ -73,6 +73,33 @@ function CustomValidator(runtime, element){
         return valid;
     }
 
+    validatorObj.validateOverlappingRangesAlgo2 = function(range){
+        // validate if any two ranges are overlapping
+
+        var valid = true,
+        range1_min_value = parseFloat($(range).find(rangeMinSelector).val()),
+        range1_max_value = parseFloat($(range).find(rangeMaxSelector).val()),
+        nextRanges = $(range).nextAll(rangeSelector);
+
+        $.each(nextRanges, function(n, next_range){
+            var range2_min_value = parseFloat($(next_range).find(rangeMinSelector).val()),
+            range2_max_value = parseFloat($(next_range).find(rangeMaxSelector).val()),
+
+            //overlap = range1.min < range2.max && range2.min < range1.max;
+            overlap = range1_min_value <= range2_max_value && range2_min_value <= range1_max_value;
+
+            // check if both ranges are overlapping
+            if(overlap) {
+                valid = false;
+                common.showMessage({success: valid, msg: 'Overlapping ranges found ['
+                + range1_min_value + "-" + range1_max_value + "] & [" + range2_min_value+ "-" + range2_max_value + "]"});
+                return valid;
+            };
+        })
+        return valid;
+    }
+
+
     validatorObj.validateDiagnosticQuizStep2 = function(){
         // validate step 2 of diagnostic quiz
         // validate for min/max AND overlapping
@@ -82,7 +109,7 @@ function CustomValidator(runtime, element){
             if(!validatorObj.validateMinMax(range)) {
                 valid = false;
                 return valid;
-            } else if(!validatorObj.validateOverlappingRanges(range)){
+            } else if(!validatorObj.validateOverlappingRangesAlgo2(range)){
                 valid = false;
                 return valid;
             }

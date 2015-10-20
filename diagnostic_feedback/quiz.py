@@ -140,7 +140,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
             save posted data of each step
         """
         step = data['step']
-        self.current_step = step
+        # self.current_step = step
 
         if step == 1:
             self.title = data['title']
@@ -188,10 +188,10 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
 
         if not step:
             success = False
-            responseMessage = 'missing step number'
+            response_message = 'missing step number'
         else:
             try:
-                is_step_valid, responseMessage = self.validate_data(data)
+                is_step_valid, response_message = self.validate_data(data)
                 if is_step_valid:
                     self.save_step(data)
                     response_message = "step {} data saved".format(data['step'])
