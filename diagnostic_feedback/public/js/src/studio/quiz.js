@@ -1,5 +1,5 @@
 function Quiz(runtime, element) {
-    // contain js related to main quiz wizard
+    // contain js related to studio quiz wizard
     $(function ($) {
 
         // import related js helpers
@@ -15,30 +15,25 @@ function Quiz(runtime, element) {
         //selectors
         var form = $("#questionnaire-form");
 
-        // category related
         var categoriesPanel = '#categories_panel';
         var addNewCategoryBtn = categoriesPanel+' .add-new-category';
         var deleteCategoryBtn = '.delete-category';
         var categorySelector = '.category';
 
-        //range related
         var rangesPanel = '#ranges_panel';
         var addNewRangeBtn =  rangesPanel+' .add-new-range';
         var deleteRangeBtn = '.delete-range';
         var rangeSelector = '.range';
 
-        //question related
         var step3Panel = "section[step='3']";
         var questionPanel = '#questions_panel';
         var addNewQuestionBtn = '.add-new-question';
         var deleteQuestionBtn = '.delete-question';
         var questionSelector = '.question';
 
-        //choice related
         var addNewChoiceBtn = '.add-new-choice';
         var deleteChoiceBtn = '.delete-choice';
         var choiceSelector = '.answer-choice';
-
 
         //initialize js validations if on in setting.js
         if(setting.jsValidation){
@@ -72,6 +67,8 @@ function Quiz(runtime, element) {
             // if return true next stepp will be loaded
             // if return false validation errors will be shown
 
+            var customValidated = false;
+
             if (currentIndex > newIndex){
                 // allow to move backwards without validate & save
                 return true;
@@ -84,17 +81,23 @@ function Quiz(runtime, element) {
                     //ignore hidden fields; will validate on current step showing fields
                     form.validate().settings.ignore = ":disabled,:hidden";
 
+
                     // run jquery.validate
                     var isValid = form.valid();
 
-                    // run extra validations
-                    var customValidated = customValidator.customStepValidation(currentStep);
+                    // run extra validations if jquery vlidations are passed
+                    if (isValid){
+                        console.log('executing additional validations');
+                        customValidated = customValidator.customStepValidation(currentStep);
+                    }
+
 
                     if (isValid && customValidated) {
                         //wait for ajax call response
                         var success = false;
                         $.when(submitForm(currentStep)).done(function (response) {
-                            studioCommon.updateUI(response);
+                            //studioCommon.updateUI(response);
+                            common.showMessage(response);
                             if (response.success) {
                                 success = true;
 
@@ -118,7 +121,8 @@ function Quiz(runtime, element) {
                         if (response.success) {
                             success = true;
                         }
-                        studioCommon.updateUI(response);
+                        //studioCommon.updateUI(response);
+                        common.showMessage(response);
                     });
                     return success;
                 }

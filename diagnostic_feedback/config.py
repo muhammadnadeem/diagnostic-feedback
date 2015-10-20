@@ -1,4 +1,4 @@
-student_config = {
+student_assets = {
     'css': [
         ('public/css/jquery.steps.css', 0),
         ('public/css/message.css', 1),
@@ -20,7 +20,7 @@ student_config = {
 
 }
 
-studio_config = {
+studio_assets = {
     'css': [
         ('public/css/jquery.steps.css', 0),
         ('public/css/studio_style.css', 1),

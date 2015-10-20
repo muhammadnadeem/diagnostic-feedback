@@ -3,12 +3,46 @@ function StudioCommon(runtime, element) {
     var setting = new Setting();
     var common = new Common();
 
+    //selectors
+    var loadingDiv = '.wizard-loading';
+    var editQuizPanel = '#edit_questionnaire_panel';
+
+    var quizTitleSelector = 'input[name="title"]';
+    var quizDescriptionSelector = 'textarea[name="description"]';
+
+    var questionPanel = '#questions_panel';
+    var questionSelector = '.question';
+    var questionOrderSelector = '.q-order';
+    var questionIdSelector = '.question_id';
+    var questionFieldsContainerSelector = '.question_field';
+    var questionTxtFieldSelector = '.question-txt';
+
+    var categoriesPanel = "#categories_panel";
+    var categorySelector = '.category';
+    var categoryIdSelector = 'input[name*="category[id]"]';
+    var categoryNameSelector = "input[name^='category[name]']";
+    var tinyMceTextarea = '.custom_textarea';
+
+    var rangesPanel = '#ranges_panel';
+
+    var allChoiceValuesInputs = '.answer-choice .answer-value';
+    var allResultChoicesDropdowns = '.answer-choice .result-choice';
+    var choiceValueSelector = 'input[name*="]value["]';
+    var choiceValueSelector2 = 'input[name*=value]';
+    var choiceValueClsSelector = '.answer-value';
+    var choiceNameSelector = 'input[name*=answer]';
+    var choiceNameClsSelector = '.answer-txt';
+
     commonObj.showQuizForm = function(){
-        $('.wizard-loading').hide();
-        $('#edit_questionnaire_panel').show();
+        // show quiz wizard html after popup resources loading
+
+        $(loadingDiv).hide();
+        $(editQuizPanel).show();
     }
 
     commonObj.getQuizType = function() {
+        // get type of quiz from DOM
+
         var type = $("#type option:selected").val();
         if (!type) {
             type = $('input[name="type"]').val();
@@ -17,17 +51,22 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.scrollToBottom = function(){
-        debugger
+        // scroll down to the newly added category, range, question
+
         var container = $('.wizard .content');
         var height = container[0].scrollHeight;
         container.scrollTop(height);
     }
 
     commonObj.closeModal = function(modal){
+        // close studio edit popup
+
         modal.cancel();
     }
 
     commonObj.askCloseModal = function(modal){
+        // ask form confirmation before closing studio edit popup (after step 3 saved)
+
         var r = confirm("Your data is successfully saved, Please click OK to close this window");
         if (r == true) {
             commonObj.closeModal(modal);
@@ -35,18 +74,22 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.sumArray = function(_array){
+        // return sum of an array
+
         var total = 0;
-        $.each(_array,function(j, value) {
+        $.each(_array, function(j, value) {
             total += value;
         });
         return parseFloat(total.toFixed(1));
     }
 
     commonObj.getAllWQuestionsChoices = function(){
+        // return array of array for all choices values of all questions
+
         var questionsChoices = [];
-        $.each($('#questions_panel .question'), function (i, question) {
+        $.each($(questionPanel + ' ' + questionSelector), function (i, question) {
             var choices = [];
-            $.each($(question).find('input[name*="]value["]'), function (j, choice) {
+            $.each($(question).find(choiceValueSelector), function (j, choice) {
                 choices.push(parseFloat($(choice).val()));
             });
             questionsChoices.push(choices);
@@ -55,6 +98,8 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.allPossibleAnswers = function(arrayOfArrays) {
+        // return all possible answers combination for all questions of a quiz
+
 		if (Object.prototype.toString.call(arrayOfArrays) !== '[object Array]') {
 			throw new Error("combinations method was passed a non-array argument");
 		}
@@ -90,28 +135,29 @@ function StudioCommon(runtime, element) {
 	}
 
     commonObj.getChoicesList = function() {
-        // Get json values of categories added at step2
+        // Get array of values for categories added at step2
 
         var categories = [];
-        $.each($("#categories_panel").find('.category'), function (i, category) {
-            var id = $(category).find("input[name^='category[id]']").val();
-            var name = $(category).find("input[name^='category[name]']").val();
+        $.each($(categoriesPanel).find(categorySelector), function (i, category) {
+            var id = $(category).find(categoryIdSelector).val();
+            var name = $(category).find(categoryNameSelector).val();
             categories.push({id: id, name: name});
         });
         return categories;
     }
 
     commonObj.initiateHtmlEditor = function(container) {
-        // Add tinymce text editor on textarea with class .custom_textarea in step 2
+        // Add tinymce text editor on textarea with class .custom_textarea at step 2
 
         if(setting.tinyMceAvailable){
-            $.each(container.find('.custom_textarea'), function (i, textarea) {
-                //check if a intance already exists for a textarea
+            $.each(container.find(tinyMceTextarea), function (i, textarea) {
+                //check if an intance already attached with any textarea
                 if ($(textarea).tinymce()) {
-                    //remove existing attached intances with textarea
+                    //remove existing attached intances
                     $(textarea).tinymce().destroy();
                 }
-                // initialize OR reinitialize tinymce on a textarea
+
+                // initialize tinymce on a textarea
                 $(textarea).tinymce({
                     theme: 'modern',
                     skin: 'studio-tmce4',
@@ -144,41 +190,96 @@ function StudioCommon(runtime, element) {
         }
         data = $.extend(data, stepData);
         console.log(data);
+
         return data;
+    }
+
+    commonObj.updateAllResultDropwdowns = function(categories) {
+        // update html of all results dropdowns to sync with categories added at step2
+
+        //var dropDowns = $(".result-choice");
+        var dropDowns = $(allResultChoicesDropdowns);
+        $.each(dropDowns, function (i, dropdown) {
+            var mappingOptions = commonObj.generateResultsHtml($(dropdown), categories);
+            $(dropdown).html(mappingOptions);
+        });
+    }
+
+    commonObj.generateResultsHtml = function(dropdown, categories) {
+        // generate html of result dropdown at step3
+
+        // get all existing values in dropdown
+        var existing_values = [];
+        $.each(dropdown.find('option'), function (i, option) {
+            existing_values.push($(option).val());
+        });
+
+        // skip already added categories and append only newly added category/categories as result
+        var _html = '';
+        $.each(categories, function (i, category) {
+            var id = category.id;
+            var name = category.name;
+
+            if (existing_values.indexOf(id) < 0) {
+                //append if option not exist
+                _html += "<option value='" + id + "'>" + name + "</option>";
+            } else {
+                //just update label of exiting option
+                dropdown.find('option[value="'+id+'"]').html(name);
+            }
+        });
+
+        return dropdown.html() + _html;
     }
 
     commonObj.updateNextForm = function(step, previousStepData) {
         // Manipulate DOM of next step in wizard, based on the last step selections
 
+        var quizType = commonObj.getQuizType();
+
         if (step == 1) {
-            if (previousStepData.type == 'BFQ') {
-                $('#categories_panel').removeClass('hide').addClass('show');
-                $('#ranges_panel').removeClass('show').addClass('hide');
-                commonObj.initiateHtmlEditor($('#categories_panel'));
+            // for 2nd step of wizard
+            if (quizType == 'BFQ') {
+                // in case of quiz type is BuzFeed
+                // show categories html
+                // hide ranges html
+                // initialize tinymce text editor on textarea in categories_panel
+                $(categoriesPanel).removeClass('hide').addClass('show');
+                $(rangesPanel).removeClass('show').addClass('hide');
+                commonObj.initiateHtmlEditor($(categoriesPanel));
             } else {
-                $('#categories_panel').removeClass('show').addClass('hide');
-                $('#ranges_panel').removeClass('hide').addClass('show');
-                commonObj.initiateHtmlEditor($('#ranges_panel'));
+                // in case of quiz type is Diagnostic
+                // show ranges html
+                // hide categories html
+                // initialize tinymce text editor on textarea in ranges_panel
+                $(categoriesPanel).removeClass('show').addClass('hide');
+                $(rangesPanel).removeClass('hide').addClass('show');
+                commonObj.initiateHtmlEditor($(rangesPanel));
             }
         } else if (step == 2) {
-            var type = commonObj.getQuizType();
-            if (type == 'BFQ') {
+            // for 3rd step of wizard
+            if (quizType == 'BFQ') {
+                // in case quiz type is Buzfeed
+                // fill all results dropdown with categories selected at step 2
+                // hide range related inputs and show result dropdowns
                 var categories = previousStepData['categories'];
                 commonObj.updateAllResultDropwdowns(categories);
-                $('.answer-choice .answer-value').hide();
-                $('.answer-choice .result-choice').show();
+                $(allChoiceValuesInputs).hide();
+                $(allResultChoicesDropdowns).show();
 
             } else {
-                $('.answer-choice .result-choice').hide();
-                $('.answer-choice .answer-value').show();
+                // in case quiz type is diagnostic
+                // hide all results dropdowns and sow range related inputs
+                $(allResultChoicesDropdowns).hide();
+                $(allChoiceValuesInputs).show();
             }
         }
     }
 
-    commonObj.updateUI = function(result) {
-        // callback for ajax call that submit step data to server
-        common.showMessage(result);
-    }
+    //commonObj.updateUI = function(result) {
+    //    // callback for ajax call that submit step data to server
+    //    common.showMessage(result);
+    //}
 
     commonObj.updateFieldAttr = function(field, order) {
         // update the name/id of a single category/range filed
@@ -190,20 +291,21 @@ function StudioCommon(runtime, element) {
 
     commonObj.updateQuestionFieldAttr = function(question, i){
         //Update name/id attributes of a given question-txt field
-        $(question).find('.q-order').html(i + 1);
+
+        $(question).find(questionOrderSelector).html(i + 1);
         var question_name = 'question[' + i + ']';
-        $(question).find('.question-txt').first().attr({'name': question_name, id: question_name});
+        $(question).find(questionTxtFieldSelector).first().attr({'name': question_name, id: question_name});
         //return question_name;
     }
 
     commonObj.updateChoiceFieldAttr = function(choice, i){
         //Update name/id attributes of a given choice field
-        var question_name = $(choice).parent().prevAll('.question_field').find('.question-txt').first().attr('name');
+        var question_name = $(choice).parent().prevAll(questionFieldsContainerSelector).find(questionTxtFieldSelector).first().attr('name');
         var ChoiceAnswer = question_name + 'answer[' + i + ']';
         var ChoiceValue = question_name + 'value[' + i + ']';
 
-        $(choice).find("input[name*=answer]").attr({id: ChoiceAnswer, name: ChoiceAnswer});
-        $(choice).find("input[name*=value]").attr({id: ChoiceValue, name: ChoiceValue});
+        $(choice).find(choiceNameSelector).attr({id: ChoiceAnswer, name: ChoiceAnswer});
+        $(choice).find(choiceValueSelector2).attr({id: ChoiceValue, name: ChoiceValue});
     }
 
     commonObj.confirmAction = function(msg){
@@ -212,6 +314,7 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.generateUniqueId = function(){
+        // return unique id for category/question
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
@@ -249,11 +352,10 @@ function StudioCommon(runtime, element) {
 
     commonObj.getStep1Data = function() {
         // Return first step data
-
         var type = commonObj.getQuizType();
         return {
-            title: $('input[name="title"]').val(),
-            description: $('textarea[name="description"]').val(),
+            title: $(quizTitleSelector).val(),
+            description: $(quizDescriptionSelector).val(),
             type: type
         }
     }
@@ -275,28 +377,28 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.getStep3Data = function() {
-        // Get ste3 data before posting to server
+        // Get step3 data before posting to server
 
-        var questionContainers = $(".question");
+        var questionContainers = $(questionSelector);
         var questions = [];
         $.each(questionContainers, function (i, container) {
             var questionObj = {
-                question_txt: $(container).find('.question-txt').val(),
+                question_txt: $(container).find(questionTxtFieldSelector).val(),
                 choices: []
             }
 
-            var id = $(container).find('.question_id').first().val();
+            var id = $(container).find(questionIdSelector).first().val();
             if(!id.trim()){
                 id =  commonObj.generateUniqueId();
-                $(container).find('.question_id').first().val(id);
+                $(container).find(questionIdSelector).first().val(id);
             }
             questionObj['id'] = id;
 
-            var answerChoicesInputs = $(container).find('.answer-txt');
+            var answerChoicesInputs = $(container).find(choiceNameClsSelector);
             $.each(answerChoicesInputs, function (j, choice) {
                 var answerChoice = {
                     'choice_txt': $(choice).val(),
-                    'choice_value': $(choice).nextAll('.answer-value').first().val(),
+                    'choice_value': $(choice).nextAll(choiceValueClsSelector).first().val(),
                     'choice_category': $(choice).nextAll('select:visible').val()
                 };
                 questionObj['choices'].push(answerChoice);
@@ -307,44 +409,12 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.removeCategoryFromOptions = function(category){
-        var category_id = category.find('input[name*="category[id]"]').val();
+        // remove category option from all result dropdowns at step 3
+        var category_id = category.find(categoryIdSelector).val();
         $(".result-choice option[value='"+category_id+"']").remove();
     }
 
-    commonObj.generateResultsHtml = function(dropdown, categories) {
-        // generate html of category dropdown for step3
 
-        var existing_values = [];
-        $.each(dropdown.find('option'), function (i, option) {
-            existing_values.push($(option).val());
-        });
-
-        var _html = '';
-        $.each(categories, function (i, category) {
-            var id = category.id;
-            var name = category.name;
-
-            if (existing_values.indexOf(id) < 0) {
-                //append if option not exist
-                _html += "<option value='" + id + "'>" + name + "</option>";
-            } else {
-                //update label of exiting option
-                dropdown.find('option[value="'+id+'"]').html(name);
-            }
-        });
-
-        return dropdown.html() + _html;
-    }
-
-    commonObj.updateAllResultDropwdowns = function(categories) {
-        // update html of all results dropdowns to sync with categories/ranges added at step3
-
-        var dropDowns = $(".result-choice");
-        $.each(dropDowns, function (i, dropdown) {
-            var mappingOptions = commonObj.generateResultsHtml($(dropdown), categories);
-            $(dropdown).html(mappingOptions);
-        });
-    }
 
 
 }

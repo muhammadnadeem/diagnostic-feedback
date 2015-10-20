@@ -1,12 +1,18 @@
 function Common(runtime, element) {
+    //contains common js b/w studio and student view
     var cObj = this;
 
+    //selectors
+    var globalMessage = '.msg';
+    var warningMessage = '.validation-msg';
+
     cObj.showGlobalMessage = function(msgObj){
+        // display message at top right of page
         var _type = '';
         var title = '';
 
-        var msg = $('.msg');
-        msg.removeClass('info success-msg error-msg warning-msg');
+        var msg = $(globalMessage);
+        msg.removeClass('info-msg success-msg error-msg warning-msg');
 
         if (msgObj.success) {
             _type = 'success-msg';
@@ -31,7 +37,7 @@ function Common(runtime, element) {
         // append message to given container
         var _type = '';
         var title = '';
-        container.find('.validation-msg').remove();
+        container.find(warningMessage).remove();
 
         if (msgObj.success) {
             _type = 'success-msg';
@@ -45,7 +51,7 @@ function Common(runtime, element) {
 
         if(!msgObj.persist){
             setTimeout(function(){
-                var target = container.find('.validation-msg');
+                var target = container.find(warningMessage);
                 target.hide('slow', function(){
                     target.remove();
                 });
