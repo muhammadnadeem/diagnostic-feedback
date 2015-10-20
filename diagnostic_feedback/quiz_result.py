@@ -36,7 +36,7 @@ class QuizResultMixin(object):
     def get_result(self, result):
 
         self.msg = "You are " + str(result['name'])
-        if result['image'] in result:
+        if result['image']:
             self.img = result['image']
         self.html_body = result['html_body']
         result = self.msg + " , your image url is " + str(self.img) + "and html body is " + str(self.html_body)

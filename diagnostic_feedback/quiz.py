@@ -237,6 +237,8 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
         try:
             success, result = StudentChoiceValidator.basic_validate(data)
             if success:
+                if data['clearPreviousData']:
+                    self.student_choices = {}
                 self.student_choices[data['question_id']] = data['student_choice']
                 if data['isLast']:
                     if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
