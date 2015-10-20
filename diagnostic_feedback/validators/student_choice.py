@@ -13,17 +13,17 @@ class StudentChoiceValidator(Validator):
             validate only question id & student choice
         """
         valid = True
-        msg = ''
+        validation_message = ''
 
         question_id = data.get('question_id')
         student_choice = data.get('student_choice')
 
         if cls.is_empty(question_id):
             valid = False
-            msg = 'question id is required'
+            validation_message = 'question id is required'
         elif cls.is_empty(student_choice):
             valid = False
-            msg = 'Student Choice is required'
+            validation_message = 'Student Choice is required'
 
-        return valid, msg
+        return valid, validation_message
 

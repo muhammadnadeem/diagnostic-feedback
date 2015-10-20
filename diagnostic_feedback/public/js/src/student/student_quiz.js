@@ -6,28 +6,27 @@ function StudentQuiz(runtime, element) {
 
     /* Javascript for Student view in LMS.*/
 
-    var common = new Common();
-    var form = $("#student_view_form");
-
-    //selctors for student answer
-    var currentAnswerContainer = ".current";
-    var questionId = '.question_id';
-    var selectedStudentChoice = 'input[type="radio"]:checked';
-
-    // Selector for showing result
-    var finalResult = '#response_body';
-    var actions = "ul[role='menu']";
-
+    var common = new Common(),
+    form = $("#student_view_form"),
 
     //selectors
-    var choiceSelector = '.answer-choice';
+    currentAnswerContainer = ".current",
+    questionId = '.question_id',
+    selectedStudentChoice = 'input[type="radio"]:checked',
+
+    finalResult = '#response_body',
+    choiceSelector = '.answer-choice';
 
     function hideActions(){
+        // hide next, previous, finish action button
+        // show start over button
         $('ul[role="menu"] a[href*="next"], ul[role="menu"] a[href*="previous"], ul[role="menu"] a[href*="finish"]').hide();
         $('ul[role="menu"] a[href*="cancel"]').show();
     }
 
     function resetActions(){
+        // hide start over button
+        // show next, previous, finish action button
         $('ul[role="menu"] a[href*="next"], ul[role="menu"] a[href*="previous"]').show();
         $('ul[role="menu"] a[href*="cancel"]').hide();
     }
@@ -38,19 +37,20 @@ function StudentQuiz(runtime, element) {
         if (result.success && result.student_result.msg) {
             var imgSrc = result.student_result.img;
             var htmlBody = result.student_result.html_body;
-            var html = '';
+            var html = '<div>';
             if (imgSrc) {
-                html = '<div><img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
-                    '<p id="html_body">' + htmlBody + '</p></div>';
+                html += '<img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
+                    '<p id="html_body">' + htmlBody + '</p>';
             }
             else {
-                html = '<div><p id="html_body">' + htmlBody + '</p></div>';
+                html += '<p id="html_body">' + htmlBody + '</p>';
             }
+            html += '</div>';
+
             $(finalResult).html(html);
             hideActions();
         }
     }
-
 
     function getStudentChoice() {
         //Get student selected answer of wizard current question
@@ -59,7 +59,6 @@ function StudentQuiz(runtime, element) {
         var studentChoice = $(currentAnswerContainer).find(selectedStudentChoice).val();
         return {'question_id': id, 'student_choice': studentChoice};
     }
-
 
     function submitQuestionResponse(isLast) {
         // this method is called on successful submission and pass the student's seleted value
@@ -81,7 +80,6 @@ function StudentQuiz(runtime, element) {
     }
 
     $(function ($) {
-        var form = $("#student_view_form");
 
         form.children("div").steps({
             headerTag: "h3",

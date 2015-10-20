@@ -3,37 +3,37 @@ function Quiz(runtime, element) {
     $(function ($) {
 
         // import related js helpers
-        var customValidator = new CustomValidator();
-        var common = new Common();
-        var studioCommon = new StudioCommon();
-        var handler = new EventHandler();
-        var setting = new Setting();
+        var customValidator = new CustomValidator(),
+        common = new Common(),
+        studioCommon = new StudioCommon(),
+        handler = new EventHandler(),
+        setting = new Setting();
 
         // show quiz wizard html after popup loads its resources
         studioCommon.showQuizForm();
 
         //selectors
-        var form = $("#questionnaire-form");
+        var form = $("#questionnaire-form"),
 
-        var categoriesPanel = '#categories_panel';
-        var addNewCategoryBtn = categoriesPanel+' .add-new-category';
-        var deleteCategoryBtn = '.delete-category';
-        var categorySelector = '.category';
+        categoriesPanel = '#categories_panel',
+        addNewCategoryBtn = categoriesPanel+' .add-new-category',
+        deleteCategoryBtn = '.delete-category',
+        categorySelector = '.category',
 
-        var rangesPanel = '#ranges_panel';
-        var addNewRangeBtn =  rangesPanel+' .add-new-range';
-        var deleteRangeBtn = '.delete-range';
-        var rangeSelector = '.range';
+        rangesPanel = '#ranges_panel',
+        addNewRangeBtn =  rangesPanel+' .add-new-range',
+        deleteRangeBtn = '.delete-range',
+        rangeSelector = '.range',
 
-        var step3Panel = "section[step='3']";
-        var questionPanel = '#questions_panel';
-        var addNewQuestionBtn = '.add-new-question';
-        var deleteQuestionBtn = '.delete-question';
-        var questionSelector = '.question';
+        step3Panel = "section[step='3']",
+        questionPanel = '#questions_panel',
+        addNewQuestionBtn = '.add-new-question',
+        deleteQuestionBtn = '.delete-question',
+        questionSelector = '.question',
 
-        var addNewChoiceBtn = '.add-new-choice';
-        var deleteChoiceBtn = '.delete-choice';
-        var choiceSelector = '.answer-choice';
+        addNewChoiceBtn = '.add-new-choice',
+        deleteChoiceBtn = '.delete-choice',
+        choiceSelector = '.answer-choice';
 
         //initialize js validations if on in setting.js
         if(setting.jsValidation){

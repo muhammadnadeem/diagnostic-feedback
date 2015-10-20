@@ -18,7 +18,7 @@ class ChoiceValidator(Validator):
         """
 
         valid = True
-        msg = ''
+        validation_message = ''
 
         if cls.empty_list(choices):
             return 'choices list is missing'
@@ -30,26 +30,22 @@ class ChoiceValidator(Validator):
 
             if cls.is_empty(choice_txt):
                 valid = False
-                msg = 'name required'
+                validation_message = 'name required'
 
             elif quiz_type == BUZ_FEED_QUIZ_VALUE and cls.is_empty(choice_category):
                 valid = False
-                msg = 'category required'
+                validation_message = 'category required'
 
             elif quiz_type == BUZ_FEED_QUIZ_VALUE and cls.invalid_category(choice_category, results):
                 valid = False
-                msg = 'invalid category_id found'
+                validation_message = 'invalid category_id found'
 
             elif quiz_type != BUZ_FEED_QUIZ_VALUE and cls.is_empty(choice_value):
                 valid = False
-                msg = 'choice value required'
-
-            # elif quiz_type != BUZ_FEED_QUIZ_VALUE and cls.invalid_range(choice_value, results):
-            #     valid = False
-            #     msg = 'invalid range value found'
+                validation_message = 'choice value required'
 
             if not valid:
                 break
 
-        return msg
+        return validation_message
 

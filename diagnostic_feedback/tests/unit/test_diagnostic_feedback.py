@@ -151,27 +151,27 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
             elif _type == 'overlapping_ranges_case1':
                 data = json.loads(data)
                 ranges = data['ranges']
-                msg = 'overlapping ranges [{} - {}] & [{} - {}]'.format(ranges[0].get('min_value'),
+                error_message = 'overlapping ranges [{} - {}] & [{} - {}]'.format(ranges[0].get('min_value'),
                                                                             ranges[0].get('max_value'),
                                                                             ranges[1].get('min_value'),
                                                                             ranges[1].get('max_value'))
-                assert_equals(res, {u'success': False, u"step": 2, u'msg': u'{}'.format(msg)})
+                assert_equals(res, {u'success': False, u"step": 2, u'msg': u'{}'.format(error_message)})
             elif _type == 'overlapping_ranges_case2':
                 data = json.loads(data)
                 ranges = data['ranges']
-                msg = 'overlapping ranges [{} - {}] & [{} - {}]'.format(ranges[0].get('min_value'),
+                error_message = 'overlapping ranges [{} - {}] & [{} - {}]'.format(ranges[0].get('min_value'),
                                                                             ranges[0].get('max_value'),
                                                                             ranges[2].get('min_value'),
                                                                             ranges[2].get('max_value'))
-                assert_equals(res, {u'success': False, u"step": 2, u'msg': u'{}'.format(msg)})
+                assert_equals(res, {u'success': False, u"step": 2, u'msg': u'{}'.format(error_message)})
             elif _type == 'overlapping_ranges_case3':
                 data = json.loads(data)
                 ranges = data['ranges']
-                msg = 'overlapping ranges [{} - {}] & [{} - {}]'.format(ranges[1].get('min_value'),
+                error_message = 'overlapping ranges [{} - {}] & [{} - {}]'.format(ranges[1].get('min_value'),
                                                                             ranges[1].get('max_value'),
                                                                             ranges[2].get('min_value'),
                                                                             ranges[2].get('max_value'))
-                assert_equals(res, {u'success': False, u"step": 2, u'msg': u'{}'.format(msg)})
+                assert_equals(res, {u'success': False, u"step": 2, u'msg': u'{}'.format(error_message)})
 
             elif _type == 'valid':
                 assert_equals(res, {u'success': True, u"step": 2, u'msg': u'step 2 data saved'})

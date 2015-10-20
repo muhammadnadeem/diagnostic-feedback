@@ -17,7 +17,7 @@
         </li>
         <li class="field comp-setting-entry metadata_entry">
             <div class="wrapper-comp-setting">
-            {% if self.mode == 'new' %}
+            {% if not self.quiz_type %}
                 <label for="type" class="label setting-label">Quiz Type</label>
                 <select id="type" name="type" class="required field-data-control">
                     <option value=""> -- Select Type -- </option>

@@ -14,7 +14,7 @@ class QuestionValidator(ChoiceValidator):
 
         questions = data.get('questions', [])
         valid = True
-        msg = ''
+        validation_message = ''
 
         if cls.empty_list(questions):
             return False, 'at least one question required'
@@ -28,23 +28,23 @@ class QuestionValidator(ChoiceValidator):
             # check for question id availablity
             if cls.is_empty(_id):
                 valid = False
-                msg = 'question {} id required'.format(question_order)
+                validation_message = 'question {} id required'.format(question_order)
 
             # check for question text validity
             elif cls.is_empty(question_txt):
                 valid = False
-                msg = 'question {} text required'.format(question_order)
+                validation_message = 'question {} text required'.format(question_order)
 
             # if question is valid, check its choices validity
             if valid:
                 choice_msg = ChoiceValidator.validate(choices, quiz.quiz_type, quiz.BUZ_FEED_QUIZ_VALUE, quiz.results)
                 if choice_msg:
                     valid = False
-                    msg = 'question {} having invalid choices. {}'.format(question_order, choice_msg)
+                    validation_message = 'question {} having invalid choices. {}'.format(question_order, choice_msg)
 
             if not valid:
                 break
 
-        return valid, msg
+        return valid, validation_message
 
 

@@ -1,10 +1,10 @@
 function Common(runtime, element) {
     //contains common js b/w studio and student view
-    var cObj = this;
+    var cObj = this,
 
     //selectors
-    var globalMessage = '.msg';
-    var warningMessage = '.validation-msg';
+    globalMessage = '.msg',
+    warningMessage = '.validation-msg';
 
     cObj.showGlobalMessage = function(msgObj){
         // display message at top right of page
@@ -30,7 +30,7 @@ function Common(runtime, element) {
 
         setTimeout(function(){
             msg.slideUp('slow');
-        }, 2000);
+        }, 3000);
     }
 
     cObj.showChildMessage = function(container, msgObj){
