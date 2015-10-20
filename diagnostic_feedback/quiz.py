@@ -248,4 +248,4 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
         except Exception as ex:
             success = False
             msg += str(ex)
-        return {'success': success, 'msg': result}
+        return {'success': success, 'student_result': result}

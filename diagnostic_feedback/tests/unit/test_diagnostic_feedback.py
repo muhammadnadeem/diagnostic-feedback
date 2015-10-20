@@ -78,6 +78,8 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
                 assert_equals(res, {u'success': False, u"step": 1, u'msg': u'type is invalid'})
             elif _type == 'missing_title_type':
                 assert_equals(res, {u'success': False, u"step": 1, u'msg': u'title is required'})
+            elif _type == "missing_description" :
+                assert_equals(res, {u'success': False, u"step": 1, u'msg': u'description is required'})
             elif _type == 'valid_data':
                 assert_equals(res, {u'success': True, u"step": 1, u'msg': u'step 1 data saved'})
 

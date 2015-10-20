@@ -1,36 +1,54 @@
-/* Javascript for MyXBlock. */
 function StudentQuiz(runtime, element) {
+    /* Javascript for Student view in LMS.*/
+
     var common = new Common();
+    var form = $("#student_view_form");
+
+    //selctors for student answer
+    var currentAnswerContainer = ".current";
+    var questionId = '.question_id';
+    var selectedStudentChoice = 'input[type="radio"]:checked';
+
+    // Selector for showing result
+    var finalResult = '#response_body';
+    var actions = "ul[role='menu']";
+
 
     function showResult(result) {
-        if (result.success && result.msg.msg) {
-            var imgSrc = result.msg.img;
-            var resultClass = 'success';
-            var htmlBody = result.msg.html_body;
+        // shows final result of student
+
+        if (result.success && result.student_result.msg) {
+            var imgSrc = result.student_result.img;
+            var htmlBody = result.student_result.html_body;
             var html = '';
             if (imgSrc) {
-                html = '<div><img class="result_img" src="' + imgSrc + '" alt="Smiley face"> ' +
+                html = '<div><img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
                     '<p id="html_body">' + htmlBody + '</p></div>';
             }
             else {
                 html = '<div><p id="html_body">' + htmlBody + '</p></div>';
             }
-            $('#response_body').html(html);
-            $("ul[role='menu']").hide()
+            $(finalResult).html(html);
+            $(actions).hide()
         }
     }
 
+
     function getStudentChoice() {
-        var answerContainers = $(".current");
-        var question_id = $(answerContainers).find('.question_id').val();
-        var student_choice = $(answerContainers).find('input[type="radio"]:checked').val();
-        return {'question_id': question_id, 'student_choice': student_choice};
+        //Get student selected answer of wizard current question
+
+        var id = $(currentAnswerContainer).find(questionId).val();
+        var studentChoice = $(currentAnswerContainer).find(selectedStudentChoice).val();
+        return {'question_id': id, 'student_choice': studentChoice};
     }
 
+
     function submitQuestionResponse(isLast) {
+        // this method is called on successful submission and pass the student's seleted value
+
         var answerHandlerUrl = runtime.handlerUrl(element, 'save_choice');
         var choice = getStudentChoice();
-        choice['isLast'] = isLast;
+        choice['isLast'] = isLast;  //if student given last answer of the question, this flag is true.
         $.ajax({
             type: "POST",
             url: answerHandlerUrl,
@@ -40,15 +58,12 @@ function StudentQuiz(runtime, element) {
     }
 
     $(function ($) {
-        var form = $("#student_view_form");
-
         form.children("div").steps({
             headerTag: "h3",
             bodyTag: "section",
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex) {
-                if(newIndex == $("#student_view_form section").length - 1){
-                    console.log('showing result');
+                if (newIndex == $("#student_view_form section").length - 1) {
                     return saveToServer(true);
                 } else {
                     return saveToServer(false);
@@ -57,8 +72,9 @@ function StudentQuiz(runtime, element) {
         });
 
         function saveToServer(isLast) {
+
             form.validate().settings.ignore = ":disabled,:hidden";
-            var selectedChoice = $("section.answer-choice:visible").find('input[type="radio"]:checked').val();
+            var selectedChoice = $("section.answer-choice:visible").find(selectedStudentChoice).val();
 
             if (selectedChoice != "" && selectedChoice != undefined) {
                 submitQuestionResponse(isLast);

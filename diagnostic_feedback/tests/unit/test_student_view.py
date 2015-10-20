@@ -51,7 +51,7 @@ class StudentViewAjaxTest(BaseTest, WizardStepMixin):
         res = self.save_wizard_step1(self._block.DIAGNOSTIC_QUIZ_VALUE)
         assert_equals(res['success'], True)
 
-        # add categories for diagnostic quiz
+        # add ranges for dignostic quiz
         res = self.save_diagnostic_step2()
         assert_equals(res['success'], True)
 
@@ -70,22 +70,22 @@ class StudentViewAjaxTest(BaseTest, WizardStepMixin):
                 json_data = json.dumps(data)
                 res = json.loads(self._block.handle('save_choice', self.make_request(json_data)).body)
                 if type == 'missing_choice':
-                    assert_equals(res, {u'success': False, u'msg': u'Student Choice is required'})
+                    assert_equals(res, {u'success': False, u'student_result': u'Student Choice is required'})
                 elif type == 'missing_id':
-                    assert_equals(res, {u'success': False, u'msg': u'question id is required'})
+                    assert_equals(res, {u'success': False, u'student_result': u'question id is required'})
                 elif type == 'valid_data':
                     if data['isLast'] == "True":
-                        assert_equals(res, {u'success': True, u'msg': {u'html_body': u'No Html Body',
-                                                                       u'img': u'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg',
-                                                                       u'msg': u'You are A'},
+                        assert_equals(res, {u'success': True, u'student_result': {u'html_body': u'',
+                                                                                  u'img': u'',
+                                                                                  u'msg': u'You are A'},
                                             })
                     else:
-                        assert_equals(res, {u'success': True, u'msg': ''})
+                        assert_equals(res, {u'success': True, u'student_result': ''})
                 elif type == "range_dont_exist":
-                    assert_equals(res, {u'success': True, u'msg': {u'html_body': u'',
-                                                                       u'img': u'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg',
-                                                                       u'msg': u'we cannot calculate your outcome'},
-                                            })
+                    assert_equals(res, {u'success': True, u'student_result': {u'html_body': u'',
+                                                                              u'img': u'',
+                                                                              u'msg': u'we cannot calculate your outcome'},
+                                        })
 
     def test_buzz_feed_answer(self):
 
@@ -112,18 +112,18 @@ class StudentViewAjaxTest(BaseTest, WizardStepMixin):
                 json_data = json.dumps(data)
                 res = json.loads(self._block.handle('save_choice', self.make_request(json_data)).body)
                 if type == 'missing_choice':
-                    assert_equals(res, {u'success': False, u'msg': u'Student Choice is required'})
+                    assert_equals(res, {u'success': False, u'student_result': u'Student Choice is required'})
                 elif type == 'missing_id':
-                    assert_equals(res, {u'success': False, u'msg': u'question id is required'})
+                    assert_equals(res, {u'success': False, u'student_result': u'question id is required'})
                 elif type == 'valid_data':
                     if data['isLast'] == "True":
-                        assert_equals(res, {u'success': True, u'msg': {u'html_body': u'No Html Body',
-                                                                       u'img': u'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg',
-                                                                       u'msg': u'You are Category2'},
+                        assert_equals(res, {u'success': True, u'student_result': {u'html_body': u'',
+                                                                                  u'img': u'',
+                                                                                  u'msg': u'You are Category2'},
                                             })
 
                     else:
-                        assert_equals(res, {u'success': True, u'msg': ''})
+                        assert_equals(res, {u'success': True, u'student_result': ''})
 
     def tearDown(self):
         self._block = None
