@@ -1,33 +1,12 @@
-h3, div, span, h1, h2, h3, h4, b, i, 
-ol, ul, li, form, label, section{
-
-	margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    color: #4c4c4c;
+#student_view_form *{
+   color: #4c4c4c;
 }
-
 
 .result_img{
     height: 80px;
     float: left;
     padding-right: 10px;
     width: 80px;
-}
-
-.final_result{
-    min-height: 100px;
-    border-radius: 15px;
-    border: 3px solid #CAD4D6;
-}
-
-
-#student_view_form body{
-	color: #4c4c4c;
 }
 
 #student_view_form  > div > div > ul[role = tablist]  { display: none; }
@@ -38,18 +17,15 @@ ol, ul, li, form, label, section{
 	transition: color 0.25s ease-in-out 0s;
 	font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight: 300;
-	font-size: 2.0rem;
+	font-size: 2.0em;
 }
 
 .quiz_title, .quiz_title > i{
-	color: #009fe6;
+	color: #009fe6 !important;
 }
-
-
 
 .quiz_description, .quiz_question, .question_container, .user_answers{
 	display: block;
-	color: #4c4c4c;
 }
 
 .quiz_description, .quiz_question{
@@ -75,5 +51,5 @@ ol, ul, li, form, label, section{
 }
 
 .user_answers > label{
-	font-size: 0.8rem;
+	font-size: 0.8em;
 }

@@ -114,12 +114,6 @@
     left: -999em;
 }
 
-
-.wizard > .actions > ul > li
-{
-    float: left;
-}
-
 .wizard > .actions
 {
     position: relative;
@@ -137,6 +131,7 @@
 
 .wizard > .actions > ul > li
 {
+    float: left;
     margin: 0 0.5em;
 }
 
@@ -145,7 +140,7 @@
 .wizard > .actions a:active
 {
     background: #2184be;
-    color: #fff;
+    color: #fff !important;
     display: block;
     padding: 0.5em 1em;
     text-decoration: none;

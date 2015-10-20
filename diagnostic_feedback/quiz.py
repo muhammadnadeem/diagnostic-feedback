@@ -1,5 +1,3 @@
-"""TO-DO: Write a description of what this XBlock is."""
-
 import logging
 import copy
 
@@ -12,7 +10,7 @@ from .resource import ResourceMixin
 from .quiz_result import QuizResultMixin
 
 from .filters import Range, Category, Question
-from .validators import CategoryValidator, RangeValidator, QuizValidator, QuestionValidator , StudentChoiceValidator
+from .validators import CategoryValidator, RangeValidator, QuizValidator, QuestionValidator, StudentChoiceValidator
 
 log = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
@@ -23,7 +21,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
 
     """
     BUZ_FEED_QUIZ_VALUE = "BFQ"
-    BUZ_FEED_QUIZ_LABEL = "Buzzfeed Quiz"
+    BUZ_FEED_QUIZ_LABEL = "Buzz Feed Quiz"
     DIAGNOSTIC_QUIZ_VALUE = "DG"
     DIAGNOSTIC_QUIZ_LABEL = "Diagnostic Quiz"
 
