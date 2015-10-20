@@ -11,7 +11,7 @@ class WizardStepMixin(object):
         }))).body)
         return res
 
-    def save_buzfeed_step2(self):
+    def save_buzzfeed_step2(self):
         res = json.loads(self._block.handle('save_data', self.make_request(json.dumps({
             "step": 2,
             "categories": [
@@ -53,7 +53,7 @@ class WizardStepMixin(object):
         }))).body)
         return res
 
-    def save_buzfeed_step3(self):
+    def save_buzzfeed_step3(self):
         res = json.loads(self._block.handle('save_data', self.make_request(json.dumps({
             "step": 3,
             "questions": [

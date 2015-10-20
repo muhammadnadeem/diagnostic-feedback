@@ -13,7 +13,7 @@ function Quiz(runtime, element) {
         studioCommon.showQuizForm();
 
         //selectors
-        var form = $("#questionnaire-form");
+        var form = $("#quiz_form");
 
         var categoriesPanel = '#categories_panel';
         var addNewCategoryBtn = categoriesPanel+' .add-new-category';

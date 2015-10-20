@@ -240,7 +240,7 @@ function StudioCommon(runtime, element) {
         if (step == 1) {
             // for 2nd step of wizard
             if (quizType == 'BFQ') {
-                // in case of quiz type is BuzFeed
+                // in case of quiz type is BuzzFeed
                 // show categories html
                 // hide ranges html
                 // initialize tinymce text editor on textarea in categories_panel
@@ -259,7 +259,7 @@ function StudioCommon(runtime, element) {
         } else if (step == 2) {
             // for 3rd step of wizard
             if (quizType == 'BFQ') {
-                // in case quiz type is Buzfeed
+                // in case quiz type is Buzzfeed
                 // fill all results dropdown with categories selected at step 2
                 // hide range related inputs and show result dropdowns
                 var categories = previousStepData['categories'];

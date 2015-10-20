@@ -60,7 +60,7 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
             return json.loads(self.load_json_resource('data/step2_test_data.json'))
         elif step == 3:
             if quiz_type == self._block.BUZ_FEED_QUIZ_VALUE:
-                return json.loads(self.load_json_resource('data/step3_buzfeed_test_data.json'))
+                return json.loads(self.load_json_resource('data/step3_buzzfeed_test_data.json'))
             else:
                 return json.loads(self.load_json_resource('data/step3_diagnostic_test_data.json'))
 
@@ -85,16 +85,16 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
         assert_equals(self._block.quiz_type, self._block.DIAGNOSTIC_QUIZ_VALUE)
 
 
-    def test_buzfeed_wizard_step2(self):
+    def test_buzzfeed_wizard_step2(self):
 
         assert_equals(len(self._block.results), 0)
 
-        # set quiz as buzfeed
+        # set quiz as buzzfeed
         res = self.save_wizard_step1(self._block.BUZ_FEED_QUIZ_VALUE)
         assert_equals(res['success'], True)
 
         # test all related cases
-        for _type, data in self._step2_data.get('buzfeed_quiz_data').items():
+        for _type, data in self._step2_data.get('buzzfeed_quiz_data').items():
             data = json.dumps(data)
             res = json.loads(self._block.handle('save_data', self.make_request(data)).body)
             if _type == 'missing_categories':
@@ -176,15 +176,15 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
 
         assert_equals(len(self._block.results), 3)
 
-    def test_buzfeed_wizard_step3(self):
+    def test_buzzfeed_wizard_step3(self):
         assert_equals(len(self._block.results), 0)
 
-        # add buzfeed quiz
+        # add buzzfeed quiz
         res = self.save_wizard_step1(self._block.BUZ_FEED_QUIZ_VALUE)
         assert_equals(res['success'], True)
 
         # add categories for buz-feed quiz
-        res = self.save_buzfeed_step2()
+        res = self.save_buzzfeed_step2()
         assert_equals(res['success'], True)
 
         # confirm if categories added
@@ -241,7 +241,7 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
     def test_diagnostic_wizard_step3(self):
         assert_equals(len(self._block.results), 0)
 
-        # add buzfeed quiz
+        # add buzzfeed quiz
         res = self.save_wizard_step1(self._block.DIAGNOSTIC_QUIZ_VALUE)
         assert_equals(res['success'], True)
 
