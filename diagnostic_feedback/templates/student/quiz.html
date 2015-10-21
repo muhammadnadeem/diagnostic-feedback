@@ -4,6 +4,7 @@
         <h1 class="quiz_title"><i class="icon fa fa-list"></i> {{self.title}} </h1><br>
         <h3 class="quiz_description">{{self.description}}</h3>
         <div class="question_div">
+            <input type="hidden" name="completed_step" id="completed_step" value="{{self.current_step}}">
             {% for question in questions %}
             <h3 style="display:none;">Question</h3>
 
@@ -34,7 +35,12 @@
 
             <h3 style="display:none;">Result</h3>
             <section id="response" class="question_container">
-                <div id="response_body"></div>
+                <div id="response_body">
+                    {% if result %}
+                        {% if result.img %} <img class="result_img" src="{{result.img}}" alt="No Result image"> {% endif %}
+                        <p id="html_body">{{result.html_body}}</p>
+                    {% endif %}
+                </div>
             </section>
         </div>
     {% else %}

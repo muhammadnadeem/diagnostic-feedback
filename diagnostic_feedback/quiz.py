@@ -125,6 +125,12 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
         if self.student_choices:
             self.append_choice(context['questions'])
 
+        if len(self.questions) == self.current_step:
+            if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
+                context['result'] = self.get_buzz_feed_result()
+            else:
+                context['result'] = self.get_diagnostic_result()
+
         return self.get_fragment(context, 'student')
 
     def studio_view(self, context):
@@ -234,7 +240,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
             if success:
                 # save student answer
                 self.student_choices[data['question_id']] = data['student_choice']
-
+                self.current_step = data['currentStep']
                 # calculate feedback result if user answering last question
                 if data['isLast']:
                     if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
@@ -260,5 +266,6 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
 
         self.student_choices = {}
         self.student_result = ""
+        self.current_step = 0
 
         return {'success': success, 'msg': response_message}
