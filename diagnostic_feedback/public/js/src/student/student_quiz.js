@@ -161,7 +161,7 @@ function StudentQuiz(runtime, element) {
                 studentQuiz.startOver = false;
                 return startOverQuiz();
 
-            } else if (studentQuiz.movingToStep) {
+            } else if (studentQuiz.movingToStep)             } else if (studentQuiz.movingToStep) {
                 studentQuiz.movingToStep = false;
                 return true;
 

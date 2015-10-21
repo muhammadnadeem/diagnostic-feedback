@@ -1,53 +1,70 @@
-from .validator import Validator
+from .base_validator import BaseValidator
 
 
-class RangeValidator(Validator):
+class RangeValidator(BaseValidator):
     """
-        hold methods to validate posted categories
+        hold methods to validate posted ranges
     """
 
     @classmethod
-    def bigger_min_val(cls, min, max):
+    def bigger_min_val(cls, _min, _max):
+        """
+        check if min value max value
+        :param _min: min value
+        :param _max: max value
+        :return: Boolean
+        """
         """
             check if min value is > max value
         """
-        return min and max and float(min) >= float(max)
+        return min and max and float(_min) >= float(_max)
 
     @classmethod
-    def overlapping_ranges_algo1(cls, range1, range2):
+    def validate_via_arrays_comparisons(cls, range1, range2):
         """
-            check if both range are overlapping
+        first algorithm to test if two ranges are overlapping, using lists to find overlap
+        :param range1: first range
+        :param range2: second range
+        :return: Boolean
         """
 
-        r1_min_val = range1.get('min_value')
-        r1_max_val = range1.get('max_value')
-        r2_min_val = range2.get('min_value')
-        r2_max_val = range2.get('max_value')
-        if r1_min_val and r1_max_val and r2_min_val and r2_max_val:
-            range1 = cls.drange(float(r1_min_val), float(r1_max_val), 0.1)
-            range2 = cls.drange(float(r2_min_val), float(r2_max_val), 0.1)
+        r1_min = range1.get('min_value')
+        r1_max = range1.get('max_value')
+        r2_min = range2.get('min_value')
+        r2_max = range2.get('max_value')
+        if r1_min and r1_max and r2_min and r2_max:
+            range1 = cls.drange(float(r1_min), float(r1_max), 0.1)
+            range2 = cls.drange(float(r2_min), float(r2_max), 0.1)
             return bool(set(range1) & set(range2))
         else:
             return True
 
     @classmethod
-    def overlapping_ranges_algo2(cls, range1, range2):
+    def validate_via_simple_comparisons(cls, range1, range2):
         """
-            check if both range are overlapping
+        second algorithm to test if two ranges are overlapping, using basic min/max values comparisons
+        :param range1: first range
+        :param range2: second range
+        :return: Boolean
         """
-
-        r1_min_val = range1.get('min_value')
-        r1_max_val = range1.get('max_value')
-        r2_min_val = range2.get('min_value')
-        r2_max_val = range2.get('max_value')
-        if r1_min_val and r1_max_val and r2_min_val and r2_max_val:
-            overlapp = bool(r1_min_val <= r1_max_val and r2_min_val <= r1_max_val)
-            return overlapp
+        r1_min = range1.get('min_value')
+        r1_max = range1.get('max_value')
+        r2_min = range2.get('min_value')
+        r2_max = range2.get('max_value')
+        if r1_min and r1_max and r2_min and r2_max:
+            #overlap = range1.min <= range2.max && range2.min <= range1.max;
+            overlap = bool(float(r1_min) <= float(r2_max) and float(r2_min) <= float(r1_max))
+            return overlap
         else:
             return True
 
     @classmethod
     def run_basic_validations(cls, ranges):
+        """
+        validate ranges for empty names, valid urls, min < max
+        :param ranges: list of all ranges
+        :return: Boolean, validation message in case of error
+        """
         valid = True
         validation_message = ''
 
@@ -77,12 +94,17 @@ class RangeValidator(Validator):
 
     @classmethod
     def run_overlapping_validations(cls, ranges):
+        """
+        check all ranges if any two of them are overlapping
+        :param ranges: list of ranges
+        :return: Boolean, validation message in case of error
+        """
         valid = True
         validation_message = ''
 
         for idx, _range in enumerate(ranges):
             for range2 in ranges[idx + 1: len(ranges) + 1]:
-                if cls.overlapping_ranges_algo1(_range, range2):
+                if cls.validate_via_simple_comparisons(_range, range2):
                     valid = False
                     validation_message = 'overlapping ranges [{} - {}] & [{} - {}]'.format(_range.get('min_value'),
                                                                             _range.get('max_value'),
@@ -99,10 +121,15 @@ class RangeValidator(Validator):
     @classmethod
     def validate(cls, data):
         """
-            validate categories for following conditions
-            name is required
-            image should be a valid url
+        validate ranges for following conditions
+        - name not empty
+        - image url is valid url
+        - min < max for each range
+        - not any two ranges overlapping
+        :param data: data to validate
+        :return: Boolean, validate message in case of error
         """
+
         ranges = data.get('ranges', [])
 
         if cls.empty_list(ranges):

@@ -62,7 +62,23 @@ function Quiz(runtime, element) {
             });
         }
 
-        function saveToServer(event, currentIndex, newIndex) {
+        function submitToSave(currentStep){
+            var success = false;
+            $.when(submitForm(currentStep)).done(function (response) {
+                common.showMessage(response);
+                if (response.success) {
+                    success = true;
+
+                    //close modal window if step3 saved successfully
+                    if (response.step == 3) {
+                        studioCommon.askCloseModal(runtime.modal);
+                    }
+                }
+            });
+            return success;
+        }
+
+        function validateAndSave(event, currentIndex, newIndex) {
             // send validated step data to server, this method will return true/false
             // if return true next stepp will be loaded
             // if return false validation errors will be shown
@@ -81,34 +97,16 @@ function Quiz(runtime, element) {
                     //ignore hidden fields; will validate on current step showing fields
                     form.validate().settings.ignore = ":disabled,:hidden";
 
-
                     // run jquery.validate
-                    var isValid = form.valid();
-
                     // run extra validations if jquery vlidations are passed
+                    var isValid = form.valid();
                     if (isValid){
-                        console.log('executing additional validations');
                         customValidated = customValidator.customStepValidation(currentStep);
                     }
 
-
                     if (isValid && customValidated) {
                         //wait for ajax call response
-                        var success = false;
-                        $.when(submitForm(currentStep)).done(function (response) {
-                            //studioCommon.updateUI(response);
-                            common.showMessage(response);
-                            if (response.success) {
-                                success = true;
-
-                                //close modal window if step3 saved successfully
-                                if (response.step == 3) {
-                                    studioCommon.askCloseModal(runtime.modal);
-                                }
-                            }
-                        });
-                        return success;
-
+                        return submitToSave(currentStep);
                     } else {
                         return false;
                     }
@@ -116,15 +114,7 @@ function Quiz(runtime, element) {
                 } else {
                     // only server side validations will be applied
                     //wait for ajax call response
-                    var success = false;
-                    $.when(submitForm(currentStep)).done(function (response) {
-                        if (response.success) {
-                            success = true;
-                        }
-                        //studioCommon.updateUI(response);
-                        common.showMessage(response);
-                    });
-                    return success;
+                    return submitToSave(currentStep);
                 }
             }
         }
@@ -134,8 +124,8 @@ function Quiz(runtime, element) {
             headerTag: "h3",
             bodyTag: "section",
             transitionEffect: "slideLeft",
-            onStepChanging: saveToServer,
-            onFinishing: saveToServer,
+            onStepChanging: validateAndSave,
+            onFinishing: validateAndSave,
             labels: {
                 cancel: "Cancel",
                 current: "current step:",

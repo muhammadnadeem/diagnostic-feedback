@@ -38,7 +38,7 @@
                 <div id="response_body">
                     {% if result %}
                         {% if result.img %} <img class="result_img" src="{{result.img}}" alt="No Result image"> {% endif %}
-                        <p id="html_body">{{result.html_body}}</p>
+                        <p id="html_body">{{result.html_body|safe}}</p>
                     {% endif %}
                 </div>
             </section>
