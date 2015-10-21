@@ -100,9 +100,9 @@ function StudentQuiz(runtime, element) {
 
     $(function ($) {
 
-        //If the form is reloaded and the user already have answered some of the questions,
-        //he will be resumed to where he left.
-        intialize = function (event) {
+        function initialize(event) {
+            //If the form is reloaded and the user already have answered some of the questions,
+            //he will be resumed to where he left.
             var completed_step = parseInt($("#completed_step").val());
 
             if (completed_step > 0) {
@@ -111,24 +111,26 @@ function StudentQuiz(runtime, element) {
             }
         }
 
-        //on every step change this method either save the data to the server or skip it.
-        stepChange = function (event, currentIndex, newIndex) {
+        function changeStep(event, currentIndex, newIndex) {
+            //on every step change this method either save the data to the server or skip it.
             var currentStep = currentIndex + 1;
             var isLast = (newIndex == $("#student_view_form section").length - 1);
             return saveOrSkip(isLast, currentStep);
 
         }
-        //If the form is reloaded and the user have answered all the questions,
-        //he will be showed the result and start over button.
-        updateResultHtml = function (event, currentIndex, newIndex) {
+
+        function updateResultHtml(event, currentIndex, newIndex) {
+            //If the form is reloaded and the user have answered all the questions,
+            //he will be showed the result and start over button.
+
             var isLast = (currentIndex == $("#student_view_form section").length - 1);
             if (isLast) {
                 hideActions();
             }
         }
 
-        //If user have answered all the questions, start over button shown to again start the Quiz
-        startOver = function (event) {
+        function startOver(event) {
+            //If user have answered all the questions, start over button shown to again start the Quiz
             studentQuiz.startOver = true;
             $(choiceSelector).find('input[type="radio"]').removeAttr('checked');
             form.children("div").steps("setStep", 0);
@@ -139,8 +141,8 @@ function StudentQuiz(runtime, element) {
             bodyTag: "section",
             transitionEffect: "slideLeft",
             enableCancelButton: true,
-            onInit: intialize,
-            onStepChanging: stepChange,
+            onInit: initialize,
+            onStepChanging: changeStep,
             onStepChanged: updateResultHtml,
             onCanceled: startOver,
             labels: {
