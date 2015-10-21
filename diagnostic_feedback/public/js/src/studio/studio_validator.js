@@ -48,7 +48,7 @@ function CustomValidator(runtime, element){
     }
 
     // TO-DO test this logic for large ranges
-    validatorObj.validateOverlappingRangesAlgo1 = function(range){
+    validatorObj.validateViaArraysComparisions = function(range){
         // validate if any two ranges are overlapping
 
         var valid = true;
@@ -73,7 +73,7 @@ function CustomValidator(runtime, element){
         return valid;
     }
 
-    validatorObj.validateOverlappingRangesAlgo2 = function(range){
+    validatorObj.validateViaSimpleComparisons = function(range){
         // validate if any two ranges are overlapping
 
         var valid = true,
@@ -85,7 +85,7 @@ function CustomValidator(runtime, element){
             var range2_min_value = parseFloat($(next_range).find(rangeMinSelector).val()),
             range2_max_value = parseFloat($(next_range).find(rangeMaxSelector).val()),
 
-            //overlap = range1.min < range2.max && range2.min < range1.max;
+            //overlap = range1.min <= range2.max && range2.min <= range1.max;
             overlap = range1_min_value <= range2_max_value && range2_min_value <= range1_max_value;
 
             // check if both ranges are overlapping
@@ -109,7 +109,7 @@ function CustomValidator(runtime, element){
             if(!validatorObj.validateMinMax(range)) {
                 valid = false;
                 return valid;
-            } else if(!validatorObj.validateOverlappingRangesAlgo2(range)){
+            } else if(!validatorObj.validateViaSimpleComparisons(range)){
                 valid = false;
                 return valid;
             }

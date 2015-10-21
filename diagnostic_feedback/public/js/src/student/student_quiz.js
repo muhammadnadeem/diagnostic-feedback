@@ -127,7 +127,7 @@ function StudentQuiz(runtime, element) {
                     hideActions();
                 }
             },
-            onCanceled:function (event) {
+            onCanceled: function (event) {
                 studentQuiz.startOver = true;
                 $(choiceSelector).find('input[type="radio"]').removeAttr('checked');
                 form.children("div").steps("setStep", 0);
