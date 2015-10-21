@@ -2,6 +2,7 @@ function StudentQuiz(runtime, element) {
 
     var studentQuiz = this;
     studentQuiz.startOver = false;
+    studentQuiz.movingToStep = false;
 
     /* Javascript for Student view in LMS.*/
 
@@ -56,11 +57,12 @@ function StudentQuiz(runtime, element) {
         return {'question_id': id, 'student_choice': studentChoice};
     }
 
-    function submitQuestionResponse(isLast) {
+    function submitQuestionResponse(isLast, currentStep) {
         // this method is called on successful submission and pass the student's seleted value
 
         var answerHandlerUrl = runtime.handlerUrl(element, 'save_choice');
         var choice = getStudentChoice();
+        choice['currentStep'] = currentStep;
         choice['isLast'] = isLast;  //if student given last answer of the question, this flag is true.
 
         var success = false;
@@ -103,11 +105,26 @@ function StudentQuiz(runtime, element) {
             bodyTag: "section",
             transitionEffect: "slideLeft",
             enableCancelButton: true,
+            onInit: function(event){
+                var completed_step = parseInt($("#completed_step").val());
+
+                if (completed_step > 0){
+                    studentQuiz.movingToStep = true;
+                    form.children("div").steps("setStep", completed_step);
+
+                }
+
+            },
             onStepChanging: function (event, currentIndex, newIndex) {
-                if (newIndex == $("#student_view_form section").length - 1) {
-                    return saveToServer(true);
-                } else {
-                    return saveToServer(false);
+                var currentStep = currentIndex + 1;
+                var isLast = (newIndex == $("#student_view_form section").length - 1);
+                return saveOrSkip(isLast, currentStep);
+
+            },
+            onStepChanged: function(event, currentIndex, newIndex){
+                var isLast = (currentIndex == $("#student_view_form section").length - 1);
+                if (isLast) {
+                    hideActions();
                 }
             },
             onCanceled:function (event) {
@@ -127,19 +144,24 @@ function StudentQuiz(runtime, element) {
 
         resetActions();
 
-        function saveToServer(isLast) {
-
-            form.validate().settings.ignore = ":disabled,:hidden";
-            var selectedChoice = $("section.answer-choice:visible").find(selectedStudentChoice).val();
+        function saveOrSkip(isLast, currentStep) {
 
             // if start over button is click just return and do nothing
-            if (studentQuiz.startOver){
+            if (studentQuiz.startOver) {
                 studentQuiz.startOver = false;
                 return startOverQuiz();
-            }else {
-                debugger;
+
+            } else if (studentQuiz.movingToStep){
+                studentQuiz.movingToStep = false;
+                return true;
+
+            } else {
+                form.validate().settings.ignore = ":disabled,:hidden";
+                var selectedChoice = $("section.answer-choice:visible").find(selectedStudentChoice).val();
+
                 if (selectedChoice != "" && selectedChoice != undefined) {
-                    return submitQuestionResponse(isLast);
+                    submitQuestionResponse(isLast, currentStep);
+                    return true;
                 } else {
                     common.showMessage({success: false, warning: false, msg: 'Please select an answer'})
                     return false;
