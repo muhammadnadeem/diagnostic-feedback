@@ -7,24 +7,24 @@ function StudentQuiz(runtime, element) {
     /* Javascript for Student view in LMS.*/
 
     var common = new Common(),
-    form = $("#student_view_form"),
+        form = $("#student_view_form"),
 
     //selectors
-    currentAnswerContainer = ".current",
-    questionId = '.question_id',
-    selectedStudentChoice = 'input[type="radio"]:checked',
+        currentAnswerContainer = ".current",
+        questionId = '.question_id',
+        selectedStudentChoice = 'input[type="radio"]:checked',
 
-    finalResult = '#response_body',
-    choiceSelector = '.answer-choice';
+        finalResult = '#response_body',
+        choiceSelector = '.answer-choice';
 
-    function hideActions(){
+    function hideActions() {
         // hide next, previous, finish action button
         // show start over button
         $('ul[role="menu"] a[href*="next"], ul[role="menu"] a[href*="previous"], ul[role="menu"] a[href*="finish"]').hide();
         $('ul[role="menu"] a[href*="cancel"]').show();
     }
 
-    function resetActions(){
+    function resetActions() {
         // hide start over button
         // show next, previous, finish action button
         $('ul[role="menu"] a[href*="next"], ul[role="menu"] a[href*="previous"]').show();
@@ -71,10 +71,10 @@ function StudentQuiz(runtime, element) {
             url: answerHandlerUrl,
             async: false,
             data: JSON.stringify(choice),
-            success: function(response){
+            success: function (response) {
                 success = response.success;
 
-                if(response.student_result){
+                if (response.student_result) {
                     showResult(response);
                 }
             }
@@ -82,7 +82,7 @@ function StudentQuiz(runtime, element) {
         return success;
     }
 
-    function startOverQuiz(){
+    function startOverQuiz() {
         var startOverUrl = runtime.handlerUrl(element, 'start_over_quiz');
         var success = false;
         $.ajax({
@@ -90,7 +90,7 @@ function StudentQuiz(runtime, element) {
             url: startOverUrl,
             async: false,
             data: JSON.stringify({}),
-            success: function(response){
+            success: function (response) {
                 success = response.success;
                 resetActions();
             }
@@ -100,38 +100,49 @@ function StudentQuiz(runtime, element) {
 
     $(function ($) {
 
+        //If the form is reloaded and the user already have answered some of the questions,
+        //he will be resumed to where he left.
+        intialize = function (event) {
+            var completed_step = parseInt($("#completed_step").val());
+
+            if (completed_step > 0) {
+                studentQuiz.movingToStep = true;
+                form.children("div").steps("setStep", completed_step);
+            }
+        }
+
+        //on every step change this method either save the data to the server or skip it.
+        stepChange = function (event, currentIndex, newIndex) {
+            var currentStep = currentIndex + 1;
+            var isLast = (newIndex == $("#student_view_form section").length - 1);
+            return saveOrSkip(isLast, currentStep);
+
+        }
+        //If the form is reloaded and the user have answered all the questions,
+        //he will be showed the result and start over button.
+        updateResultHtml = function (event, currentIndex, newIndex) {
+            var isLast = (currentIndex == $("#student_view_form section").length - 1);
+            if (isLast) {
+                hideActions();
+            }
+        }
+
+        //If user have answered all the questions, start over button shown to again start the Quiz
+        startOver = function (event) {
+            studentQuiz.startOver = true;
+            $(choiceSelector).find('input[type="radio"]').removeAttr('checked');
+            form.children("div").steps("setStep", 0);
+        }
+
         form.children("div").steps({
             headerTag: "h3",
             bodyTag: "section",
             transitionEffect: "slideLeft",
             enableCancelButton: true,
-            onInit: function(event){
-                var completed_step = parseInt($("#completed_step").val());
-
-                if (completed_step > 0){
-                    studentQuiz.movingToStep = true;
-                    form.children("div").steps("setStep", completed_step);
-
-                }
-
-            },
-            onStepChanging: function (event, currentIndex, newIndex) {
-                var currentStep = currentIndex + 1;
-                var isLast = (newIndex == $("#student_view_form section").length - 1);
-                return saveOrSkip(isLast, currentStep);
-
-            },
-            onStepChanged: function(event, currentIndex, newIndex){
-                var isLast = (currentIndex == $("#student_view_form section").length - 1);
-                if (isLast) {
-                    hideActions();
-                }
-            },
-            onCanceled: function (event) {
-                studentQuiz.startOver = true;
-                $(choiceSelector).find('input[type="radio"]').removeAttr('checked');
-                form.children("div").steps("setStep", 0);
-            },
+            onInit: intialize,
+            onStepChanging: stepChange,
+            onStepChanged: updateResultHtml,
+            onCanceled: startOver,
             labels: {
                 cancel: "Start Over",
                 current: "current step:",
@@ -143,7 +154,6 @@ function StudentQuiz(runtime, element) {
         });
 
         resetActions();
-
         function saveOrSkip(isLast, currentStep) {
 
             // if start over button is click just return and do nothing
@@ -151,7 +161,7 @@ function StudentQuiz(runtime, element) {
                 studentQuiz.startOver = false;
                 return startOverQuiz();
 
-            } else if (studentQuiz.movingToStep){
+            } else if (studentQuiz.movingToStep) {
                 studentQuiz.movingToStep = false;
                 return true;
 
