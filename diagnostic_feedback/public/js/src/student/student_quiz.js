@@ -60,11 +60,12 @@ function StudentQuiz(runtime, element) {
         return {'question_id': id, 'student_choice': studentChoice};
     }
 
-    function submitQuestionResponse(isLast) {
+    function submitQuestionResponse(isLast, currentStep) {
         // this method is called on successful submission and pass the student's seleted value
 
         var answerHandlerUrl = runtime.handlerUrl(element, 'save_choice');
         var choice = getStudentChoice();
+        choice['currentStep'] = currentStep;
         choice['isLast'] = isLast;  //if student given last answer of the question, this flag is true.
         choice['clearPreviousData'] = studentQuiz.clearPreviousResults;
         if(studentQuiz.clearPreviousResults) {
@@ -87,10 +88,11 @@ function StudentQuiz(runtime, element) {
             transitionEffect: "slideLeft",
             enableCancelButton: true,
             onStepChanging: function (event, currentIndex, newIndex) {
+                currentStep = currentIndex + 1;
                 if (newIndex == $("#student_view_form section").length - 1) {
-                    return saveToServer(true);
+                    return saveToServer(true, currentStep);
                 } else {
-                    return saveToServer(false);
+                    return saveToServer(false, currentStep);
                 }
             },
             onCanceled:function (event) {
@@ -111,7 +113,7 @@ function StudentQuiz(runtime, element) {
 
         resetActions();
 
-        function saveToServer(isLast) {
+        function saveToServer(isLast, currentStep) {
 
             form.validate().settings.ignore = ":disabled,:hidden";
             var selectedChoice = $("section.answer-choice:visible").find(selectedStudentChoice).val();
@@ -123,7 +125,7 @@ function StudentQuiz(runtime, element) {
                 return true;
             }else {
                 if (selectedChoice != "" && selectedChoice != undefined) {
-                    submitQuestionResponse(isLast);
+                    submitQuestionResponse(isLast, currentStep);
                     return true;
                 } else {
                     common.showMessage({success: false, warning: false, msg: 'Please select an answer'})

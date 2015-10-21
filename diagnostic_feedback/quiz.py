@@ -237,6 +237,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
                     self.student_result = ""
 
                 self.student_choices[data['question_id']] = data['student_choice']
+                self.current_step = data['currentStep']
                 if data['isLast']:
                     if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
                         success = True
