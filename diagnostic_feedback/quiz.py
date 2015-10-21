@@ -139,11 +139,12 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
             self.append_choice(context['questions'])
 
         # return final result to show if user already completed the quiz
-        if len(self.questions) == self.current_step:
-            if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
-                context['result'] = self.get_buzz_feed_result()
-            else:
-                context['result'] = self.get_diagnostic_result()
+        if self.questions and self.current_step:
+            if len(self.questions) == self.current_step:
+                if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
+                    context['result'] = self.get_buzz_feed_result()
+                else:
+                    context['result'] = self.get_diagnostic_result()
 
         return self.get_fragment(context, 'student')
 
