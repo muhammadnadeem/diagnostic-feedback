@@ -2,7 +2,6 @@ function StudentQuiz(runtime, element) {
 
     var studentQuiz = this;
     studentQuiz.startOver = false;
-    studentQuiz.clearPreviousResults = false;
 
     /* Javascript for Student view in LMS.*/
 
@@ -33,23 +32,20 @@ function StudentQuiz(runtime, element) {
 
     function showResult(result) {
         // shows final result of student
-
-        if (result.success && result.student_result.msg) {
-            var imgSrc = result.student_result.img;
-            var htmlBody = result.student_result.html_body;
-            var html = '<div>';
-            if (imgSrc) {
-                html += '<img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
-                    '<p id="html_body">' + htmlBody + '</p>';
-            }
-            else {
-                html += '<p id="html_body">' + htmlBody + '</p>';
-            }
-            html += '</div>';
-
-            $(finalResult).html(html);
-            hideActions();
+        var imgSrc = result.student_result.img;
+        var htmlBody = result.student_result.html_body;
+        var html = '<div>';
+        if (imgSrc) {
+            html += '<img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
+                '<p id="html_body">' + htmlBody + '</p>';
         }
+        else {
+            html += '<p id="html_body">' + htmlBody + '</p>';
+        }
+        html += '</div>';
+
+        $(finalResult).html(html);
+        hideActions();
     }
 
     function getStudentChoice() {
@@ -66,17 +62,38 @@ function StudentQuiz(runtime, element) {
         var answerHandlerUrl = runtime.handlerUrl(element, 'save_choice');
         var choice = getStudentChoice();
         choice['isLast'] = isLast;  //if student given last answer of the question, this flag is true.
-        choice['clearPreviousData'] = studentQuiz.clearPreviousResults;
-        if(studentQuiz.clearPreviousResults) {
-            studentQuiz.clearPreviousResults = false;
-        }
 
+        var success = false;
         $.ajax({
             type: "POST",
             url: answerHandlerUrl,
+            async: false,
             data: JSON.stringify(choice),
-            success: showResult
+            success: function(response){
+                success = response.success;
+
+                if(response.student_result){
+                    showResult(response);
+                }
+            }
         });
+        return success;
+    }
+
+    function startOverQuiz(){
+        var startOverUrl = runtime.handlerUrl(element, 'start_over_quiz');
+        var success = false;
+        $.ajax({
+            type: "POST",
+            url: startOverUrl,
+            async: false,
+            data: JSON.stringify({}),
+            success: function(response){
+                success = response.success;
+                resetActions();
+            }
+        });
+        return success;
     }
 
     $(function ($) {
@@ -95,7 +112,6 @@ function StudentQuiz(runtime, element) {
             },
             onCanceled:function (event) {
                 studentQuiz.startOver = true;
-                studentQuiz.clearPreviousResults = true;
                 $(choiceSelector).find('input[type="radio"]').removeAttr('checked');
                 form.children("div").steps("setStep", 0);
             },
@@ -119,12 +135,11 @@ function StudentQuiz(runtime, element) {
             // if start over button is click just return and do nothing
             if (studentQuiz.startOver){
                 studentQuiz.startOver = false;
-                resetActions();
-                return true;
+                return startOverQuiz();
             }else {
+                debugger;
                 if (selectedChoice != "" && selectedChoice != undefined) {
-                    submitQuestionResponse(isLast);
-                    return true;
+                    return submitQuestionResponse(isLast);
                 } else {
                     common.showMessage({success: false, warning: false, msg: 'Please select an answer'})
                     return false;

@@ -226,17 +226,16 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
         """
             Handler to save answers of user
         """
+        result = ""
         response_message = ""
-        result = ''
-        try:
-            success, result = StudentChoiceValidator.basic_validate(data)
-            if success:
-                # reset student choices & calculated result for this user
-                if data['clearPreviousData']:
-                    self.student_choices = {}
-                    self.student_result = ""
 
+        try:
+            success, validation_message = StudentChoiceValidator.basic_validate(data)
+            if success:
+                # save student answer
                 self.student_choices[data['question_id']] = data['student_choice']
+
+                # calculate feedback result if user answering last question
                 if data['isLast']:
                     if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
                         success = True
@@ -244,7 +243,22 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
                     else:
                         success = True
                         result = self.get_diagnostic_result()
+            else:
+                response_message = validation_message
         except Exception as ex:
             success = False
             response_message += str(ex)
-        return {'success': success, 'student_result': result}
+        return {'success': success, 'student_result': result, 'msg': response_message}
+
+    @XBlock.json_handler
+    def start_over_quiz(self, data, suffix=''):
+        """
+            reset student choices & calculated result for this user
+        """
+        success = True
+        response_message = "student data cleared"
+
+        self.student_choices = {}
+        self.student_result = ""
+
+        return {'success': success, 'msg': response_message}
