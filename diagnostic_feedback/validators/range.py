@@ -129,11 +129,7 @@ class RangeValidator(BaseValidator):
         :param data: data to validate
         :return: Boolean, validate message in case of error
         """
-        """
-            validate ranges for following conditions
-            name is required
-            image should be a valid url
-        """
+
         ranges = data.get('ranges', [])
 
         if cls.empty_list(ranges):

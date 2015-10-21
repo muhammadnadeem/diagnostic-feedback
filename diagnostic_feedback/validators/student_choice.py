@@ -13,9 +13,7 @@ class StudentChoiceValidator(BaseValidator):
         :param data: posted answer data
         :return: Boolean, validation message in case of error
         """
-        """
-            validate only question id & student choice
-        """
+
         valid = True
         validation_message = ''
 
