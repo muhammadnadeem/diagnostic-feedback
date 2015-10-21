@@ -1,14 +1,18 @@
-__author__ = 'attiya'
+from .base_validator import BaseValidator
 
 
-from .validator import Validator
-
-
-class StudentChoiceValidator(Validator):
-
+class StudentChoiceValidator(BaseValidator):
+    """
+        method to validate student answer
+    """
 
     @classmethod
-    def basic_validate(cls, data):
+    def validate(cls, data):
+        """
+        validate if user is providing answer of a question
+        :param data: posted answer data
+        :return: Boolean, validation message in case of error
+        """
         """
             validate only question id & student choice
         """

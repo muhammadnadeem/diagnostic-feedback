@@ -1,20 +1,32 @@
-from .validator import Validator
+from .base_validator import BaseValidator
 
 
-class QuizValidator(Validator):
+class QuizValidator(BaseValidator):
+    """
+        hold method to validate quiz
+    """
+
 
     @classmethod
     def invalid_quiz_type(cls, _type, valid_types):
         """
-            check if provided type is valid
+        check if provided type is valid
+        :param _type: type to save
+        :param valid_types: list of valid quiz types
+        :return: Boolean
         """
+
         return not(_type in [t['value'] for t in valid_types])
 
     @classmethod
     def basic_validate(cls, data, quiz):
         """
-            validate only title & quiz_type
+        validate quiz title & quiz_type
+        :param data: quiz data
+        :param quiz: object of xblock
+        :return: Boolean, validation message in case of error
         """
+
         valid = True
         validation_message = ''
 

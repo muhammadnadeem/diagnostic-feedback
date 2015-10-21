@@ -9,7 +9,10 @@ class QuestionValidator(ChoiceValidator):
     @classmethod
     def validate(cls, data, quiz):
         """
-            validate questions and their choices
+        validate questions and their related choices
+        :param data: data to validate
+        :param quiz: object of xblock
+        :return: Boolean, validation message in case of error
         """
 
         questions = data.get('questions', [])

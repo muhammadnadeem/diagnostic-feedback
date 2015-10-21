@@ -9,8 +9,8 @@ from xblockutils.resources import ResourceLoader
 from .resource import ResourceMixin
 from .quiz_result import QuizResultMixin
 
-from .filters import Range, Category, Question
-from .validators import CategoryValidator, RangeValidator, QuizValidator, QuestionValidator, StudentChoiceValidator
+from .helpers import MainHelper
+from .validators import Validator
 
 log = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
@@ -91,6 +91,12 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
 
     def get_fragment(self, context, view='studio'):
         """
+        return fragment after loading css/js/html either for studio OR student view
+        :param context: context for templates
+        :param view: view_type i;e studio/student
+        :return: fragment after loading all assets
+        """
+        """
             Return fragment after adding required css/js/html
         """
         fragment = Fragment()
@@ -102,7 +108,12 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
 
     def append_choice(self, questions):
         """
-            Append student choice with each question
+        append student choice with each question if available
+        :param questions: list of questions
+        :return:
+        """
+        """
+
         """
         for question in questions:
             if self.quiz_type == self.DIAGNOSTIC_QUIZ_VALUE:
@@ -113,7 +124,9 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
 
     def student_view(self, context=None):
         """
-        Create a fragment, displayed to the student
+        it will loads student view
+        :param context: context
+        :return: fragment
         """
 
         context = {
@@ -125,6 +138,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
         if self.student_choices:
             self.append_choice(context['questions'])
 
+        # return final result to show if user already completed the quiz
         if len(self.questions) == self.current_step:
             if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
                 context['result'] = self.get_buzz_feed_result()
@@ -135,59 +149,23 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
 
     def studio_view(self, context):
         """
-            Create a fragment used to display add/edit quiz in studio view.
+        it will loads studio view
+        :param context: context
+        :return: fragment
         """
 
         context['self'] = self
         return self.get_fragment(context, 'studio')
 
-    def save_step(self, data):
-        """
-            save posted data of each step
-        """
-        step = data['step']
-        # self.current_step = step
-
-        if step == 1:
-            self.title = data['title']
-            self.description = data['description']
-            if not self.quiz_type and data.get('type'):
-                self.quiz_type = data['type']
-            # self.mode = 'edit'
-        elif step == 2 and self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
-            results = Category.filter_results(data)
-            self.results = results
-        elif step == 2 and self.quiz_type == self.DIAGNOSTIC_QUIZ_VALUE:
-            results = Range.filter_results(data)
-            self.results = results
-        elif step == 3:
-            questions = Question.filter_question(data, self.quiz_type)
-            self.questions = questions
-
-    def validate_data(self, data):
-        """
-           validate data for an individual step
-        """
-        step = data['step']
-        valid = False
-        validation_message = ''
-
-        if step == 1:
-            valid, validation_message = QuizValidator.basic_validate(data, self)
-        elif step == 2 and self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
-            valid, validation_message = CategoryValidator.validate(data)
-        elif step == 2 and self.quiz_type == self.DIAGNOSTIC_QUIZ_VALUE:
-            valid, validation_message = RangeValidator.validate(data)
-        elif step == 3:
-            valid, validation_message = QuestionValidator.validate(data, self)
-
-        return valid, validation_message
-
     @XBlock.json_handler
     def save_data(self, data, suffix=''):
         """
-            Handler to save data for each step
+        ajax handler to save data after applying required validation & filtration
+        :param data: step data to save
+        :param suffix:
+        :return: response dict
         """
+
         success = True
         response_message = ""
         step = data.get('step', '')
@@ -197,10 +175,9 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
             response_message = 'missing step number'
         else:
             try:
-                is_step_valid, response_message = self.validate_data(data)
-                if is_step_valid:
-                    self.save_step(data)
-                    response_message = "step {} data saved".format(data['step'])
+                is_valid_data, response_message = Validator.validate(self, data)
+                if is_valid_data:
+                    response_message = MainHelper.save_filtered_data(self, data)
                 else:
                     success = False
 
@@ -213,8 +190,12 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
     @XBlock.json_handler
     def get_template(self, data, suffix=''):
         """
-            Handler to return a template to add new html content dynamically using js
+        ajax handler: return a template to load new html content dynamically
+        :param data: empty dict
+        :param suffix:
+        :return: template html as unicode string
         """
+
         _type = data.get('type')
         if _type == 'category':
             template = 'templates/underscore/new_category.html'
@@ -230,17 +211,22 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
     @XBlock.json_handler
     def save_choice(self, data, suffix=''):
         """
-            Handler to save answers of user
+        save student choice for a question after validations
+        :param data: answer data
+        :param suffix:
+        :return: response dict
         """
+
         result = ""
         response_message = ""
 
         try:
-            success, validation_message = StudentChoiceValidator.basic_validate(data)
+            success, response_message = Validator.validate_student_answer(data)
             if success:
                 # save student answer
                 self.student_choices[data['question_id']] = data['student_choice']
                 self.current_step = data['currentStep']
+
                 # calculate feedback result if user answering last question
                 if data['isLast']:
                     if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
@@ -249,8 +235,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
                     else:
                         success = True
                         result = self.get_diagnostic_result()
-            else:
-                response_message = validation_message
+
         except Exception as ex:
             success = False
             response_message += str(ex)
@@ -259,8 +244,12 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
     @XBlock.json_handler
     def start_over_quiz(self, data, suffix=''):
         """
-            reset student choices & calculated result for this user
+        reset student_choices, student_result, current_step for current user
+        :param data: empty dict
+        :param suffix:
+        :return: response dict
         """
+
         success = True
         response_message = "student data cleared"
 

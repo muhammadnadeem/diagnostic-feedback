@@ -1,7 +1,7 @@
-from .validator import Validator
+from .base_validator import BaseValidator
 
 
-class CategoryValidator(Validator):
+class CategoryValidator(BaseValidator):
     """
         hold methods to validate posted categories
     """
@@ -9,10 +9,13 @@ class CategoryValidator(Validator):
     @classmethod
     def validate(cls, data):
         """
-            validate categories for following conditions
-            name is required
-            image should be a valid url
+        validate categories for following conditions
+        - name is required
+        - image should be a valid url
+        :param data: data to validate
+        :return: Boolean, validation message if case of error
         """
+
         categories = data.get('categories', [])
         valid = True
         validation_message = ''
