@@ -1,5 +1,4 @@
 from buzzfeed_choice import BuzzfeedChoice
-from buzzfeed_choice import BuzzfeedChoice
 from category import Category
 from choice import Choice
 from diagnostic_choice import DiagnosticChoice
