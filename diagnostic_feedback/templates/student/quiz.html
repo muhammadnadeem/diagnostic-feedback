@@ -1,7 +1,7 @@
 <div class="msg"><h3></h3></div>
 <form id="student_view_form">
     {% if questions %}
-        <h1 class="quiz_title"><i class="icon fa fa-list"></i> {{self.title}} </h1><br>
+        <h1 class="quiz_title"><i class="icon fa fa-list"></i> {{self.title}} </h1>
         <h3 class="quiz_description">{{self.description}}</h3>
         <div class="question_div">
             <input type="hidden" name="completed_step" id="completed_step" value="{{self.current_step}}">

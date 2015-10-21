@@ -3,7 +3,7 @@ from .choice import Choice
 
 class BuzzfeedChoice(Choice):
     """
-    method to return buzz feed choice json in required format
+    method to return buzz feed choice' json in required format
     """
 
     category_id = ""
@@ -23,21 +23,7 @@ class BuzzfeedChoice(Choice):
 
     def get_json(self):
         """
-        return choice json in required format to save
+        return choice' json in required format to save
         :return: dict
         """
         return {'name': self.name, 'category_id': self.category_id}
-
-    @classmethod
-    def get_choices_json(cls, choices):
-        """
-        get only required data for each posted choice
-        :param choices: list of posted choices
-        :return: filtered list of choices json
-        """
-        choices_lst = []
-
-        for choice in choices:
-            choice = cls.get_object(choice)
-            choices_lst.append(choice.get_json())
-        return choices_lst

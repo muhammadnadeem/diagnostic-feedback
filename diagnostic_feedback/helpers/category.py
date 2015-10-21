@@ -3,7 +3,7 @@ from .result import Result
 
 class Category(Result):
     """
-    method to return categories json in required format
+    method to return categories' json in required format
     """
 
     id = ''
@@ -28,7 +28,7 @@ class Category(Result):
 
     def get_json(self):
         """
-        return category json in required format to save
+        return category's json in required format to save
         :return: dict
         """
         return {'id': self.id, 'name': self.name, 'image': self.image, 'html_body': self.html_body}
@@ -38,7 +38,7 @@ class Category(Result):
         """
         get only required data for each posted category
         :param choices: list of posted categories
-        :return: filtered list of categories json that will be saved in quiz results field
+        :return: filtered list of categories' json that will be saved in quiz results field
         """
         results = []
         categories = data.get('categories')
