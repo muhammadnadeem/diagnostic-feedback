@@ -29,7 +29,11 @@ class QuizResultMixin(object):
         Calculate the result of Diagnostic Quiz type
 
         """
-        final_result = {'msg': 'we cannot calculate your outcome', 'img': self.img, 'html_body': self.html_body}
+        final_result = {
+            'msg': 'we cannot calculate your outcome',
+            'img': self.img,
+            'html_body': 'we cannot calculate your outcome'
+        }
         total_value = 0.0
         for choice in self.student_choices.values():
             total_value += float(choice)
@@ -38,6 +42,7 @@ class QuizResultMixin(object):
                 final_result.clear()
                 final_result = self.get_result(result)
                 break
+
         self.student_result = result['name']
         return final_result
 

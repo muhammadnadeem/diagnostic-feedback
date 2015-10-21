@@ -19,7 +19,7 @@ class StudentChoiceValidator(BaseValidator):
 
         question_id = data.get('question_id')
         student_choice = data.get('student_choice')
-        current_step = data.get('currentStep')
+        current_step = str(data.get('currentStep'))
 
         if cls.is_empty(question_id):
             valid = False

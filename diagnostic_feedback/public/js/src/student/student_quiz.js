@@ -34,7 +34,9 @@ function StudentQuiz(runtime, element) {
     function showResult(result) {
         // shows final result of student
         var imgSrc = result.student_result.img;
+
         var htmlBody = result.student_result.html_body;
+
         var html = '<div>';
         if (imgSrc) {
             html += '<img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
@@ -74,6 +76,8 @@ function StudentQuiz(runtime, element) {
             success: function (response) {
                 success = response.success;
 
+                common.showMessage({success: success, warning: false, msg: response.msg});
+                debugger;
                 if (response.student_result) {
                     showResult(response);
                 }
@@ -172,10 +176,9 @@ function StudentQuiz(runtime, element) {
                 var selectedChoice = $("section.answer-choice:visible").find(selectedStudentChoice).val();
 
                 if (selectedChoice != "" && selectedChoice != undefined) {
-                    submitQuestionResponse(isLast, currentStep);
-                    return true;
+                    return submitQuestionResponse(isLast, currentStep);
                 } else {
-                    common.showMessage({success: false, warning: false, msg: 'Please select an answer'})
+                    common.showMessage({success: false, warning: false, msg: 'Please select an answer'});
                     return false;
                 }
             }

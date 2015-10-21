@@ -236,6 +236,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin):
                         success = True
                         result = self.get_diagnostic_result()
 
+                response_message = "Your response is saved"
         except Exception as ex:
             success = False
             response_message += str(ex)
