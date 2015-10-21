@@ -7,10 +7,11 @@ class Choice(object):
     name = ""
 
     def get_json(self):
-    	pass
+        pass
 
+    @classmethod
     def get_object(cls, choice):
-    	pass
+        pass
 
     @classmethod
     def get_choices_json(cls, choices):
