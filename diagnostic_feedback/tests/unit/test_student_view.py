@@ -82,14 +82,15 @@ class StudentViewAjaxTest(BaseTest, WizardStepMixin):
                         assert_equals(res, {u'success': True, u'student_result': {u'html_body': u'',
                                                                                   u'img': u'',
                                                                                   u'msg': u'You are A'},
-                                            u'msg': u''})
+                                            u'msg': u'Your response is saved'})
                     else:
-                        assert_equals(res, {u'success': True, u'student_result': '',  u'msg': u''})
+                        assert_equals(res, {u'success': True, u'student_result': '', u'msg': u'Your response is saved'})
                 elif type == "range_dont_exist":
-                    assert_equals(res, {u'success': True, u'student_result': {u'html_body': u'',
-                                                                              u'img': u'',
-                                                                              u'msg': u'we cannot calculate your outcome'},
-                                        u'msg': u'',
+                    assert_equals(res, {u'success': True,
+                                        u'student_result': {u'html_body': u'we cannot calculate your outcome',
+                                                            u'img': u'',
+                                                            u'msg': u'we cannot calculate your outcome'},
+                                        u'msg': u'Your response is saved',
                                         })
 
     def test_buzz_feed_answer(self):
@@ -117,22 +118,22 @@ class StudentViewAjaxTest(BaseTest, WizardStepMixin):
                 json_data = json.dumps(data)
                 res = json.loads(self._block.handle('save_choice', self.make_request(json_data)).body)
                 if type == 'missing_choice':
-                      assert_equals(res,
+                    assert_equals(res,
                                   {u'success': False, u'student_result': u'', 'msg': u'Student Choice is required'})
                 elif type == 'missing_id':
-                       assert_equals(res, {u'success': False, u'student_result': u'', u'msg': u'question id is required'})
+                    assert_equals(res, {u'success': False, u'student_result': u'', u'msg': u'question id is required'})
                 elif type == 'missing_step':
                     assert_equals(res, {u'success': False, u'student_result': u'', u'msg': u'current step is required'})
                 elif type == 'valid_data':
                     if data['isLast'] == "True":
                         assert_equals(res, {u'success': True, u'student_result': {u'html_body': u'',
-                                                                                  u'img' : u'http://xyz.com',
+                                                                                  u'img': u'http://xyz.com',
                                                                                   u'msg': u'You are Category2'},
-                                                 u'msg': u'',
+                                            u'msg': u'Your response is saved',
                                             })
 
                     else:
-                         assert_equals(res, {u'success': True, u'student_result': '',  u'msg': u''})
+                        assert_equals(res, {u'success': True, u'student_result': '', u'msg': u'Your response is saved'})
 
     def tearDown(self):
         self._block = None
