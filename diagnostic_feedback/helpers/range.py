@@ -9,14 +9,13 @@ class Range(Result):
     min_value = 0
     max_value = 0
 
-    def __init__(self, name, min_value, max_value, image='', html_body=''):
-        self.name = name
-        self.min_value = min_value
-        self.max_value = max_value
-        if image:
-            self.image = image
-        if html_body:
-            self.html_body = html_body
+    def __init__(self, **params):
+        self.name = params['name']
+        self.min_value = params['min_value']
+        self.max_value = params['max_value']
+        self.internal_description = params['internal_description']
+        self.image = params['image']
+        self.html_body = params['html_body']
 
     @classmethod
     def get_object(cls, _range):
@@ -27,7 +26,8 @@ class Range(Result):
         """
         return cls(name=_range.get('name').strip(),
                    min_value=_range.get('min_value').strip(), max_value=_range.get('max_value').strip(),
-                   image=_range.get('image', ''), html_body=_range.get('html_body', ''))
+                   image=_range.get('image', ''), internal_description=_range.get('internal_description', ''),
+                   html_body=_range.get('html_body', ''))
 
     def get_json(self):
         """
@@ -35,7 +35,7 @@ class Range(Result):
         :return: dict
         """
         return {'name': self.name, 'min_value': self.min_value, 'max_value': self.max_value,
-                'image': self.image, 'html_body': self.html_body}
+                'image': self.image, 'internal_description': self.internal_description, 'html_body': self.html_body}
 
     @classmethod
     def filter_results(cls, data):
@@ -49,4 +49,5 @@ class Range(Result):
         for _range in ranges:
             cat = cls.get_object(_range)
             results.append(cat.get_json())
+
         return results

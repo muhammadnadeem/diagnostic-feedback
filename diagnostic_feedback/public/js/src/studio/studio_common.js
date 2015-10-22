@@ -323,29 +323,36 @@ function StudioCommon(runtime, element) {
     commonObj.getCategoriesList = function(field_name) {
         // Get list of categories at step2
         return $('input[name^="' + field_name + '"]').map(function () {
-            var order = $(this).attr('name').split('][')[1].replace(']', '');
-            var id = $('input[name="category[id][' + order + ']"]').val();
+            var order = $(this).attr('name').split('][')[1].replace(']', ''),
+                id = $('input[name="category[id][' + order + ']"]').val();
+
             if(!id.trim()){
                 id =  commonObj.generateUniqueId();
                 $('input[name="category[id][' + order + ']"]').val(id);
             }
-            var name = this.value;
-            var image = $('input[name="category[image][' + order + ']"]').val();
-            var htmlBody = $('textarea[name="category[html_body][' + order + ']"]').val();
-            return {id: id, name: name, image: image, html_body: htmlBody};
+
+            var name = this.value,
+            image = $('input[name="category[image][' + order + ']"]').val(),
+            internalDescription = $('input[name="category[internal_description][' + order + ']"]').val(),
+            htmlBody = $('textarea[name="category[html_body][' + order + ']"]').val();
+
+            return {id: id, name: name, image: image, internal_description: internalDescription, html_body: htmlBody};
         }).get();
     }
 
     commonObj.getRangesList = function(field_name) {
         // Get list of ranges at step2
         return $('input[name^="' + field_name + '"]').map(function () {
-            var order = $(this).attr('name').split('][')[1].replace(']', '');
-            var name = this.value;
-            var minValue = $('input[name="range[min][' + order + ']"]').val();
-            var maxValue = $('input[name="range[max][' + order + ']"]').val();
-            var image = $('input[name="range[image][' + order + ']"]').val();
-            var htmlBody = $('textarea[name="range[html_body][' + order + ']"]').val();
-            return {name: name, min_value: minValue, max_value: maxValue, image: image, html_body: htmlBody};
+            var order = $(this).attr('name').split('][')[1].replace(']', ''),
+                name = this.value,
+                minValue = $('input[name="range[min][' + order + ']"]').val(),
+                maxValue = $('input[name="range[max][' + order + ']"]').val(),
+                image = $('input[name="range[image][' + order + ']"]').val(),
+                internalDescription = $('input[name="range[internal_description][' + order + ']"]').val(),
+                htmlBody = $('textarea[name="range[html_body][' + order + ']"]').val();
+
+            return {name: name, min_value: minValue, max_value: maxValue, image: image,
+                internal_description: internalDescription, html_body: htmlBody};
         }).get();
     }
 

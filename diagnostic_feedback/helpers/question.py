@@ -11,10 +11,10 @@ class Question(object):
     title = ""
     choices = ""
 
-    def __init__(self, id, title, choices):
-        self.id = id
-        self.title = title
-        self.choices = choices
+    def __init__(self, **params):
+        self.id = params['id']
+        self.title = params['title']
+        self.choices = params['choices']
 
     @classmethod
     def get_object(cls, question, choices):

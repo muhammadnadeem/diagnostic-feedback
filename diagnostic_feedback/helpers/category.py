@@ -8,13 +8,12 @@ class Category(Result):
 
     id = ''
 
-    def __init__(self, id, name, image='', html_body=''):
-        self.id = id
-        self.name = name
-        if image:
-            self.image = image
-        if html_body:
-            self.html_body = html_body
+    def __init__(self, **params):
+        self.id = params['id']
+        self.name = params['name']
+        self.internal_description = params['internal_description']
+        self.image = params['image']
+        self.html_body = params['html_body']
 
     @classmethod
     def get_object(cls, category):
@@ -24,6 +23,7 @@ class Category(Result):
         :return: category object
         """
         return cls(id=category.get('id', ''), name=category.get('name').strip(), image=category.get('image', ''),
+                   internal_description=category.get('internal_description', ''),
                    html_body=category.get('html_body', ''))
 
     def get_json(self):
@@ -31,7 +31,9 @@ class Category(Result):
         return category's json in required format to save
         :return: dict
         """
-        return {'id': self.id, 'name': self.name, 'image': self.image, 'html_body': self.html_body}
+        return {'id': self.id, 'name': self.name, 'image': self.image,
+                'internal_description': self.internal_description,
+                'html_body': self.html_body}
 
     @classmethod
     def filter_results(cls, data):
@@ -46,4 +48,5 @@ class Category(Result):
         for category in categories:
             cat = cls.get_object(category)
             results.append(cat.get_json())
+
         return results

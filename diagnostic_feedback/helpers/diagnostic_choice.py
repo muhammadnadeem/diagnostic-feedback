@@ -7,9 +7,9 @@ class DiagnosticChoice(Choice):
     """
     value = ""
 
-    def __init__(self, value, name):
-        self.value = value
-        self.name = name
+    def __init__(self, **params):
+        self.value = params['value']
+        self.name = params['name']
 
     @classmethod
     def get_object(cls, choice):
