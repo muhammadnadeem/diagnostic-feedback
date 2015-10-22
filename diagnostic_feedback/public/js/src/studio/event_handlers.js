@@ -5,21 +5,23 @@ function EventHandler(runtime, element){
     handler.addNewCategory = function(link, result) {
         // Handler to add new category on step2
 
-        var link = $(link);
-        var template = JSON.parse(result).template;
-        var tmpl = _.template(template);
+        var link = $(link),
+            template = JSON.parse(result).template,
+            tmpl = _.template(template),
 
-        var existing_categories = link.prevAll('.category').length;
-        var idFieldAttrs = 'category[id][' + existing_categories + ']';
-        var nameFieldAttrs = 'category[name][' + existing_categories + ']';
-        var imageFieldAttrs = 'category[image][' + existing_categories + ']';
-        var htmlBodyFieldAttrs = 'category[html_body][' + existing_categories + ']';
-        var html = tmpl({
-            idFieldAttrs: idFieldAttrs,
-            nameFieldAttrs: nameFieldAttrs,
-            imageFieldAttrs: imageFieldAttrs,
-            htmlBodyFieldAttrs: htmlBodyFieldAttrs
-        });
+            existing_categories = link.prevAll('.category').length,
+            idFieldAttrs = 'category[id][' + existing_categories + ']',
+            nameFieldAttrs = 'category[name][' + existing_categories + ']',
+            imageFieldAttrs = 'category[image][' + existing_categories + ']',
+            internalDescAttrs = 'category[internal_description][' + existing_categories + ']',
+            htmlBodyFieldAttrs = 'category[html_body][' + existing_categories + ']',
+            html = tmpl({
+                idFieldAttrs: idFieldAttrs,
+                nameFieldAttrs: nameFieldAttrs,
+                imageFieldAttrs: imageFieldAttrs,
+                internalDescAttrs: internalDescAttrs,
+                htmlBodyFieldAttrs: htmlBodyFieldAttrs
+            });
 
         $(html).insertBefore(link);
         studioCommon.initiateHtmlEditor($('#categories_panel'));
@@ -28,25 +30,27 @@ function EventHandler(runtime, element){
     handler.addNewRange = function(link, result) {
         // Handler to add new range on step2
 
-        var link = $(link);
-        var template = JSON.parse(result).template;
-        var tmpl = _.template(template);
+        var link = $(link),
+            template = JSON.parse(result).template,
+            tmpl = _.template(template),
 
-        var existing_ranges = link.prevAll('.range').length;
-        var idFieldAttrs = 'range[id][' + existing_ranges + ']';
-        var nameFieldAttrs = 'range[name][' + existing_ranges + ']';
-        var minFieldAttrs = 'range[min][' + existing_ranges + ']';
-        var maxFieldAttrs = 'range[max][' + existing_ranges + ']';
-        var imageFieldAttrs = 'range[image][' + existing_ranges + ']';
-        var htmlBodyFieldAttrs = 'range[html_body][' + existing_ranges + ']';
-        var html = tmpl({
-            idFieldAttrs: idFieldAttrs,
-            nameFieldAttrs: nameFieldAttrs,
-            minFieldAttrs: minFieldAttrs,
-            maxFieldAttrs: maxFieldAttrs,
-            imageFieldAttrs: imageFieldAttrs,
-            htmlBodyFieldAttrs: htmlBodyFieldAttrs
-        });
+            existing_ranges = link.prevAll('.range').length,
+            idFieldAttrs = 'range[id][' + existing_ranges + ']',
+            nameFieldAttrs = 'range[name][' + existing_ranges + ']',
+            minFieldAttrs = 'range[min][' + existing_ranges + ']',
+            maxFieldAttrs = 'range[max][' + existing_ranges + ']',
+            imageFieldAttrs = 'range[image][' + existing_ranges + ']',
+            internalDescAttrs = 'range[internal_description][' + existing_ranges + ']',
+            htmlBodyFieldAttrs = 'range[html_body][' + existing_ranges + ']',
+            html = tmpl({
+                idFieldAttrs: idFieldAttrs,
+                nameFieldAttrs: nameFieldAttrs,
+                minFieldAttrs: minFieldAttrs,
+                maxFieldAttrs: maxFieldAttrs,
+                imageFieldAttrs: imageFieldAttrs,
+                internalDescAttrs: internalDescAttrs,
+                htmlBodyFieldAttrs: htmlBodyFieldAttrs
+            });
 
         $(html).insertBefore(link);
         studioCommon.initiateHtmlEditor($('#ranges_panel'));
@@ -56,55 +60,54 @@ function EventHandler(runtime, element){
     handler.addNewQuestion = function(link, result) {
         // Handler to add new question html
 
-        var link = $(link);
-        var type = studioCommon.getQuizType();
+        var link = $(link),
+            type = studioCommon.getQuizType(),
 
-        var template = JSON.parse(result).template;
-        var tmpl = _.template(template);
+            template = JSON.parse(result).template,
+            tmpl = _.template(template),
 
-        // count existing questions
-        var existing_questions = link.prevAll('.question').length;
-        var questionText = 'question[' + existing_questions + ']';
-        var answerText = 'question[' + existing_questions + ']answer[0]';
-        var answerValue = 'question[' + existing_questions + ']value[0]';
-        var resultChoice = 'quesiton[[' + existing_questions + ']category[0]';
-        var resultChoicesOptions = studioCommon.getChoicesList();
+            // count existing questions
+            existing_questions = link.prevAll('.question').length,
+            questionText = 'question[' + existing_questions + ']',
+            answerText = 'question[' + existing_questions + ']answer[0]',
+            answerValue = 'question[' + existing_questions + ']value[0]',
+            resultChoice = 'quesiton[[' + existing_questions + ']category[0]',
+            resultChoicesOptions = studioCommon.getChoicesList(),
 
-        var html = tmpl({
-            order: existing_questions + 1,
-            type: type,
-            questionText: questionText,
-            answerText: answerText,
-            answerValue: answerValue,
-            resultChoice: resultChoice,
-            resultChoicesOptions: resultChoicesOptions
-        });
+            html = tmpl({
+                order: existing_questions + 1,
+                type: type,
+                questionText: questionText,
+                answerText: answerText,
+                answerValue: answerValue,
+                resultChoice: resultChoice,
+                resultChoicesOptions: resultChoicesOptions
+            });
         $(html).insertBefore(link);
-        //$("textarea[id='"+htmlBodyFieldAttrs+"']").prev().focus();
     };
 
     handler.addNewChoice = function(link, result) {
         // Handler to add new question choice html
-        var link = $(link);
-        var type = studioCommon.getQuizType();
-        var template = JSON.parse(result).template;
-        var tmpl = _.template(template);
+        var link = $(link),
+            type = studioCommon.getQuizType(),
+            template = JSON.parse(result).template,
+            tmpl = _.template(template),
 
-        // count existing choices
-        var existing_choices = link.prev().find('.answer-choice').length;
-        var question_name = link.prevAll('.question_field').find('.question-txt').first().attr('name');
-        var answerText = question_name + 'answer[' + existing_choices + ']';
-        var answerValue = question_name + 'value[' + existing_choices + ']';
-        var resultChoice = question_name + 'category[' + existing_choices + ']';
-        var resultChoicesOptions = studioCommon.getChoicesList();
+            // count existing choices
+            existing_choices = link.prev().find('.answer-choice').length,
+            question_name = link.prevAll('.question_field').find('.question-txt').first().attr('name'),
+            answerText = question_name + 'answer[' + existing_choices + ']',
+            answerValue = question_name + 'value[' + existing_choices + ']',
+            resultChoice = question_name + 'category[' + existing_choices + ']',
+            resultChoicesOptions = studioCommon.getChoicesList(),
 
-        var html = tmpl({
-            type: type,
-            answerText: answerText,
-            answerValue: answerValue,
-            resultChoice: resultChoice,
-            resultChoicesOptions: resultChoicesOptions
-        });
+            html = tmpl({
+                type: type,
+                answerText: answerText,
+                answerValue: answerValue,
+                resultChoice: resultChoice,
+                resultChoicesOptions: resultChoicesOptions
+            });
         link.prev('ol').append(html);
     };
 }

@@ -5,6 +5,7 @@ class Result(object):
     """
     name = ''
     image = ''
+    internal_description = ''
     html_body = ''
 
 

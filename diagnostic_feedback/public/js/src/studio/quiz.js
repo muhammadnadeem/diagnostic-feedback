@@ -33,14 +33,22 @@ function Quiz(runtime, element) {
 
         addNewChoiceBtn = '.add-new-choice',
         deleteChoiceBtn = '.delete-choice',
-        choiceSelector = '.answer-choice';
+        choiceSelector = '.answer-choice',
+        toolTipSelector = '.custom-tooltip';
 
         //initialize js validations if on in setting.js
         if(setting.jsValidation){
             // initialize jQuery validation on form
             form.validate({
+                success: function (label, element) {
+                    $(element).next(toolTipSelector).remove();
+                },
                 errorPlacement: function errorPlacement(error, element) {
-                    element.after(error);
+                    var container = $('<div />');
+                    container.addClass('custom-tooltip');
+                    error.insertAfter(element);
+                    error.wrap(container);
+                    $('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(error);
                 }
             });
         }

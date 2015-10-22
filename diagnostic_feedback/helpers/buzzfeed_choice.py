@@ -8,9 +8,9 @@ class BuzzfeedChoice(Choice):
 
     category_id = ""
 
-    def __init__(self, category_id, name):
-        self.category_id = category_id
-        self.name = name
+    def __init__(self, **params):
+        self.category_id = params['category_id']
+        self.name = params['name']
 
     @classmethod
     def get_object(cls, choice):
