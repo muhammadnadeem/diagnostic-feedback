@@ -71,7 +71,7 @@ function EventHandler(runtime, element){
             questionText = 'question[' + existing_questions + ']',
             answerText = 'question[' + existing_questions + ']answer[0]',
             answerValue = 'question[' + existing_questions + ']value[0]',
-            resultChoice = 'quesiton[[' + existing_questions + ']category[0]',
+            resultChoice = 'question[' + existing_questions + ']category[0]',
             resultChoicesOptions = studioCommon.getChoicesList(),
 
             html = tmpl({

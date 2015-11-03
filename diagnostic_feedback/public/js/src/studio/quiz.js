@@ -1,5 +1,7 @@
 function Quiz(runtime, element) {
     // contain js related to studio quiz wizard
+    myXblock =this;
+
     $(function ($) {
 
         // import related js helpers
@@ -73,9 +75,12 @@ function Quiz(runtime, element) {
         function submitToSave(currentStep){
             var success = false;
             $.when(submitForm(currentStep)).done(function (response) {
+                debugger;
+                runtime.refreshXBlock(element);
                 common.showMessage(response);
                 if (response.success) {
                     success = true;
+                    debugger;
 
                     //close modal window if step3 saved successfully
                     if (response.step == 3) {
@@ -345,6 +350,27 @@ function Quiz(runtime, element) {
             // add attribute selected='select' on selection option
             var select = $(eventObject.currentTarget).find("option:selected");
             select.attr({'selected': 'selected'});
+        });
+
+        $("#edit_questionnaire_panel", element).on('click', "#export_data", function(eventObject) {
+            eventObject.preventDefault();
+
+            var link = $(eventObject.currentTarget);
+            var handlerUrl = runtime.handlerUrl(element, 'start_export');
+
+            $.ajax({
+                type: 'POST',
+                url: handlerUrl,
+                data: JSON.stringify({}),
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (result) {
+                    alert(response);
+                },
+                dataType: 'json'
+            });
+
         });
     });
 }

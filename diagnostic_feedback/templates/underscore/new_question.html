@@ -21,11 +21,11 @@
                 </select>
             <% } else { %>
                 <input placeholder="Choice Value" type="number" step="0.1" id="<%- answerValue %>" name="<%- answerValue %>" class="required answer-value" />
-                <a href="#" data-tooltip="Delete Choice" class="delete-choice delete-button action-button">
-                    <i class="icon fa fa-trash-o"></i>
-                    <span class="sr">Delete</span>
-                </a>
             <% } %>
+            <a href="#" data-tooltip="Delete Choice" class="delete-choice delete-button action-button">
+                <i class="icon fa fa-trash-o"></i>
+                <span class="sr">Delete</span>
+            </a>
         </li>
     </ol>
     <a href="#" class="add-new-choice button button-new" title="Click to add a new Choice">

@@ -1,4 +1,4 @@
-"""Setup for diagostic-feedback XBlock."""
+"""Setup for diagnostic-feedback XBlock."""
 
 import os
 from setuptools import setup

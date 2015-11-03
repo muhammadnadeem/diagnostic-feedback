@@ -27,9 +27,9 @@ function StudioCommon(runtime, element) {
     allChoiceValuesInputs = '.answer-choice .answer-value',
     allResultChoicesDropdowns = '.answer-choice .result-choice',
     choiceValueSelector = 'input[name*="]value["]',
-    choiceValueSelector2 = 'input[name*=value]',
     choiceValueClsSelector = '.answer-value',
     choiceNameSelector = 'input[name*=answer]',
+    choiceResultSelector = '.result-choice:visible',
     choiceNameClsSelector = '.answer-txt';
 
     commonObj.showQuizForm = function(){
@@ -302,9 +302,11 @@ function StudioCommon(runtime, element) {
         var question_name = $(choice).parent().prevAll(questionFieldsContainerSelector).find(questionTxtFieldSelector).first().attr('name');
         var ChoiceAnswer = question_name + 'answer[' + i + ']';
         var ChoiceValue = question_name + 'value[' + i + ']';
+        var CategoryValue = question_name + 'category[' + i + ']';
 
         $(choice).find(choiceNameSelector).attr({id: ChoiceAnswer, name: ChoiceAnswer});
-        $(choice).find(choiceValueSelector2).attr({id: ChoiceValue, name: ChoiceValue});
+        $(choice).find(choiceResultSelector).attr({id: CategoryValue, name: CategoryValue});
+        $(choice).find(choiceValueSelector).attr({id: ChoiceValue, name: ChoiceValue});
     }
 
     commonObj.confirmAction = function(msg){
@@ -405,7 +407,7 @@ function StudioCommon(runtime, element) {
                 var answerChoice = {
                     'choice_txt': $(choice).val(),
                     'choice_value': $(choice).nextAll(choiceValueClsSelector).first().val(),
-                    'choice_category': $(choice).nextAll('select:visible').val()
+                    'choice_category': $(choice).nextAll(choiceResultSelector).val()
                 };
                 questionObj['choices'].push(answerChoice);
             });

@@ -1,6 +1,7 @@
 <li class="answer-choice">
     <input placeholder="Choice Text" type="text" id="<%- answerText %>" name="<%- answerText %>" class="required answer-txt" />
     <% if(type == 'BFQ'){ %>
+    test
         <select id="<%- resultChoice %>" name="<%- resultChoice %>" class="required result-choice">
             <option value=""> -- Choose result -- </option>
             <% _.each(resultChoicesOptions, function(choice) { %>
@@ -9,11 +10,11 @@
         </select>
     <% } else { %>
             <input placeholder="Choice Value" type="number" step="0.1" id="<%- answerValue %>" name="<%- answerValue %>" class="required answer-value" />
-            <a href="#" data-tooltip="Delete Choice" class="delete-choice delete-button action-button">
-                <i class="icon fa fa-trash-o"></i>
-                <span class="sr">Delete</span>
-            </a>
     <% } %>
+    <a href="#" data-tooltip="Delete Choice" class="delete-choice delete-button action-button">
+        <i class="icon fa fa-trash-o"></i>
+        <span class="sr">Delete</span>
+    </a>
 </li>
 
 
