@@ -13,18 +13,14 @@ from .helpers import MainHelper
 from .validators import Validator
 from .sub_api import SubmittingXBlockMixin, sub_api
 import json
+from .export_data import ExportDataBlock
 
 log = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
 
 
-# Make '_' a no-op so we can scrape strings
-def _(text):
-    return text
-
-
 @XBlock.wants('user')
-class QuizBlock(XBlock, ResourceMixin, QuizResultMixin, SubmittingXBlockMixin):
+class QuizBlock(ResourceMixin, QuizResultMixin, SubmittingXBlockMixin, ExportDataBlock):
     """
 
     """
@@ -141,27 +137,7 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin, SubmittingXBlockMixin):
         context = {
             'questions': copy.deepcopy(self.questions),
             'self': self,
-
-        }
-
-        if self.student_choices:
-            self.append_choice(context['questions'])
-
-        # return final result to show if user already completed the quiz
-        if self.questions and self.current_step:
-            if len(self.questions) == self.current_step:
-                if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
-                    context['result'] = self.get_buzz_feed_result()
-                else:
-                    context['result'] = self.get_diagnostic_result()
-
-        return self.get_fragment(context, 'student')
-
-    def author_view(self, context):
-        context = {
-            'questions': copy.deepcopy(self.questions),
-            'self': self,
-
+            'user_is_staff': self.user_is_staff()
         }
 
         if self.student_choices:
@@ -238,24 +214,6 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin, SubmittingXBlockMixin):
 
         return {'success': True, 'template': loader.load_unicode(template)}
 
-    # def submit(self, submission):
-    #     """
-    #     The parent block is handling a student submission, including a new answer for this
-    #     block. Update accordingly.
-    #     """
-    #     self.student_input = submission[0]['value'].strip()
-    #     self.save()
-    #
-    #     if sub_api:
-    #         # Also send to the submissions API:
-    #         item_key = self.student_item_key
-    #         # Need to do this by our own ID, since an answer can be referred to multiple times.
-    #         item_key['item_id'] = self.name
-    #         sub_api.create_submission(item_key, self.student_input)
-    #
-    #     log.info(u'Answer submitted for`{}`: "{}"'.format(self.name, self.student_input))
-    #     return self.get_results()
-
     @XBlock.json_handler
     def save_choice(self, data, suffix=''):
         """
@@ -315,10 +273,6 @@ class QuizBlock(XBlock, ResourceMixin, QuizResultMixin, SubmittingXBlockMixin):
 
         return {'success': success, 'msg': response_message}
 
-    def _delete_export(self):
-        self.last_export_result = None
-        self.display_data = None
-        self.active_export_task_id = ''
 
     def _save_result(self, task_result):
         """ Given an AsyncResult or EagerResult, save it. """

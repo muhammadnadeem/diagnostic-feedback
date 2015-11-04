@@ -184,6 +184,27 @@ function StudentQuiz(runtime, element) {
             }
         }
 
+        function getStatus() {
+            $.ajax({
+                type: 'POST',
+                url: runtime.handlerUrl(element, 'get_status'),
+                data: '{}',
+                success: updateStatus,
+                dataType: 'json'
+            });
+        }
+
+        function updateStatus(response) {
+            if(response.export_pending){
+                common.showMessage({success: false, warning: true, msg: 'The report is currently being generated…'});
+                setTimeout(getStatus, 1000);
+            } else {
+                common.showMessage({success: true, warning: false, msg: 'Report is successfully generated. Downloading...'});
+                window.location.href = response.download_url;
+            }
+        }
+
+
         $("#student_view_form", element).on('click', "#export_data", function(eventObject) {
             eventObject.preventDefault();
 
@@ -194,9 +215,7 @@ function StudentQuiz(runtime, element) {
                 type: 'POST',
                 url: handlerUrl,
                 data: JSON.stringify({}),
-                success: function (response) {
-                    alert(response);
-                },
+                success: updateStatus,
                 error: function (result) {
                     alert(response);
                 },
