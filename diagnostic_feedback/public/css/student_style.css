@@ -13,7 +13,7 @@
 #student_view_form  > .wizard > .content {overflow-y: hidden}
 
 .quiz_title{
-	display: block;
+	display: none;
 	transition: color 0.25s ease-in-out 0s;
 	font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight: 300;
@@ -29,17 +29,23 @@
 }
 
 .quiz_description, .quiz_question{
-	font-size: 0.8em;
+	font-size: 1em !important;
+	font-weight: normal !important;
+}
+
+.quiz_question{
+	padding-top: 1em;
 }
 
 .question_container{
 	border: solid 4px #DDD;
-	height: 70% !important; 
-	width: 85% !important;
+	height: 85% !important;
+	width: 100% !important;
 }
 
 .question_title{
 	text-transform: uppercase;
+	font-weight: bold;
 }
 
 .user_answers{
@@ -51,5 +57,5 @@
 }
 
 .user_answers > label{
-	font-size: 0.8em;
+	font-size: 1em;
 }
