@@ -196,10 +196,10 @@ function StudentQuiz(runtime, element) {
 
         function updateStatus(response) {
             if(response.export_pending){
-                common.showMessage({success: false, warning: true, msg: 'The report is currently being generated…'});
+                $('#export_progress').html('The report is currently being generated…');
                 setTimeout(getStatus, 1000);
             } else {
-                common.showMessage({success: true, warning: false, msg: 'Report is successfully generated. Downloading...'});
+               $('#export_progress').html('Report is successfully generated. Downloading…');
                 window.location.href = response.download_url;
             }
         }
