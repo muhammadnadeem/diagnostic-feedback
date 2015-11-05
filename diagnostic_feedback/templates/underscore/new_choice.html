@@ -1,7 +1,6 @@
 <li class="answer-choice">
     <input placeholder="Choice Text" type="text" id="<%- answerText %>" name="<%- answerText %>" class="required answer-txt" />
     <% if(type == 'BFQ'){ %>
-    test
         <select id="<%- resultChoice %>" name="<%- resultChoice %>" class="required result-choice">
             <option value=""> -- Choose result -- </option>
             <% _.each(resultChoicesOptions, function(choice) { %>

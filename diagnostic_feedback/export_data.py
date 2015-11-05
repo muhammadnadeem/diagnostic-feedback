@@ -81,7 +81,7 @@ class ExportDataBlock(XBlock):
         """
         If we're waiting for an export, see if it has finished, and if so, get the result.
         """
-        from diagnostic_feedback.tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             log.info("------------ in check_pending_export - checking status ---------------")
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
@@ -101,7 +101,9 @@ class ExportDataBlock(XBlock):
             return {'error': 'permission denied'}
 
         # Launch task
-        from diagnostic_feedback.tasks import export_data as export_data_task
+        from celery import app
+        from .tasks import export_data as export_data_task
+        app.config_from_object('celeryconfig')
         self._delete_export()
         # Make sure we nail down our state before sending off an asynchronous task.
         self.save()
@@ -122,7 +124,7 @@ class ExportDataBlock(XBlock):
             self._save_result(async_result)
         else:
             log.info("------------ in start_export- saving id ---------------")
-            logging.debug(async_result.id)
+            log.info(async_result.id)
             # The task is running asynchronously. Store the result ID so we can query its progress:
             self.active_export_task_id = async_result.id
             #diagnostic_feedback.tasks.export_data
