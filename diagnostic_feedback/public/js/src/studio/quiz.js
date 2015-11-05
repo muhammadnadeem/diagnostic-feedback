@@ -352,25 +352,5 @@ function Quiz(runtime, element) {
             select.attr({'selected': 'selected'});
         });
 
-        $("#edit_questionnaire_panel", element).on('click', "#export_data", function(eventObject) {
-            eventObject.preventDefault();
-
-            var link = $(eventObject.currentTarget);
-            var handlerUrl = runtime.handlerUrl(element, 'start_export');
-
-            $.ajax({
-                type: 'POST',
-                url: handlerUrl,
-                data: JSON.stringify({}),
-                success: function (response) {
-                    alert(response);
-                },
-                error: function (result) {
-                    alert(response);
-                },
-                dataType: 'json'
-            });
-
-        });
     });
 }

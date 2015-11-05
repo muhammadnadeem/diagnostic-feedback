@@ -101,9 +101,7 @@ class ExportDataBlock(XBlock):
             return {'error': 'permission denied'}
 
         # Launch task
-        from celery import app
         from .tasks import export_data as export_data_task
-        app.config_from_object('celeryconfig')
         self._delete_export()
         # Make sure we nail down our state before sending off an asynchronous task.
         self.save()
@@ -115,6 +113,7 @@ class ExportDataBlock(XBlock):
         )
         if async_result.ready():
             log.info("------------ in start_export- task ready ---------------")
+            log.info(async_result.id)
             # In development mode, the task may have executed synchronously.
             # Store the result now, because we won't be able to retrieve it later :-/
             if async_result.successful():
