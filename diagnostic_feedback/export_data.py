@@ -76,7 +76,7 @@ class ExportDataBlock(XBlock):
         """
         If we're waiting for an export, see if it has finished, and if so, get the result.
         """
-        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        from diagnostic_feedback.tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
             if async_result.ready():
@@ -95,7 +95,7 @@ class ExportDataBlock(XBlock):
             return {'error': 'permission denied'}
 
         # Launch task
-        from .tasks import export_data as export_data_task
+        from diagnostic_feedback.tasks import export_data as export_data_task
         self._delete_export()
         # Make sure we nail down our state before sending off an asynchronous task.
         self.save()
@@ -115,11 +115,12 @@ class ExportDataBlock(XBlock):
         else:
             # The task is running asynchronously. Store the result ID so we can query its progress:
             self.active_export_task_id = async_result.id
+            #diagnostic_feedback.tasks.export_data
         return self._get_status()
 
     @XBlock.json_handler
     def cancel_export(self, request, suffix=''):
-        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        from diagnostic_feedback.tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
             async_result.revoke()
