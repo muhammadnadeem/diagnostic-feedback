@@ -6,7 +6,7 @@ from xblockutils.resources import ResourceLoader
 loader = ResourceLoader(__name__)
 
 PAGE_SIZE = 15
-
+import logging
 
 # Make '_' a no-op so we can scrape strings
 def _(text):
@@ -43,6 +43,7 @@ class ExportDataBlock(XBlock):
         self.active_export_task_id = ''
         if task_result.successful():
             if isinstance(task_result.result, dict) and not task_result.result.get('error'):
+                print("------------ _save_result- saving result ---------------")
                 self.display_data = task_result.result['display_data']
                 del task_result.result['display_data']
                 self.last_export_result = task_result.result
@@ -66,6 +67,7 @@ class ExportDataBlock(XBlock):
 
     def _get_status(self):
         self.check_pending_export()
+        print("------------ in _get_status - return status ---------------")
         return {
             'export_pending': bool(self.active_export_task_id),
             'last_export_result': self.last_export_result,
@@ -78,6 +80,7 @@ class ExportDataBlock(XBlock):
         """
         from diagnostic_feedback.tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
+            print("------------ in check_pending_export - checking status ---------------")
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
             if async_result.ready():
                 self._save_result(async_result)
@@ -86,7 +89,7 @@ class ExportDataBlock(XBlock):
     def start_export(self, data, suffix=''):
         """ Start a new asynchronous export """
         block_type = "QuizBlock"
-
+        print("------------ in start_export ---------------")
         root_block_id = self.scope_ids.usage_id
         root_block_id = unicode(getattr(root_block_id, 'block_id', root_block_id))
         #
@@ -99,12 +102,14 @@ class ExportDataBlock(XBlock):
         self._delete_export()
         # Make sure we nail down our state before sending off an asynchronous task.
         self.save()
+        print("------------ in start_export - starting async task ---------------")
         async_result = export_data_task.delay(
             # course_id not available in workbench.
             unicode(getattr(self.runtime, 'course_id', 'course_id')),
             root_block_id
         )
         if async_result.ready():
+            print("------------ in start_export- task ready ---------------")
             # In development mode, the task may have executed synchronously.
             # Store the result now, because we won't be able to retrieve it later :-/
             if async_result.successful():
@@ -113,6 +118,8 @@ class ExportDataBlock(XBlock):
                 json.dumps(async_result.result)
             self._save_result(async_result)
         else:
+            print("------------ in start_export- saving id ---------------")
+            logging.debug(async_result.id)
             # The task is running asynchronously. Store the result ID so we can query its progress:
             self.active_export_task_id = async_result.id
             #diagnostic_feedback.tasks.export_data
