@@ -194,7 +194,8 @@ function StudentQuiz(runtime, element) {
         }
 
         function updateStatus(response) {
-            if(response.export_pending){
+            console.log(response);
+	        if(response.export_pending){
                 $('#export_progress').html('The report is currently being generated…');
                 setTimeout(getStatus, 1000);
             } else {
