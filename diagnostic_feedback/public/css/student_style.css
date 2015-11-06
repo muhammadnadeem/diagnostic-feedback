@@ -1,61 +1,80 @@
-#student_view_form *{
-   color: #4c4c4c;
+#student_view_form * {
+    color: #4c4c4c;
 }
 
-.result_img{
+.result_img {
     height: 80px;
     float: left;
     padding-right: 10px;
     width: 80px;
 }
 
-#student_view_form  > div > div > ul[role = tablist]  { display: none; }
-#student_view_form  > .wizard > .content {overflow-y: hidden}
-
-.quiz_title{
-	display: none;
-	transition: color 0.25s ease-in-out 0s;
-	font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-	font-weight: 300;
-	font-size: 2.0em;
+#student_view_form > div > div > ul[role = tablist] {
+    display: none;
 }
 
-.quiz_title, .quiz_title > i{
-	color: #009fe6 !important;
+#student_view_form > .wizard > .content {
+    overflow-y: hidden
 }
 
-.quiz_description, .quiz_question, .question_container, .user_answers{
-	display: block;
+.quiz_title {
+    display: none;
+    transition: color 0.25s ease-in-out 0s;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-size: 2.0em;
 }
 
-.quiz_description, .quiz_question{
-	font-size: 1em !important;
-	font-weight: normal !important;
+.quiz_title, .quiz_title > i {
+    color: #009fe6 !important;
 }
 
-.quiz_question{
-	padding-top: 1em;
+.quiz_description, .quiz_question, .question_container, .user_answers {
+    display: block;
 }
 
-.question_container{
-	border: solid 4px #DDD;
-	height: 85% !important;
-	width: 100% !important;
+.quiz_description, .quiz_question {
+    font-size: 1em !important;
+    font-weight: normal !important;
 }
 
-.question_title{
-	text-transform: uppercase;
-	font-weight: bold;
+.quiz_question {
+    padding-top: 1em;
 }
 
-.user_answers{
-	padding: 20px;
+.question_container {
+    border: solid 4px #DDD;
+    height: 85% !important;
+    width: 100% !important;
 }
 
-.user_answers > input, .user_answers > label{
-	display: inline;
+.question_title {
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-.user_answers > label{
-	font-size: 1em;
+.user_answers {
+    padding: 20px;
+}
+
+.user_answers > input, .user_answers > label {
+    display: inline;
+}
+
+.user_answers > label {
+    font-size: 1em;
+}
+
+.answer-choice > .result-choice {
+    margin: 2px;
+    padding: 6px 8px 8px;
+    margin-bottom: 4px;
+    background-image: none;
+    background-color: #f2f2f2;
+    font-size: 0.75em;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-family: 'Open Sans', sans-serif;
+    color: #4c4c4c;
+    border-radius: 2px;
+    min-width: 150px;
 }
