@@ -77,7 +77,6 @@ function StudentQuiz(runtime, element) {
                 success = response.success;
 
                 common.showMessage({success: success, warning: false, msg: response.msg});
-                debugger;
                 if (response.student_result) {
                     showResult(response);
                 }

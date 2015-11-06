@@ -75,12 +75,10 @@ function Quiz(runtime, element) {
         function submitToSave(currentStep){
             var success = false;
             $.when(submitForm(currentStep)).done(function (response) {
-                debugger;
                 runtime.refreshXBlock(element);
                 common.showMessage(response);
                 if (response.success) {
                     success = true;
-                    debugger;
 
                     //close modal window if step3 saved successfully
                     if (response.step == 3) {

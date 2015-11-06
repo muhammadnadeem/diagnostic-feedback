@@ -10,8 +10,11 @@
                     <input placeholder="Name" type="text" id="category[name][{{forloop.counter0}}]" name="category[name][{{forloop.counter0}}]" value="{{result.name}}"  class="required" />
                     <input placeholder="Image"  type="text" id="category[image][{{forloop.counter0}}]" name="category[image][{{forloop.counter0}}]" value="{{result.image}}" >
                     <input placeholder="Internal Description"  type="text" id="category[internal_description][{{forloop.counter0}}]" name="category[internal_description][{{forloop.counter0}}]" value="{{result.internal_description}}" >
+                    <a href="#" data-tooltip="Delete" class="delete-category delete-button action-button">
+                        <i class="icon fa fa-trash-o"></i>
+                        <span class="sr">Delete</span>
+                    </a>
                     <textarea class="custom_textarea" placeholder="Html Body"  id="category[html_body][{{forloop.counter0}}]" name="category[html_body][{{forloop.counter0}}]">{{result.html_body}}</textarea>
-                    <a href="#" class="delete-category">Delete</a>
                 </div>
             {% endfor %}
         {% else %}
@@ -20,11 +23,15 @@
                 <input placeholder="Name" type="text" id="category[name][0]" name="category[name][0]"  class="required" />
                 <input placeholder="Image" type="text" id="category[image][0]" name="category[image][0]" >
                 <input placeholder="Internal Description"  type="text" id="category[internal_description][0]" name="category[internal_description][0]" >
+                <a href="#" data-tooltip="Delete" class="delete-category delete-button action-button">
+                    <i class="icon fa fa-trash-o"></i>
+                    <span class="sr">Delete</span>
+                </a>
                 <textarea class="custom_textarea" placeholder="Html Body" id="category[html_body][0]" name="category[html_body][0]"></textarea>
-                <a href="#" class="delete-category">Delete</a>
+
             </div>
         {% endif %}
-        <a class="add-new-category" href="#">Add Category</a>
+        <a class="add-new-category button button-new" href="#"><i class="icon fa fa-plus"></i>Add Category</a>
     </div>
     <div id="ranges_panel" class="fields_container hide">
         <h3>Range(s)</h3>

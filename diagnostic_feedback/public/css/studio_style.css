@@ -20,7 +20,7 @@
     padding: 2px;
 }
 
-.range, .add-new-range, .question, .add-new-question {
+.range, .add-new-range, .category, .add-new-category, .question, .add-new-question {
 
     margin: 20px;
 }
@@ -33,7 +33,7 @@
 .question_field > input{
     width:500px;
 }
-.range > input, .question_field > input, .answer-choice > input {
+.range > input,.category > input, .question_field > input, .answer-choice > input {
     margin: 2px;
     padding: 6px 8px 8px;
     margin-bottom: 4px;
