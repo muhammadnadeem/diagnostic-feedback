@@ -6,6 +6,14 @@ function Common(runtime, element) {
     globalMessage = '.msg',
     warningMessage = '.validation-msg';
 
+    cObj.clearErrors = function(){
+        $('.validation-error-message').remove();
+    }
+
+    cObj.showValidationError = function(msgObj){
+        $('<div class="validation-error-message">' + msgObj.msg + '<div>').insertBefore($('.user_answers:visible').first());
+    }
+
     cObj.showGlobalMessage = function(msgObj){
         // display message at top right of page
         var _type = '';

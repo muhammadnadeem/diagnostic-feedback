@@ -78,3 +78,7 @@
     border-radius: 2px;
     min-width: 150px;
 }
+
+.validation-error-message{
+    color: red !important;
+}

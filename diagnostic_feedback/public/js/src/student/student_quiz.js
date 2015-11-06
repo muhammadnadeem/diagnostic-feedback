@@ -60,8 +60,8 @@ function StudentQuiz(runtime, element) {
     }
 
     function submitQuestionResponse(isLast, currentStep) {
-        // this method is called on successful submission and pass the student's seleted value
-
+        // this method is called on valid submission and pass the student's selected value
+        common.clearErrors();
         var answerHandlerUrl = runtime.handlerUrl(element, 'save_choice');
         var choice = getStudentChoice();
         choice['currentStep'] = currentStep;
@@ -76,7 +76,7 @@ function StudentQuiz(runtime, element) {
             success: function (response) {
                 success = response.success;
 
-                common.showMessage({success: success, warning: false, msg: response.msg});
+                //common.showMessage({success: success, warning: false, msg: response.msg});
                 if (response.student_result) {
                     showResult(response);
                 }
@@ -177,7 +177,7 @@ function StudentQuiz(runtime, element) {
                 if (selectedChoice != "" && selectedChoice != undefined) {
                     return submitQuestionResponse(isLast, currentStep);
                 } else {
-                    common.showMessage({success: false, warning: false, msg: 'Please select an answer'});
+                    common.showValidationError({success: false, warning: false, msg: 'Please select an answer'});
                     return false;
                 }
             }
