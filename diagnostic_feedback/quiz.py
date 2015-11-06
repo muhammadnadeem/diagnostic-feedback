@@ -234,6 +234,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, SubmittingXBlockMixin, ExportDat
                     self.current_step = data['currentStep']
 
                 if sub_api:
+                    log.info("have sub_api intance")
                     # Also send to the submissions API:
                     item_key = self.student_item_key
                     item_key['item_id'] = data['question_id']

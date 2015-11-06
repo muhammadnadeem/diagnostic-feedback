@@ -3,10 +3,9 @@
 }
 
 .result_img {
-    height: 80px;
     float: left;
     padding-right: 10px;
-    width: 80px;
+    width: 200px;
 }
 
 #student_view_form > div > div > ul[role = tablist] {

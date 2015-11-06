@@ -3,7 +3,6 @@ import logging
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, List
 from xblockutils.resources import ResourceLoader
-from .sub_api import sub_api
 
 loader = ResourceLoader(__name__)
 
@@ -154,12 +153,3 @@ class ExportDataBlock(XBlock):
     def user_is_staff(self):
         """Return a Boolean value indicating whether the current user is a member of staff."""
         return self._get_user_attr('edx-platform.user_is_staff')
-
-    def _get_submissions(self, course_key_str, block_type, question_id):
-        """
-        Return submissions for 'question'.
-        """
-        # Load the actual student submissions for `question`.
-        # Note this requires one giant query that retrieves all student submissions for `question` at once.
-        log.debug('in _get_submissions: ')
-        return sub_api.get_all_submissions(course_key_str, question_id, block_type)

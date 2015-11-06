@@ -61,6 +61,7 @@ function StudioCommon(runtime, element) {
         // close studio edit popup
 
         modal.cancel();
+        location.reload();
     }
 
     commonObj.askCloseModal = function(modal){

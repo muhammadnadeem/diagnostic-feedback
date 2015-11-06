@@ -9,6 +9,7 @@ from instructor_task.models import ReportStore
 from opaque_keys.edx.keys import CourseKey
 from xmodule.modulestore.django import modulestore
 from .quiz import QuizBlock
+from .sub_api import sub_api
 
 logger = get_task_logger(__name__)
 
@@ -69,7 +70,7 @@ def _extract_data(course_key_str, block):
     for question in block.questions:
         # Extract info for "Question" column
         question_id, question_title = _get_question(question)
-        submissions = block._get_submissions(course_key_str, block_type, question_id)
+        submissions = _get_submissions(course_key_str, block_type, question_id)
 
         # - For each submission, look up student's answer:
         answer_cache = {}
@@ -94,6 +95,16 @@ def _get_question(question):
     Return question for `block`; default to question ID if `question` is not set.
     """
     return question['id'], question['title']
+
+
+def _get_submissions(course_key_str, block_type, question_id):
+    """
+    Return submissions for 'question'.
+    """
+    # Load the actual student submissions for `question`.
+    # Note this requires one giant query that retrieves all student submissions for `question` at once.
+    logger.debug('in _get_submissions: ')
+    return sub_api.get_all_submissions(course_key_str, question_id, block_type)
 
 
 def _get_answer(block, question, submission, answer_cache):
