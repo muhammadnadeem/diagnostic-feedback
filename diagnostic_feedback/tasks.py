@@ -7,9 +7,7 @@ from celery.task import task
 from celery.utils.log import get_task_logger
 from instructor_task.models import ReportStore
 from opaque_keys.edx.keys import CourseKey
-
 from xmodule.modulestore.django import modulestore
-
 from .quiz import QuizBlock
 from .sub_api import sub_api
 

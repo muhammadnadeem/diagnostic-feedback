@@ -71,6 +71,7 @@ class ExportDataBlock(XBlock):
     def _get_status(self):
         self.check_pending_export()
         log.info("------------ in _get_status - return status ---------------")
+        log.info(self.download_url_for_last_report)
         return {
             'export_pending': bool(self.active_export_task_id),
             'last_export_result': self.last_export_result,
@@ -131,7 +132,7 @@ class ExportDataBlock(XBlock):
 
     @XBlock.json_handler
     def cancel_export(self, request, suffix=''):
-        from diagnostic_feedback.tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
             async_result.revoke()
