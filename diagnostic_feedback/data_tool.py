@@ -109,6 +109,8 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
         log.info("------------ in start_export - starting async task ---------------")
         if sub_api:
             log.info("------------ in start_export - sub_api found ---------------")
+        else:
+            log.info("------------ in start_export - sub_api no found ---------------")
         async_result = export_data_task.delay(
             # course_id not available in workbench.
             unicode(getattr(self.runtime, 'course_id', 'course_id')),
