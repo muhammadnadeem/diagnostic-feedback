@@ -11,7 +11,7 @@ from .quiz_result import QuizResultMixin
 
 from .helpers import MainHelper
 from .validators import Validator
-from .sub_api import SubmittingXBlockMixin, sub_api
+from .sub_api import sub_api
 from .export_data import ExportDataBlock
 
 log = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ loader = ResourceLoader(__name__)
 
 
 @XBlock.wants('user')
-class QuizBlock(ResourceMixin, QuizResultMixin, SubmittingXBlockMixin, ExportDataBlock):
+class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
     """
 
     """
@@ -272,4 +272,10 @@ class QuizBlock(ResourceMixin, QuizResultMixin, SubmittingXBlockMixin, ExportDat
         self.current_step = 0
 
         return {'success': success, 'msg': response_message}
+
+
+
+
+
+
 

@@ -3,7 +3,7 @@ import logging
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, List
 from xblockutils.resources import ResourceLoader
-
+from .sub_api import SubmittingXBlockMixin
 loader = ResourceLoader(__name__)
 
 PAGE_SIZE = 15
@@ -16,7 +16,7 @@ def _(text):
 log = logging.getLogger(__name__)
 
 
-class ExportDataBlock(XBlock):
+class ExportDataBlock(XBlock, SubmittingXBlockMixin):
     active_export_task_id = String(
         # The UUID of the celery AsyncResult for the most recent export,
         # IF we are sill waiting for it to finish
