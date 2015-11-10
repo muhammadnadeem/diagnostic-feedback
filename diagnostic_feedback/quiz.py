@@ -239,6 +239,8 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
                     item_key = self.student_item_key
                     item_key['item_id'] = data['question_id']
                     sub_api.create_submission(item_key, self.student_choices[data['question_id']])
+                else:
+                    log.info("not sub_api intance")
 
                 # calculate feedback result if user answering last question
                 if data['isLast']:
@@ -294,7 +296,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         if sub_api:
             log.info("------------ in start_export - sub_api found ---------------")
         else:
-            log.info("------------ in start_export - sub_api no found ---------------")
+            log.info("------------ in start_export - sub_api not found ---------------")
         async_result = export_data_task.delay(
             # course_id not available in workbench.
             unicode(getattr(self.runtime, 'course_id', 'course_id')),
