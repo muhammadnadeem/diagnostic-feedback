@@ -4,6 +4,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, List
 from xblockutils.resources import ResourceLoader
 from .sub_api import SubmittingXBlockMixin
+from .tasks import export_data as export_data_task
 loader = ResourceLoader(__name__)
 
 PAGE_SIZE = 15
@@ -82,7 +83,7 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
         """
         If we're waiting for an export, see if it has finished, and if so, get the result.
         """
-        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        # from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             log.info("------------ in check_pending_export - checking status ---------------")
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
@@ -102,7 +103,6 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
             return {'error': 'permission denied'}
 
         # Launch task
-        from .tasks import export_data as export_data_task
         self._delete_export()
         # Make sure we nail down our state before sending off an asynchronous task.
         self.save()
@@ -132,7 +132,7 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
 
     @XBlock.json_handler
     def cancel_export(self, request, suffix=''):
-        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        # from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
             async_result.revoke()
