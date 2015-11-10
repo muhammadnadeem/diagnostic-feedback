@@ -13,6 +13,8 @@ from .helpers import MainHelper
 from .validators import Validator
 from .sub_api import sub_api
 from .data_tool import ExportDataBlock
+from .tasks import export_dg_data as export_data_task
+import json
 
 log = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
@@ -27,8 +29,6 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
     BUZ_FEED_QUIZ_LABEL = "Buzz Feed Quiz"
     DIAGNOSTIC_QUIZ_VALUE = "DG"
     DIAGNOSTIC_QUIZ_LABEL = "Diagnostic Quiz"
-
-
 
     display_name = String(
         display_name="Diagnostic Feedback",
@@ -273,6 +273,63 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
 
         return {'success': success, 'msg': response_message}
 
+
+    @XBlock.json_handler
+    def start_export(self, data, suffix=''):
+        """ Start a new asynchronous export """
+        block_type = "QuizBlock"
+        log.info("------------ in start_export ---------------")
+        root_block_id = self.scope_ids.usage_id
+        root_block_id = unicode(getattr(root_block_id, 'block_id', root_block_id))
+        #
+
+        if not self.user_is_staff():
+            return {'error': 'permission denied'}
+
+        # Launch task
+        self._delete_export()
+        # Make sure we nail down our state before sending off an asynchronous task.
+        self.save()
+        log.info("------------ in start_export - starting async task ---------------")
+        if sub_api:
+            log.info("------------ in start_export - sub_api found ---------------")
+        else:
+            log.info("------------ in start_export - sub_api no found ---------------")
+        async_result = export_data_task.delay(
+            # course_id not available in workbench.
+            unicode(getattr(self.runtime, 'course_id', 'course_id')),
+            root_block_id,
+            sub_api
+        )
+        if async_result.ready():
+            log.info("------------ in start_export- task ready ---------------")
+            log.info(async_result.id)
+            # In development mode, the task may have executed synchronously.
+            # Store the result now, because we won't be able to retrieve it later :-/
+            if async_result.successful():
+                # Make sure the result can be represented as JSON, since the non-eager celery
+                # requires that
+                json.dumps(async_result.result)
+            self._save_result(async_result)
+        else:
+            log.info("------------ in start_export- saving id ---------------")
+            log.info(async_result.id)
+            # The task is running asynchronously. Store the result ID so we can query its progress:
+            self.active_export_task_id = async_result.id
+            #diagnostic_feedback.tasks.export_data
+        return self._get_status()
+
+    @XBlock.json_handler
+    def cancel_export(self, request, suffix=''):
+        # from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        if self.active_export_task_id:
+            async_result = export_data_task.AsyncResult(self.active_export_task_id)
+            async_result.revoke()
+            self._delete_export()
+
+    @XBlock.json_handler
+    def get_status(self, data, suffix=''):
+        return self._get_status()
 
 
 
