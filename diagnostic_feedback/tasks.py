@@ -8,13 +8,13 @@ from celery.utils.log import get_task_logger
 from instructor_task.models import ReportStore
 from opaque_keys.edx.keys import CourseKey
 from xmodule.modulestore.django import modulestore
-
+from .sub_api import sub_api
 
 logger = get_task_logger(__name__)
 
 
 @task()
-def export_dg_data(course_id, source_block_id_str, sub_api=None):
+def export_dg_data(course_id, source_block_id_str):
     """
     Exports all answers to all questions by all students to a CSV file.
     """
@@ -32,7 +32,7 @@ def export_dg_data(course_id, source_block_id_str, sub_api=None):
     rows = []
     rows.append(["Question", "Answer"])
 
-    results = _extract_data(course_key_str, block, sub_api)
+    results = _extract_data(course_key_str, block)
     rows += results
 
     # Generate the CSV:
@@ -52,7 +52,7 @@ def export_dg_data(course_id, source_block_id_str, sub_api=None):
     }
 
 
-def _extract_data(course_key_str, block, sub_api):
+def _extract_data(course_key_str, block):
     """
     Extract results for `block`.
     """
@@ -69,7 +69,7 @@ def _extract_data(course_key_str, block, sub_api):
     for question in block.questions:
         # Extract info for "Question" column
         question_id, question_title = _get_question(question)
-        submissions = _get_submissions(course_key_str, block_type, question_id, sub_api)
+        submissions = _get_submissions(course_key_str, block_type, question_id)
 
         # - For each submission, look up student's answer:
         answer_cache = {}
@@ -96,7 +96,7 @@ def _get_question(question):
     return question['id'], question['title']
 
 
-def _get_submissions(course_key_str, block_type, question_id, sub_api):
+def _get_submissions(course_key_str, block_type, question_id):
     """
     Return submissions for 'question'.
     """
