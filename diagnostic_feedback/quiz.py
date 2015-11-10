@@ -12,7 +12,7 @@ from .quiz_result import QuizResultMixin
 from .helpers import MainHelper
 from .validators import Validator
 from .sub_api import sub_api
-from .export_data import ExportDataBlock
+from .data_tool import ExportDataBlock
 
 log = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
