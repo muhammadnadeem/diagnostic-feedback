@@ -137,6 +137,12 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
             'user_is_staff': self.user_is_staff()
         }
 
+        from submissions import api as my_api
+        if my_api:
+            log.info("my api found")
+        else:
+            log.info("my api not found")
+
         if self.student_choices:
             self.append_choice(context['questions'])
 

@@ -21,9 +21,13 @@
 Integrations between these XBlocks and the edX Submissions API
 """
 
+import logging
+log = logging.getLogger(__name__)
+
 try:
     from submissions import api as sub_api
 except ImportError:
+    log.info("can not import sub_api")
     sub_api = None  # We are probably in the workbench. Don't use the submissions API
 
 
