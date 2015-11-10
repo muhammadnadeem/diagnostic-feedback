@@ -8,7 +8,7 @@ from celery.utils.log import get_task_logger
 from instructor_task.models import ReportStore
 from opaque_keys.edx.keys import CourseKey
 from xmodule.modulestore.django import modulestore
-from .sub_api import sub_api
+from .sub_api import my_api
 
 logger = get_task_logger(__name__)
 
@@ -103,7 +103,7 @@ def _get_submissions(course_key_str, block_type, question_id):
     # Load the actual student submissions for `question`.
     # Note this requires one giant query that retrieves all student submissions for `question` at once.
     logger.debug('in _get_submissions: ')
-    return sub_api.get_all_submissions(course_key_str, question_id, block_type)
+    return my_api.get_all_submissions(course_key_str, question_id, block_type)
 
 
 def _get_answer(block, question, submission, answer_cache):

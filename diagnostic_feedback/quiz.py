@@ -11,7 +11,7 @@ from .quiz_result import QuizResultMixin
 
 from .helpers import MainHelper
 from .validators import Validator
-from .sub_api import sub_api
+from .sub_api import my_api
 from .data_tool import ExportDataBlock
 
 log = logging.getLogger(__name__)
@@ -237,14 +237,14 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
                 if self.current_step < data['currentStep']:
                     self.current_step = data['currentStep']
 
-                if sub_api:
-                    log.info("have sub_api intance")
+                if my_api:
+                    log.info("have my_api intance")
                     # Also send to the submissions API:
                     item_key = self.student_item_key
                     item_key['item_id'] = data['question_id']
-                    sub_api.create_submission(item_key, self.student_choices[data['question_id']])
+                    my_api.create_submission(item_key, self.student_choices[data['question_id']])
                 else:
-                    log.info("not sub_api intance")
+                    log.info("not my_api intance")
 
                 # calculate feedback result if user answering last question
                 if data['isLast']:
