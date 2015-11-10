@@ -4,7 +4,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, List
 from xblockutils.resources import ResourceLoader
 from .sub_api import SubmittingXBlockMixin
-from .tasks import export_data as export_data_task
+from .tasks import export_dg_data as export_data_task
 loader = ResourceLoader(__name__)
 
 PAGE_SIZE = 15

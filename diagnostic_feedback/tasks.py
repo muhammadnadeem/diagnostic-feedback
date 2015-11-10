@@ -14,7 +14,7 @@ logger = get_task_logger(__name__)
 
 
 @task()
-def export_data(course_id, source_block_id_str):
+def export_dg_data(course_id, source_block_id_str):
     """
     Exports all answers to all questions by all students to a CSV file.
     """
