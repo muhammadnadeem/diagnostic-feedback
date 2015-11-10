@@ -3,7 +3,7 @@ import logging
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, List
 from xblockutils.resources import ResourceLoader
-from .sub_api import SubmittingXBlockMixin
+from .sub_api import SubmittingXBlockMixin, sub_api
 from .tasks import export_dg_data as export_data_task
 loader = ResourceLoader(__name__)
 
@@ -107,10 +107,13 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
         # Make sure we nail down our state before sending off an asynchronous task.
         self.save()
         log.info("------------ in start_export - starting async task ---------------")
+        if sub_api:
+            log.info("------------ in start_export - sub_api found ---------------")
         async_result = export_data_task.delay(
             # course_id not available in workbench.
             unicode(getattr(self.runtime, 'course_id', 'course_id')),
-            root_block_id
+            root_block_id,
+            sub_api
         )
         if async_result.ready():
             log.info("------------ in start_export- task ready ---------------")
