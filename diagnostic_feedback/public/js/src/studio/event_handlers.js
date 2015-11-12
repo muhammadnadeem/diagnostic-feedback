@@ -1,6 +1,8 @@
 function EventHandler(runtime, element){
     var handler = this,
-    studioCommon = new StudioCommon();
+        studioCommon = new StudioCommon(),
+        questionPanel = '#questions_panel';
+
 
     handler.addNewCategory = function(link, result) {
         // Handler to add new category on step2
@@ -68,7 +70,8 @@ function EventHandler(runtime, element){
 
             // count existing questions
             existing_questions = link.prevAll('.question').length,
-            questionText = 'question[' + existing_questions + ']',
+            questionTitle = 'question[' + existing_questions + '][title]',
+            questionText = 'question[' + existing_questions + '][text]',
             answerText = 'question[' + existing_questions + ']answer[0]',
             answerValue = 'question[' + existing_questions + ']value[0]',
             resultChoice = 'question[' + existing_questions + ']category[0]',
@@ -77,6 +80,7 @@ function EventHandler(runtime, element){
             html = tmpl({
                 order: existing_questions + 1,
                 type: type,
+                questionTitle: questionTitle,
                 questionText: questionText,
                 answerText: answerText,
                 answerValue: answerValue,
@@ -84,6 +88,7 @@ function EventHandler(runtime, element){
                 resultChoicesOptions: resultChoicesOptions
             });
         $(html).insertBefore(link);
+        studioCommon.initiateHtmlEditor($(questionPanel));
     };
 
     handler.addNewChoice = function(link, result) {

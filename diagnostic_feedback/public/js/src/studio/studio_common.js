@@ -15,6 +15,7 @@ function StudioCommon(runtime, element) {
     questionIdSelector = '.question_id',
     questionFieldsContainerSelector = '.question_field',
     questionTxtFieldSelector = '.question-txt',
+    questionTitleFieldSelector = '.question-title',
 
     categoriesPanel = "#categories_panel",
     categorySelector = '.category',
@@ -146,15 +147,30 @@ function StudioCommon(runtime, element) {
         return categories;
     }
 
-    commonObj.initiateHtmlEditor = function(container) {
+    commonObj.destroyAllEditors = function(){
+        $.each($("section .custom_textarea"), function(editor){
+           if ($(editor).tinymce()) {
+                //remove existing attached instances
+                $(editor).tinymce().destroy();
+            }
+        });
+    }
+
+    commonObj.destroyEditor = function(editor){
+        //check if an intance already attached with any textarea
+        if ($(editor).tinymce()) {
+            //remove existing attached instances
+            $(editor).tinymce().destroy();
+        }
+    }
+
+    commonObj.initiateHtmlEditor = function(container, destroyExisting) {
         // Add tinymce text editor on textarea with class .custom_textarea at step 2
 
         if(setting.tinyMceAvailable){
             $.each(container.find(tinyMceTextarea), function (i, textarea) {
-                //check if an intance already attached with any textarea
-                if ($(textarea).tinymce()) {
-                    //remove existing attached intances
-                    $(textarea).tinymce().destroy();
+                if(destroyExisting){
+                    commonObj.destroyEditor(textarea);
                 }
 
                 // initialize tinymce on a textarea
@@ -246,7 +262,7 @@ function StudioCommon(runtime, element) {
                 // initialize tinymce text editor on textarea in categories_panel
                 $(categoriesPanel).removeClass('hide').addClass('show');
                 $(rangesPanel).removeClass('show').addClass('hide');
-                commonObj.initiateHtmlEditor($(categoriesPanel));
+                commonObj.initiateHtmlEditor($(categoriesPanel), true);
             } else {
                 // in case of quiz type is Diagnostic
                 // show ranges html
@@ -254,7 +270,7 @@ function StudioCommon(runtime, element) {
                 // initialize tinymce text editor on textarea in ranges_panel
                 $(categoriesPanel).removeClass('show').addClass('hide');
                 $(rangesPanel).removeClass('hide').addClass('show');
-                commonObj.initiateHtmlEditor($(rangesPanel));
+                commonObj.initiateHtmlEditor($(rangesPanel), true);
             }
         } else if (step == 2) {
             // for 3rd step of wizard
@@ -273,6 +289,7 @@ function StudioCommon(runtime, element) {
                 $(allResultChoicesDropdowns).hide();
                 $(allChoiceValuesInputs).show();
             }
+            commonObj.initiateHtmlEditor($(questionPanel), true);
         }
     }
 
@@ -293,14 +310,16 @@ function StudioCommon(runtime, element) {
         //Update name/id attributes of a given question-txt field
 
         $(question).find(questionOrderSelector).html(i + 1);
-        var question_name = 'question[' + i + ']';
-        $(question).find(questionTxtFieldSelector).first().attr({'name': question_name, id: question_name});
+        var question_title = 'question[' + i + '][title]';
+        var question_text = 'question[' + i + '][text]';
+        $(question).find(questionTitleFieldSelector).first().attr({'name': question_title, id: question_title});
+        $(question).find(questionTxtFieldSelector).first().attr({'name': question_text, id: question_text});
         //return question_name;
     }
 
     commonObj.updateChoiceFieldAttr = function(choice, i){
         //Update name/id attributes of a given choice field
-        var question_name = $(choice).parent().prevAll(questionFieldsContainerSelector).find(questionTxtFieldSelector).first().attr('name');
+        var question_name = $(choice).parent().prevAll(questionFieldsContainerSelector).find(questionTxtFieldSelector).first().attr('name').split("][")[0]+ "]";
         var ChoiceAnswer = question_name + 'answer[' + i + ']';
         var ChoiceValue = question_name + 'value[' + i + ']';
         var CategoryValue = question_name + 'category[' + i + ']';
@@ -329,7 +348,7 @@ function StudioCommon(runtime, element) {
             var order = $(this).attr('name').split('][')[1].replace(']', ''),
                 id = $('input[name="category[id][' + order + ']"]').val();
 
-            if(!id.trim()){
+            if(!id){
                 id =  commonObj.generateUniqueId();
                 $('input[name="category[id][' + order + ']"]').val(id);
             }
@@ -388,16 +407,17 @@ function StudioCommon(runtime, element) {
     commonObj.getStep3Data = function() {
         // Get step3 data before posting to server
 
-        var questionContainers = $(questionSelector);
+        var questionContainers = $(questionPanel+ " " +questionSelector);
         var questions = [];
         $.each(questionContainers, function (i, container) {
             var questionObj = {
+                question_title: $(container).find(questionTitleFieldSelector).val(),
                 question_txt: $(container).find(questionTxtFieldSelector).val(),
                 choices: []
             }
 
             var id = $(container).find(questionIdSelector).first().val();
-            if(!id.trim()){
+            if(!id){
                 id =  commonObj.generateUniqueId();
                 $(container).find(questionIdSelector).first().val(id);
             }

@@ -6,7 +6,7 @@
         {% if self.results %}
             {% for result in self.results %}
                 <div class="category">
-                    <input type="hidden" id="category[id][{{forloop.counter0}}]" name="category[id][{{forloop.counter0}}]" value="{{result.id}}" />
+                    <input type="hidden" id="category[id][{{forloop.counter0}}]" name="category[id][{{forloop.counter0}}]" value="{{result.id}}"  class="skip-validation" />
                     <input placeholder="Name" type="text" id="category[name][{{forloop.counter0}}]" name="category[name][{{forloop.counter0}}]" value="{{result.name}}"  class="required" />
                     <input placeholder="Image"  type="text" id="category[image][{{forloop.counter0}}]" name="category[image][{{forloop.counter0}}]" value="{{result.image}}" >
                     <input placeholder="Internal Description"  type="text" id="category[internal_description][{{forloop.counter0}}]" name="category[internal_description][{{forloop.counter0}}]" value="{{result.internal_description}}" >
@@ -19,7 +19,7 @@
             {% endfor %}
         {% else %}
             <div class="category">
-                <input type="hidden" id="category[id][0]" name="category[id][0]"/>
+                <input type="hidden" id="category[id][0]" name="category[id][0]" class="skip-validation"/>
                 <input placeholder="Name" type="text" id="category[name][0]" name="category[name][0]"  class="required" />
                 <input placeholder="Image" type="text" id="category[image][0]" name="category[image][0]" >
                 <input placeholder="Internal Description"  type="text" id="category[internal_description][0]" name="category[internal_description][0]" >
@@ -42,7 +42,7 @@
                     <input placeholder="Range Min" type="number" step="0.1" id="range[min][{{forloop.counter0}}]" name="range[min][{{forloop.counter0}}]" value="{{result.min_value}}"  class="required" />
                     <input placeholder="Range Max" type="number" step="0.1" id="range[max][{{forloop.counter0}}]" name="range[max][{{forloop.counter0}}]" value="{{result.max_value}}"  class="required" />
                     <input placeholder="Result Image"  type="text" id="range[image][{{forloop.counter0}}]" name="range[image][{{forloop.counter0}}]" value="{{result.image}}" >
-                    <input placeholder="Internal Description"  type="text" id="range[internal_description][{{forloop.counter0}}]" name="range[internal_description][{{forloop.counter0}}]" value="{{result.internal_description}}" >
+                    <input placeholder="Internal Description" class="internal-description" type="text" id="range[internal_description][{{forloop.counter0}}]" name="range[internal_description][{{forloop.counter0}}]" value="{{result.internal_description}}" >
                     <a href="#" data-tooltip="Delete" class="delete-range delete-button action-button">
                         <i class="icon fa fa-trash-o"></i>
                         <span class="sr">Delete</span>
@@ -56,7 +56,7 @@
                 <input placeholder="Range Min" type="number" step="0.1" id="range[min][0]" name="range[min][0]" value=""  class="required" />
                 <input placeholder="Range Max" type="number" step="0.1" id="range[max][0]" name="range[max][0]" value=""  class="required" />
                 <input placeholder="Result Image" type="text" id="range[image][0]" name="range[image][0]" >
-                <input placeholder="Internal Description"  type="text" id="range[internal_description][0]" name="range[internal_description][0]" >
+                <input placeholder="Internal Description" class="internal-description" type="text" id="range[internal_description][0]" name="range[internal_description][0]" >
                 <a href="#" data-tooltip="Delete" class="delete-range delete-button action-button">
                     <i class="icon fa fa-trash-o"></i>
                     <span class="sr">Delete</span>

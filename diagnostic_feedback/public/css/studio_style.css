@@ -31,7 +31,7 @@
 }
 
 .question_field > input{
-    width:500px;
+    width:435px;
 }
 .range > input,.category > input, .question_field > input, .answer-choice > input {
     margin: 2px;
@@ -57,6 +57,7 @@
 .delete-range, .delete-question, .delete-choice{
     margin-top: 10px;
     margin-right: 10px;
+    position: absolute;
 }
 
 .delete-range{
@@ -70,4 +71,8 @@
 
 .answer-choice {
     list-style: upper-alpha;
+}
+
+.range > .internal-description{
+    width: 98%;
 }

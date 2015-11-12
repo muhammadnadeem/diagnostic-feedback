@@ -1,8 +1,9 @@
 <div class="question">
-    <input type="hidden" class="question_id" value="" >
+    <input type="hidden" class="question_id skip-validation" value="" >
     <div class="question_field">
         <label><span class="q-order"><%- order %>.</span></label>
-        <input placeholder="Enter your question" type="text" id="<%- questionText %>" name="<%- questionText %>"  class="required question-txt" value="">
+        <input placeholder="Enter question title" type="text" id="<%- questionTitle %>" name="<%- questionTitle %>"  class="required question-title" value="">
+        <input placeholder="Enter your question" type="text" id="<%- questionText %>" name="<%- questionText %>"  class="required question-txt custom_textarea" value="">
         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
             <i class="icon fa fa-trash-o"></i>
             <span class="sr">Delete</span>

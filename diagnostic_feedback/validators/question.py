@@ -25,6 +25,7 @@ class QuestionValidator(ChoiceValidator):
         for idx, question in enumerate(questions):
             question_order = idx + 1
             _id = question.get('id', '')
+            question_title = question.get('question_title', '')
             question_txt = question.get('question_txt', '')
             choices = question.get('choices', [])
 
@@ -32,6 +33,12 @@ class QuestionValidator(ChoiceValidator):
             if cls.is_empty(_id):
                 valid = False
                 validation_message = 'question {} id required'.format(question_order)
+
+            # check for question title validity
+            elif cls.is_empty(question_title):
+                valid = False
+                validation_message = 'question {} title required'.format(question_order)
+
 
             # check for question text validity
             elif cls.is_empty(question_txt):

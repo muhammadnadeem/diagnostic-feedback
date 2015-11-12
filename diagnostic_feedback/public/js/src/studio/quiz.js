@@ -4,6 +4,16 @@ function Quiz(runtime, element) {
 
     $(function ($) {
 
+        tinyMCE.init({
+            // update validation status on change
+            onchange_callback: function(editor) {
+                debugger;
+                tinyMCE.triggerSave();
+                $("#" + editor.id).valid();
+            }
+        });
+
+
         // import related js helpers
         var customValidator = new CustomValidator(),
         common = new Common(),
@@ -21,12 +31,14 @@ function Quiz(runtime, element) {
         addNewCategoryBtn = categoriesPanel+' .add-new-category',
         deleteCategoryBtn = '.delete-category',
         categorySelector = '.category',
+        editorSelector = '.custom_textarea',
 
         rangesPanel = '#ranges_panel',
         addNewRangeBtn =  rangesPanel+' .add-new-range',
         deleteRangeBtn = '.delete-range',
         rangeSelector = '.range',
 
+        step1Panel = "section[step='1']",
         step3Panel = "section[step='3']",
         questionPanel = '#questions_panel',
         addNewQuestionBtn = '.add-new-question',
@@ -50,7 +62,13 @@ function Quiz(runtime, element) {
                     container.addClass('custom-tooltip');
                     error.insertAfter(element);
                     error.wrap(container);
-                    $('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(error);
+                    //$('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(error);
+                    if (element.is("textarea")) {
+                        $('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(element.prev());
+                    } else {
+                        $('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(error);
+                    }
+
                 }
             });
         }
@@ -107,7 +125,9 @@ function Quiz(runtime, element) {
                 if (setting.jsValidation) {
                     //ignore hidden fields; will validate on current step showing fields
                     form.validate().settings.ignore = ":disabled,:hidden";
-
+                    //form.validate().settings.ignore = ".skip-validation";
+                    debugger;
+                    tinyMCE.triggerSave();
                     // run jquery.validate
                     // run extra validations if jquery vlidations are passed
                     var isValid = form.valid();
@@ -247,6 +267,8 @@ function Quiz(runtime, element) {
                     //remove deleted category html at step3 from all category selection dropdowns
                     studioCommon.removeCategoryFromOptions(category);
 
+                    studioCommon.destroyEditor($(category).find('textarea'));
+
                     //remove category html from DOM at current step
                     category.remove();
 
@@ -255,9 +277,13 @@ function Quiz(runtime, element) {
                     $.each(remaining_categories, function (i, category) {
                         var fields = $(category).find('input[type="text"], input[type="hidden"], textarea');
                         $.each(fields, function (k, field) {
+                            studioCommon.destroyEditor(field);
                             studioCommon.updateFieldAttr($(field), i);
                         });
                     });
+
+                    // re-attache text editor after field renaming
+                    studioCommon.initiateHtmlEditor($(categoriesPanel));
                 }
             }
         });
@@ -275,15 +301,21 @@ function Quiz(runtime, element) {
             } else {
                 // ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this range?')) {
-                    $(btn).parent(rangeSelector).remove();
+                    var range = $(btn).parent(rangeSelector);
+                    studioCommon.destroyEditor($(range).find('textarea'));
+                    range.remove();
 
                     var remaining_ranges = ranges_container.find(rangeSelector);
                     $.each(remaining_ranges, function (i, range) {
                         var fields = $(range).find('input[type="text"], input[type="number"], input[type="hidden"], textarea');
                         $.each(fields, function (k, field) {
+                            studioCommon.destroyEditor($(field).find('textarea'));
                             studioCommon.updateFieldAttr($(field), i);
                         });
                     });
+
+                    // re-attache text editor after field renaming
+                    studioCommon.initiateHtmlEditor($(rangesPanel));
                 }
             }
         });
@@ -301,19 +333,26 @@ function Quiz(runtime, element) {
             } else {
                 //ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this question?')) {
+                    var question = $(btn).parents(questionSelector);
+
+                    studioCommon.destroyEditor($(question).find(editorSelector));
+
                     //remove question html from DOM
-                    $(btn).parents(questionSelector).remove();
+                    question.remove();
 
                     // rename all remaining question fields including its choice
                     var remaining_questions = questions_container.find(questionSelector);
                     $.each(remaining_questions, function (i, question) {
-                        //var question_name = studioCommon.updateQuestionFieldAttr(question, i);
+
+                        studioCommon.destroyEditor($(question).find(editorSelector));
                         studioCommon.updateQuestionFieldAttr(question, i);
                         var question_choices = $(question).find(choiceSelector);
                         $.each(question_choices, function (j, choice) {
                             studioCommon.updateChoiceFieldAttr(choice, j);
                         });
                     });
+
+                    studioCommon.initiateHtmlEditor($(questionPanel));
                 }
             }
         });
@@ -350,5 +389,6 @@ function Quiz(runtime, element) {
             select.attr({'selected': 'selected'});
         });
 
+        studioCommon.initiateHtmlEditor($(step1Panel));
     });
 }

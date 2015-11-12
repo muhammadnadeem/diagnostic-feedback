@@ -77,9 +77,6 @@ class RangeValidator(BaseValidator):
             if cls.is_empty(name):
                 valid = False
                 validation_message = 'name is required'
-            elif cls.invalid_url(image):
-                valid = False
-                validation_message = 'image invalid url'
             elif cls.is_empty(min_value) or cls.is_empty(max_value):
                 valid = False
                 validation_message = 'min/max values required'

@@ -3,7 +3,7 @@
     {% if user_is_staff %} <a href="#" id="export_data">Download Data</a><span id="export_progress"></span> {% endif %}
     {% if questions %}
         <h1 class="quiz_title"><i class="icon fa fa-list"></i> {{self.title}} </h1>
-        <h3 class="quiz_description">{{self.description}}</h3>
+        <h3 class="quiz_description">{{self.description|safe}}</h3>
         <div class="question_div">
             <input type="hidden" name="completed_step" id="completed_step" value="{{self.current_step}}">
             {% for question in questions %}

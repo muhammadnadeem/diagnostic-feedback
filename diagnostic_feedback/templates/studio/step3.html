@@ -2,14 +2,15 @@
 <h3>Questions</h3>
 <section step="3">
     <div id="questions_panel">
-        <h3>Quiz Questions XX</h3>
+        <h3>Quiz Questions</h3>
         {% if self.questions %}
             {% for question in self.questions %}
                 <div class="question">
-                    <input type="hidden" class="question_id" value="{{question.id}}" >
+                    <input type="hidden" class="question_id skip-validation" value="{{question.id}}" >
                     <div class="question_field">
                         <label><span class="q-order">{{forloop.counter}}.</span></label>
-                        <input placeholder="Enter your question" type="text" id="question[{{forloop.counter0}}]" name="question[{{forloop.counter0}}]"  class="required question-txt" value="{{question.title}}" />
+                        <input placeholder="Enter question title" type="text" id="question[{{forloop.counter0}}][title]" name="question[{{forloop.counter0}}][title]"  class="required question-title" value="{{question.title}}" />
+                        <input placeholder="Enter your question" type="text" id="question[{{forloop.counter0}}][text]" name="question[{{forloop.counter0}}][text]"  class="required question-txt custom_textarea" value="{{question.text}}" />
                         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
                             <i class="icon fa fa-trash-o"></i>
                             <span class="sr">Delete</span>
@@ -47,10 +48,11 @@
 
         {% else %}
             <div class="question">
-                <input type="hidden" class="question_id" value="" >
+                <input type="hidden" class="question_id skip-validation" value="" >
                 <div class="question_field">
                     <label><span class="q-order">1.</span></label>
-                    <input placeholder="Enter your question" type="text" id="question[0]" name="question[0]"  class="required question-txt" value="" />
+                    <input placeholder="Enter question title" type="text" id="question[0][title]" name="question[0][title]"  class="required question-title" value="" />
+                    <input placeholder="Enter your question" type="text" id="question[0][text]" name="question[0][text]"  class="required question-txt custom_textarea" value="" />
                     <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
                         <i class="icon fa fa-trash-o"></i>
                     <span class="sr">Delete</span>

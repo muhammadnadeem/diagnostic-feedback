@@ -34,9 +34,6 @@ class CategoryValidator(BaseValidator):
             elif cls.is_empty(name):
                 valid = False
                 validation_message = 'name is required'
-            elif cls.invalid_url(image):
-                valid = False
-                validation_message = 'image invalid url'
             if not valid:
                 break
 
