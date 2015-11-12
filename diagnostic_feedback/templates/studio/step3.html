@@ -10,7 +10,7 @@
                     <div class="question_field">
                         <label><span class="q-order">{{forloop.counter}}.</span></label>
                         <input placeholder="Enter question title" type="text" id="question[{{forloop.counter0}}][title]" name="question[{{forloop.counter0}}][title]"  class="required question-title" value="{{question.title}}" />
-                        <input placeholder="Enter your question" type="text" id="question[{{forloop.counter0}}][text]" name="question[{{forloop.counter0}}][text]"  class="required question-txt custom_textarea" value="{{question.text}}" />
+                        <textarea placeholder="Enter your question" id="question[{{forloop.counter0}}][text]" name="question[{{forloop.counter0}}][text]" rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea>
                         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
                             <i class="icon fa fa-trash-o"></i>
                             <span class="sr">Delete</span>
@@ -52,7 +52,7 @@
                 <div class="question_field">
                     <label><span class="q-order">1.</span></label>
                     <input placeholder="Enter question title" type="text" id="question[0][title]" name="question[0][title]"  class="required question-title" value="" />
-                    <input placeholder="Enter your question" type="text" id="question[0][text]" name="question[0][text]"  class="required question-txt custom_textarea" value="" />
+                    <textarea placeholder="Enter your question"  id="question[0][text]" name="question[0][text]" rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea>
                     <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
                         <i class="icon fa fa-trash-o"></i>
                     <span class="sr">Delete</span>

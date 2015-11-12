@@ -3,7 +3,7 @@
     <div class="question_field">
         <label><span class="q-order"><%- order %>.</span></label>
         <input placeholder="Enter question title" type="text" id="<%- questionTitle %>" name="<%- questionTitle %>"  class="required question-title" value="">
-        <input placeholder="Enter your question" type="text" id="<%- questionText %>" name="<%- questionText %>"  class="required question-txt custom_textarea" value="">
+        <textarea placeholder="Enter your question" id="<%- questionText %>" name="<%- questionText %>"  rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea>
         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
             <i class="icon fa fa-trash-o"></i>
             <span class="sr">Delete</span>

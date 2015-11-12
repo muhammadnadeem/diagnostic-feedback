@@ -4,16 +4,6 @@ function Quiz(runtime, element) {
 
     $(function ($) {
 
-        tinyMCE.init({
-            // update validation status on change
-            onchange_callback: function(editor) {
-                debugger;
-                tinyMCE.triggerSave();
-                $("#" + editor.id).valid();
-            }
-        });
-
-
         // import related js helpers
         var customValidator = new CustomValidator(),
         common = new Common(),
@@ -55,20 +45,24 @@ function Quiz(runtime, element) {
             // initialize jQuery validation on form
             form.validate({
                 success: function (label, element) {
-                    $(element).next(toolTipSelector).remove();
+                    if ($(element).is("textarea")) {
+                        $(element).prev(toolTipSelector).remove();
+                    } else {
+                        $(element).next(toolTipSelector).remove();
+                    }
                 },
                 errorPlacement: function errorPlacement(error, element) {
                     var container = $('<div />');
                     container.addClass('custom-tooltip');
-                    error.insertAfter(element);
-                    error.wrap(container);
-                    //$('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(error);
+
                     if (element.is("textarea")) {
-                        $('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(element.prev());
+                        error.insertAfter(element.prev());
                     } else {
-                        $('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(error);
+                        error.insertAfter(element);
                     }
 
+                    error.wrap(container);
+                    $('<span class="feedback-symbol fa fa-warning"></span>').insertAfter(error);
                 }
             });
         }
@@ -113,6 +107,7 @@ function Quiz(runtime, element) {
             // if return false validation errors will be shown
 
             var customValidated = false;
+            tinyMCE.triggerSave();
 
             if (currentIndex > newIndex){
                 // allow to move backwards without validate & save
@@ -124,15 +119,25 @@ function Quiz(runtime, element) {
                 //execute both server side & js validations if on in setting.js
                 if (setting.jsValidation) {
                     //ignore hidden fields; will validate on current step showing fields
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                    //form.validate().settings.ignore = ".skip-validation";
+                    //form.validate().settings.ignore = ":disabled,:hidden";
+                    var fieldToIgnore = [
+                        'section:visible .skip-validation',
+                        'section:visible input:hidden',
+                        'section:visible select:hidden',
+                        'section:hidden input',
+                        'section:hidden textarea',
+                        'section:hidden select',
+                    ]
+                    form.validate().settings.ignore = fieldToIgnore.join(", ");
                     debugger;
-                    tinyMCE.triggerSave();
+
                     // run jquery.validate
                     // run extra validations if jquery vlidations are passed
                     var isValid = form.valid();
                     if (isValid){
                         customValidated = customValidator.customStepValidation(currentStep);
+                    } else {
+                        console.log(form.validate().errorList);
                     }
 
                     if (isValid && customValidated) {
@@ -388,7 +393,8 @@ function Quiz(runtime, element) {
             var select = $(eventObject.currentTarget).find("option:selected");
             select.attr({'selected': 'selected'});
         });
-
+        studioCommon.destroyEditor($(step1Panel).find('.custom_textarea'));
         studioCommon.initiateHtmlEditor($(step1Panel));
+
     });
 }
