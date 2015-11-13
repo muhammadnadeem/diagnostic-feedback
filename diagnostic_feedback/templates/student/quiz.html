@@ -10,8 +10,8 @@
             <h3 style="display:none;">Question</h3>
 
             <section class="answer-choice question_container">
-                <div class="question_title">Question {{ forloop.counter }} </div>
-                <div class="quiz_question">{{ question.title }} </div>
+                <div class="question_title">{{ question.title }} </div>
+                <div class="quiz_question">{{ question.text|safe }} </div>
                 <div class="user_answers">
                     {% for choice in question.choices %}
                          {% if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE %}
