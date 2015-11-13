@@ -164,8 +164,12 @@ function StudioCommon(runtime, element) {
         }
     }
 
-    commonObj.initiateHtmlEditor = function(container, destroyExisting) {
+    commonObj.initiateHtmlEditor = function(container, destroyExisting, width, height) {
         // Add tinymce text editor on textarea with class .custom_textarea at step 2
+
+        destroyExisting = typeof destroyExisting !== 'undefined' ? destroyExisting : false;
+        width = typeof width !== 'undefined' ? width : '100%';
+        height = typeof height !== 'undefined' ? height : '70px';
 
         if(setting.tinyMceAvailable){
             $.each(container.find(tinyMceTextarea), function (i, textarea) {
@@ -177,7 +181,8 @@ function StudioCommon(runtime, element) {
                 $(textarea).tinymce({
                     theme: 'modern',
                     skin: 'studio-tmce4',
-                    height: '70px',
+                    height: height,
+                    width: width,
                     formats: {code: {inline: 'code'}},
                     codemirror: {path: "" + baseUrl + "/js/vendor"},
                     convert_urls: false,

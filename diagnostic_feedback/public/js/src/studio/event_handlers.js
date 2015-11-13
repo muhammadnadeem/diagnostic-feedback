@@ -1,7 +1,15 @@
 function EventHandler(runtime, element){
     var handler = this,
         studioCommon = new StudioCommon(),
-        questionPanel = '#questions_panel';
+        questionPanel = '#questions_panel',
+        categoriesPanel = '#categories_panel',
+        rangesPanel = '#ranges_panel',
+        rangeSelector = '.range',
+        questionSelector = '.question',
+        questionFieldSelector = '.question_field',
+        choiceSelector = '.answer-choice',
+        categorySelector = '.category',
+        questionTextSelector = '.question-txt';
 
 
     handler.addNewCategory = function(link, result) {
@@ -11,7 +19,7 @@ function EventHandler(runtime, element){
             template = JSON.parse(result).template,
             tmpl = _.template(template),
 
-            existing_categories = link.prevAll('.category').length,
+            existing_categories = link.prevAll(categorySelector).length,
             idFieldAttrs = 'category[id][' + existing_categories + ']',
             nameFieldAttrs = 'category[name][' + existing_categories + ']',
             imageFieldAttrs = 'category[image][' + existing_categories + ']',
@@ -26,7 +34,7 @@ function EventHandler(runtime, element){
             });
 
         $(html).insertBefore(link);
-        studioCommon.initiateHtmlEditor($('#categories_panel'));
+        studioCommon.initiateHtmlEditor($(categoriesPanel));
     };
 
     handler.addNewRange = function(link, result) {
@@ -36,7 +44,7 @@ function EventHandler(runtime, element){
             template = JSON.parse(result).template,
             tmpl = _.template(template),
 
-            existing_ranges = link.prevAll('.range').length,
+            existing_ranges = link.prevAll(rangeSelector).length,
             idFieldAttrs = 'range[id][' + existing_ranges + ']',
             nameFieldAttrs = 'range[name][' + existing_ranges + ']',
             minFieldAttrs = 'range[min][' + existing_ranges + ']',
@@ -55,7 +63,7 @@ function EventHandler(runtime, element){
             });
 
         $(html).insertBefore(link);
-        studioCommon.initiateHtmlEditor($('#ranges_panel'));
+        studioCommon.initiateHtmlEditor($(rangesPanel));
         //studioCommon.scrollToBottom();
     };
 
@@ -69,7 +77,7 @@ function EventHandler(runtime, element){
             tmpl = _.template(template),
 
             // count existing questions
-            existing_questions = link.prevAll('.question').length,
+            existing_questions = link.prevAll(questionSelector).length,
             questionTitle = 'question[' + existing_questions + '][title]',
             questionText = 'question[' + existing_questions + '][text]',
             answerText = 'question[' + existing_questions + ']answer[0]',
@@ -99,8 +107,8 @@ function EventHandler(runtime, element){
             tmpl = _.template(template),
 
             // count existing choices
-            existing_choices = link.prev().find('.answer-choice').length,
-            question_name = link.prevAll('.question_field').find('.question-txt').first().attr('name'),
+            existing_choices = link.prev().find(choiceSelector).length,
+            question_name = link.prevAll(questionFieldSelector).find(questionTextSelector).first().attr('name').split("][")[0]+ "]",
             answerText = question_name + 'answer[' + existing_choices + ']',
             answerValue = question_name + 'value[' + existing_choices + ']',
             resultChoice = question_name + 'category[' + existing_choices + ']',

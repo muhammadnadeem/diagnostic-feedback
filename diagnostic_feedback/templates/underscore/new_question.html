@@ -3,11 +3,12 @@
     <div class="question_field">
         <label><span class="q-order"><%- order %>.</span></label>
         <input placeholder="Enter question title" type="text" id="<%- questionTitle %>" name="<%- questionTitle %>"  class="required question-title" value="">
-        <textarea placeholder="Enter your question" id="<%- questionText %>" name="<%- questionText %>"  rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea>
         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
             <i class="icon fa fa-trash-o"></i>
             <span class="sr">Delete</span>
         </a>
+        <div class="question-txt-editor"><textarea placeholder="Enter your question" id="<%- questionText %>" name="<%- questionText %>"  rows="5" cols="50" class="required question-txt custom_textarea"></textarea></div>
+
     </div>
     <h4>Choices</h4>
     <ol type="A">
@@ -32,4 +33,5 @@
     <a href="#" class="add-new-choice button button-new" title="Click to add a new Choice">
         <i class="icon fa fa-plus"></i>New Choice
     </a>
+    <hr />
 </div>

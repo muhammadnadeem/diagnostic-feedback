@@ -129,7 +129,6 @@ function Quiz(runtime, element) {
                         'section:hidden select',
                     ]
                     form.validate().settings.ignore = fieldToIgnore.join(", ");
-                    debugger;
 
                     // run jquery.validate
                     // run extra validations if jquery vlidations are passed
@@ -393,8 +392,7 @@ function Quiz(runtime, element) {
             var select = $(eventObject.currentTarget).find("option:selected");
             select.attr({'selected': 'selected'});
         });
-        studioCommon.destroyEditor($(step1Panel).find('.custom_textarea'));
-        studioCommon.initiateHtmlEditor($(step1Panel));
+        studioCommon.initiateHtmlEditor($(step1Panel), true);
 
     });
 }

@@ -10,11 +10,12 @@
                     <div class="question_field">
                         <label><span class="q-order">{{forloop.counter}}.</span></label>
                         <input placeholder="Enter question title" type="text" id="question[{{forloop.counter0}}][title]" name="question[{{forloop.counter0}}][title]"  class="required question-title" value="{{question.title}}" />
-                        <textarea placeholder="Enter your question" id="question[{{forloop.counter0}}][text]" name="question[{{forloop.counter0}}][text]" rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea>
                         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
                             <i class="icon fa fa-trash-o"></i>
                             <span class="sr">Delete</span>
                         </a>
+                        <div class="question-txt-editor"><textarea placeholder="Enter your question" id="question[{{forloop.counter0}}][text]" name="question[{{forloop.counter0}}][text]" rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea></div>
+
                     </div>
                     <h4>Choices</h4>
                     {% with question_order=forloop.counter0 %}
@@ -43,6 +44,7 @@
                     <a href="#" class="add-new-choice button button-new" title="Click to add a new Choice">
                         <i class="icon fa fa-plus"></i>New Choice
                     </a>
+                    <hr />
                 </div>
             {% endfor %}
 
@@ -52,11 +54,12 @@
                 <div class="question_field">
                     <label><span class="q-order">1.</span></label>
                     <input placeholder="Enter question title" type="text" id="question[0][title]" name="question[0][title]"  class="required question-title" value="" />
-                    <textarea placeholder="Enter your question"  id="question[0][text]" name="question[0][text]" rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea>
                     <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
                         <i class="icon fa fa-trash-o"></i>
                     <span class="sr">Delete</span>
                     </a>
+                    <div class="question-txt-editor"><textarea placeholder="Enter your question"  id="question[0][text]" name="question[0][text]" rows="5" cols="50" class="required question-txt custom_textarea">{{question.text}}</textarea></div>
+
                 </div>
                 <h4>Choices</h4>
 
@@ -76,10 +79,12 @@
                 <a href="#" class="add-new-choice button button-new" title="Click to add a new Choice">
                     <i class="icon fa fa-plus"></i>New Choice
                 </a>
+                <hr />
             </div>
         {% endif %}
         <a href="#" class="add-new-question button button-new" title="Click to add a new Question">
             <i class="icon fa fa-plus"></i>New Question
         </a>
+
     </div>
 </section>
