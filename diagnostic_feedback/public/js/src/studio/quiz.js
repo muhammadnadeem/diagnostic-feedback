@@ -17,6 +17,7 @@ function Quiz(runtime, element) {
         //selectors
         var form = $("#questionnaire-form"),
 
+        editQuestionPanel = "#edit_questionnaire_panel";
         categoriesPanel = '#categories_panel',
         addNewCategoryBtn = categoriesPanel+' .add-new-category',
         deleteCategoryBtn = '.delete-category',
@@ -87,15 +88,30 @@ function Quiz(runtime, element) {
         function submitToSave(currentStep){
             var success = false;
             $.when(submitForm(currentStep)).done(function (response) {
-                runtime.refreshXBlock(element);
-                common.showMessage(response);
+                //runtime.refreshXBlock(element);
                 if (response.success) {
                     success = true;
 
                     //close modal window if step3 saved successfully
                     if (response.step == 3) {
-                        studioCommon.askCloseModal(runtime.modal);
+                        if(showInvalidChoiceValueWarning){
+                            common.showMessage({
+                                success: false,
+                                warning: true,
+                                persist: true,
+                                msg: '<br />Your data has been successfully saved.<br />' +
+                                'Some answer combinations may not belong to any result ' +
+                                '<a id="close_msg" href="#" style="float: right">Close</a>'
+                            });
+                            showInvalidChoiceValueWarning = false;
+                        } else {
+                            studioCommon.askCloseModal(runtime.modal);
+                        }
                     }
+                }
+
+                if(response.step != 3 || (response.step == 3 && !response.success)){
+                    common.showMessage(response);
                 }
             });
             return success;
@@ -392,6 +408,16 @@ function Quiz(runtime, element) {
             var select = $(eventObject.currentTarget).find("option:selected");
             select.attr({'selected': 'selected'});
         });
+
+        $(editQuestionPanel, element).on('click', '#close_msg', function(eventObject) {
+            eventObject.preventDefault();
+
+            var btn = $(eventObject.currentTarget);
+            var msgDiv = btn.parents('.msg');
+            btn.parents("h3").first().html("");
+            msgDiv.slideUp('slow');
+        });
+
         studioCommon.initiateHtmlEditor($(step1Panel), true);
 
     });

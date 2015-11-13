@@ -43,8 +43,8 @@
 
 .question_container {
     border: solid 4px #DDD;
-    height: 85% !important;
-    width: 100% !important;
+    height: 80% !important;
+    width: 85% !important;
 }
 
 .question_title {
@@ -80,4 +80,9 @@
 
 .validation-error-message{
     color: red !important;
+}
+
+.lesson-content .question_container {
+    height: 85% !important;
+    width: 100% !important;
 }

@@ -1,7 +1,7 @@
 
 function CustomValidator(runtime, element){
     // contains all additional validation logic for wizard steps
-
+    showInvalidChoiceValueWarning = false;
     var validatorObj = this,
     studioCommon = new StudioCommon(),
     common = new Common(),
@@ -170,12 +170,7 @@ function CustomValidator(runtime, element){
 
             if(!valid){
                 valid = true;
-                common.showMessage({
-                    success: false,
-                    warning: true,
-                    persist: true,
-                    msg: 'Some answer combinations may not belong to any result'
-                }, $("section[step='3']").find('h3').first());
+                showInvalidChoiceValueWarning = true;
             }
         }
         return valid;

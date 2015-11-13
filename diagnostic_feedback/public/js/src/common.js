@@ -19,7 +19,7 @@ function Common(runtime, element) {
         var _type = '';
         var title = '';
 
-        var msg = $(globalMessage);
+        var msg = $(globalMessage).last();
         msg.removeClass('info-msg success-msg error-msg warning-msg');
 
         if (msgObj.success) {
@@ -36,9 +36,11 @@ function Common(runtime, element) {
         msg.find('h3').html(title);
         msg.slideDown('slow');
 
-        setTimeout(function(){
-            msg.slideUp('slow');
-        }, 3000);
+        if(!msgObj.persist) {
+            setTimeout(function () {
+                msg.slideUp('slow');
+            }, 3000);
+        }
     }
 
     cObj.showChildMessage = function(container, msgObj){
