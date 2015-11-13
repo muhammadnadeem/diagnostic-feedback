@@ -100,7 +100,7 @@ function Quiz(runtime, element) {
                                 warning: true,
                                 persist: true,
                                 msg: '<br />Your data has been successfully saved.<br />' +
-                                'Some answer combinations may not belong to any result ' +
+                                'However, some answer combinations may not belong to any result.' +
                                 '<a id="close_msg" href="#" style="float: right">Close</a>'
                             });
                             showInvalidChoiceValueWarning = false;
