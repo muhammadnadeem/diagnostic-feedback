@@ -45,11 +45,11 @@ class ResourceMixin(object):
             else:
                 fragment.add_javascript_url(self.runtime.local_resource_url(self, js))
 
-    def initialize_js_classes(self, fragment, view):
+    def initialize_js_classes(self, fragment, view, json_args):
         # initialize js
 
         js_classes = self.sort_resources_by_order(student_assets.get('js_classes', [])
                                                   if view == 'student' else studio_assets.get('js_classes', [])
                                                   )
         for _class, order in js_classes:
-            fragment.initialize_js(_class)
+            fragment.initialize_js(_class, json_args)

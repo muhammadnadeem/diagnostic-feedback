@@ -1,0 +1,14 @@
+<div class="category">
+    <input type="hidden" id="category[id][<%- order %>]" name="category[id][<%- order %>]" class="skip-validation" value="<%- id %>" />
+    <input placeholder="Name" type="text" id="category[name][<%- order %>]" name="category[name][<%- order %>]"  class="required" value="<%- name %>" />
+    <input placeholder="Image" type="text" id="category[image][<%- order %>]" name="category[image][<%- order %>]"  value="<%- image %>" />
+    <a href="#" data-tooltip="Delete" class="delete-category delete-button action-button">
+        <i class="icon fa fa-trash-o"></i>
+        <span class="sr">Delete</span>
+    </a>
+    <input placeholder="Internal Description" class="internal-description" type="text"
+           id="category[id][<%- internal_description %>]" name="category[id][<%- internal_description %>]" value="<%- internal_description %>" />
+
+    <textarea class="custom_textarea" placeholder="Html Body" id="category[id][<%- html_body %>]" name="category[id][<%- html_body %>]"><%- html_body %></textarea>
+
+</div>

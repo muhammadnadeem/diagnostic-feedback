@@ -1,6 +1,7 @@
-function Quiz(runtime, element) {
+function Quiz(runtime, element, initData) {
     // contain js related to studio quiz wizard
     myXblock =this;
+    xblockInitData = initData;
 
     $(function ($) {
 
@@ -17,7 +18,7 @@ function Quiz(runtime, element) {
         //selectors
         var form = $("#questionnaire-form"),
 
-        editQuestionPanel = "#edit_questionnaire_panel";
+        editQuestionPanel = "#edit_questionnaire_panel",
         categoriesPanel = '#categories_panel',
         addNewCategoryBtn = categoriesPanel+' .add-new-category',
         deleteCategoryBtn = '.delete-category',
@@ -40,6 +41,19 @@ function Quiz(runtime, element) {
         deleteChoiceBtn = '.delete-choice',
         choiceSelector = '.answer-choice',
         toolTipSelector = '.custom-tooltip';
+
+        renderSteps();
+
+        function renderSteps(){
+            if (initData.quiz_type == initData.BUZ_FEED_QUIZ_VALUE){
+                studioCommon.renderCategories();
+            } else {
+                studioCommon.renderRanges();
+            }
+            debugger;
+            studioCommon.renderQuestions();
+
+        }
 
         //initialize js validations if on in setting.js
         if(setting.jsValidation){
@@ -191,40 +205,16 @@ function Quiz(runtime, element) {
             // get new category underscore template via ajax
 
             eventObject.preventDefault();
-
             var link = $(eventObject.currentTarget);
-            var categoryTemplateHandlerUrl = runtime.handlerUrl(element, 'get_template');
-
-            $.ajax({
-                type: "POST",
-                data: JSON.stringify({type: 'category'}),
-                url: categoryTemplateHandlerUrl,
-                async: false,
-                dataType: 'html',
-                success: function (result) {
-                    handler.addNewCategory(link, result);
-                }
-            });
+            handler.addNewCategory(link);
         });
 
         $(addNewRangeBtn, element).click(function (eventObject) {
             // get new range underscore template via ajax
 
             eventObject.preventDefault();
-
             var link = $(eventObject.currentTarget);
-            var categoryTemplateHandlerUrl = runtime.handlerUrl(element, 'get_template');
-
-            $.ajax({
-                type: "POST",
-                data: JSON.stringify({type: 'range'}),
-                url: categoryTemplateHandlerUrl,
-                async: false,
-                dataType: 'html',
-                success: function (result) {
-                    handler.addNewRange(link, result);
-                }
-            });
+            handler.addNewRange(link);
         });
 
         $(questionPanel, element).on('click', addNewChoiceBtn, function (eventObject) {
@@ -233,18 +223,8 @@ function Quiz(runtime, element) {
             eventObject.preventDefault();
 
             var link = $(eventObject.currentTarget);
-            var questionTemplateHandlerUrl = runtime.handlerUrl(element, 'get_template');
 
-            $.ajax({
-                type: "POST",
-                data: JSON.stringify({type: 'choice'}),
-                url: questionTemplateHandlerUrl,
-                async: false,
-                dataType: 'html',
-                success: function (result) {
-                    handler.addNewChoice(link, result);
-                }
-            });
+            handler.addNewChoice(link);
         });
 
         $(step3Panel, element).on('click', addNewQuestionBtn, function (eventObject) {
@@ -253,18 +233,8 @@ function Quiz(runtime, element) {
             eventObject.preventDefault();
 
             var link = $(eventObject.currentTarget);
-            var questionTemplateHandlerUrl = runtime.handlerUrl(element, 'get_template');
 
-            $.ajax({
-                type: "POST",
-                data: JSON.stringify({type: 'question'}),
-                url: questionTemplateHandlerUrl,
-                async: false,
-                dataType: 'html',
-                success: function (result) {
-                    handler.addNewQuestion(link, result);
-                }
-            });
+            handler.addNewQuestion(link);
 
         });
 

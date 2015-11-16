@@ -257,7 +257,6 @@ function StudioCommon(runtime, element) {
         // Manipulate DOM of next step in wizard, based on the last step selections
 
         var quizType = commonObj.getQuizType();
-
         if (step == 1) {
             // for 2nd step of wizard
             if (quizType == 'BFQ') {
@@ -449,6 +448,119 @@ function StudioCommon(runtime, element) {
     }
 
 
+    commonObj.renderSingleCategory = function(order, category){
+        if(typeof category == 'undefined') {
+            category = {id: '', name: '', image: '', internal_description: '', html_body: ''};
+        };
 
+        if(typeof category.id == 'undefined') {
+            category['id'] = '';
+        };
+
+        category['order'] = order;
+
+        var tpl = _.template(xblockInitData.categoryTpl),
+            html = tpl(category);
+
+        $(html).insertBefore($(categoriesPanel).find('.add-new-category'));
+    }
+
+    commonObj.renderSingleRange = function(order, range){
+        if (typeof range == 'undefined') {
+            range = { name: '', min_value: 0, max_value: 0, image: '', internal_description: '', html_body: ''};
+        };
+
+        range['order'] = order;
+
+        var tpl = _.template(xblockInitData.rangeTpl),
+            html = tpl(range);
+
+        $(html).insertBefore($(rangesPanel).find('.add-new-range'));
+    }
+
+
+    commonObj.renderSingleChoice = function(q_order, c_order, choice, returnChoiceObj){
+        var quiz_type = commonObj.getQuizType();
+        var returnChoiceObj = typeof returnChoiceObj !== 'undefined' ? returnChoiceObj : false;
+
+        if(typeof choice == 'undefined') {
+            choice = {name: '', value: '', category_id: '' };
+        };
+
+        choice['q_order'] = q_order;
+        choice['c_order'] = c_order;
+        choice['resultChoicesOptions'] = commonObj.getChoicesList();
+        choice['quiz_type'] = quiz_type;
+        choice['BUZ_FEED_QUIZ_VALUE'] = xblockInitData.BUZ_FEED_QUIZ_VALUE;
+
+        if(returnChoiceObj){
+            return choice;
+        } else {
+            var tpl = _.template(xblockInitData.choiceTpl),
+            html = tpl(choice);
+
+            return html;
+        }
+    }
+
+    commonObj.renderSingleQuestion = function(order, question){
+
+        if(typeof question == 'undefined') {
+            question = {
+                id: '',
+                title: '',
+                text: '',
+                choices: []
+            }
+        };
+
+        question['order'] = order;
+
+        if(question.choices.length > 0) {
+            var choices = [];
+            $.each(question.choices, function (c_order, choice) {
+                choices.push(commonObj.renderSingleChoice(order, c_order, choice, true));
+            });
+            question['choices'] = choices;
+        } else {
+            question['choices'] = [commonObj.renderSingleChoice(order, 0, undefined, true)];
+        }
+
+        var tpl = _.template(xblockInitData.questionTpl),
+            html = tpl(question);
+
+        $(html).insertBefore($(questionPanel).find('.add-new-question'));
+    }
+
+
+    commonObj.renderCategories = function(){
+        if(xblockInitData.results.length > 0){
+            $.each(xblockInitData.results, function(order, catergory){
+                commonObj.renderSingleCategory(order, catergory);
+            });
+        } else {
+            commonObj.renderSingleCategory(0);
+        }
+    }
+
+    commonObj.renderRanges = function(){
+        if(xblockInitData.results.length > 0){
+            $.each(xblockInitData.results, function(order, range){
+                commonObj.renderSingleRange(order, range);
+            });
+        } else {
+            commonObj.renderSingleRange(0);
+        }
+    }
+
+    commonObj.renderQuestions = function(){
+        if(xblockInitData.questions.length > 0){
+            $.each(xblockInitData.questions, function(order, question){
+                commonObj.renderSingleQuestion(order, question);
+            });
+        } else {
+            commonObj.renderSingleQuestion(0);
+        }
+    }
 
 }

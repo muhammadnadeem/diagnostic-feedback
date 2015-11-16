@@ -92,7 +92,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         help='To control which question should be shown to student'
     )
 
-    def get_fragment(self, context, view='studio'):
+    def get_fragment(self, context, view='studio', json_args=None):
         """
         return fragment after loading css/js/html either for studio OR student view
         :param context: context for templates
@@ -106,7 +106,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         self.add_templates(fragment, context, view)
         self.add_css(fragment, view)
         self.add_js(fragment, view)
-        self.initialize_js_classes(fragment, view)
+        self.initialize_js_classes(fragment, view, json_args)
         return fragment
 
     def append_choice(self, questions):
@@ -163,7 +163,21 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         :return: fragment
         """
         context['self'] = self
-        return self.get_fragment(context, 'studio')
+        return self.get_fragment(
+            context,
+            'studio',
+            {
+                'quiz_type': self.quiz_type,
+                'results': self.results,
+                'BUZ_FEED_QUIZ_VALUE': self.BUZ_FEED_QUIZ_VALUE,
+                'questions': self.questions,
+                'categoryTpl': loader.load_unicode('templates/underscore/category.html'),
+                'rangeTpl': loader.load_unicode('templates/underscore/range.html'),
+                'questionTpl': loader.load_unicode('templates/underscore/question.html'),
+                'choiceTpl': loader.load_unicode('templates/underscore/choice.html')
+            }
+        )
+
 
     @XBlock.json_handler
     def save_data(self, data, suffix=''):
@@ -195,27 +209,6 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
 
         return {'step': step, 'success': success, 'msg': response_message}
 
-    @XBlock.json_handler
-    def get_template(self, data, suffix=''):
-        """
-        ajax handler: return a template to load new html content dynamically
-        :param data: empty dict
-        :param suffix:
-        :return: template html as unicode string
-        """
-
-
-        _type = data.get('type')
-        if _type == 'category':
-            template = 'templates/underscore/new_category.html'
-        elif _type == 'range':
-            template = 'templates/underscore/new_range.html'
-        elif _type == 'question':
-            template = 'templates/underscore/new_question.html'
-        elif _type == 'choice':
-            template = 'templates/underscore/new_choice.html'
-
-        return {'success': True, 'template': loader.load_unicode(template)}
 
     @XBlock.json_handler
     def save_choice(self, data, suffix=''):

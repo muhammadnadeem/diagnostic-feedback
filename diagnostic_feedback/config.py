@@ -48,11 +48,7 @@ studio_assets = {
         ('Quiz', 4),
     ],
     'templates': [
-        ('templates/studio/wizard_start.html', 0),
-        ('templates/studio/step1.html', 1),
-        ('templates/studio/step2.html', 2),
-        ('templates/studio/step3.html', 3),
-        ('templates/studio/wizard_end.html', 4),
+        ('templates/studio/wizard.html', 0)
     ]
 }
 

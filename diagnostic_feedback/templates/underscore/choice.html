@@ -1,0 +1,19 @@
+<li class="answer-choice">
+    <input placeholder="Choice Text" type="text" id="question[<%- q_order %>]answer[<%- c_order %>]" name="question[<%- q_order %>]answer[<%- c_order %>]" class="required answer-txt" value="<%- name %>" />
+    <% if(quiz_type == BUZ_FEED_QUIZ_VALUE){ %>
+        <select id="question[<%- q_order %>]category[<%- c_order %>]" name="question[<%- q_order %>]category[<%- c_order %>]" class="required result-choice">
+            <option value=""> -- Choose result -- </option>
+            <% _.each(resultChoicesOptions, function(choice) { %>
+                 <option value="<%- choice.id %>" <% if(choice.id == choice.category_id) { %> selected="selected" <% } %> ><%- choice.name %></option>
+            <% }); %>
+        </select>
+    <% } else { %>
+            <input placeholder="Choice Value" type="number" step="0.1" id="question[<%- q_order %>]value[<%- c_order %>]" name="question[<%- q_order %>]value[<%- c_order %>]" class="required answer-value" value="<%- value %>" />
+    <% } %>
+    <a href="#" data-tooltip="Delete Choice" class="delete-choice delete-button action-button">
+        <i class="icon fa fa-trash-o"></i>
+        <span class="sr">Delete</span>
+    </a>
+</li>
+
+
