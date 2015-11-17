@@ -7,8 +7,7 @@
         <span class="sr">Delete</span>
     </a>
     <input placeholder="Internal Description" class="internal-description" type="text"
-           id="category[id][<%- internal_description %>]" name="category[id][<%- internal_description %>]" value="<%- internal_description %>" />
+           id="category[internal_description][<%- order %>]" name="category[internal_description][<%- order %>]" value="<%- internal_description %>" />
 
-    <textarea class="custom_textarea" placeholder="Html Body" id="category[id][<%- html_body %>]" name="category[id][<%- html_body %>]"><%- html_body %></textarea>
-
+    <textarea class="custom_textarea" placeholder="Html Body" id="category[html_body][<%- order %>]" name="category[html_body][<%- order %>]"><%- html_body %></textarea>
 </div>

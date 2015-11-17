@@ -1,7 +1,7 @@
 <div class="question">
     <input type="hidden" class="question_id skip-validation" value="<%- id %>" >
     <div class="question_field">
-        <label><span class="q-order"><%- order %>.</span></label>
+        <label><span class="q-order"><%- order + 1 %>.</span></label>
         <input placeholder="Enter question title" type="text" id="question[<%- order %>][title]" name="question[<%- order %>][title]"  class="required question-title" value="<%- title %>">
         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
             <i class="icon fa fa-trash-o"></i>

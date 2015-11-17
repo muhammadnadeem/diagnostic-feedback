@@ -9,7 +9,6 @@ function Quiz(runtime, element, initData) {
         var customValidator = new CustomValidator(),
         common = new Common(),
         studioCommon = new StudioCommon(),
-        handler = new EventHandler(),
         setting = new Setting();
 
         // show quiz wizard html after popup loads its resources
@@ -50,9 +49,7 @@ function Quiz(runtime, element, initData) {
             } else {
                 studioCommon.renderRanges();
             }
-            debugger;
             studioCommon.renderQuestions();
-
         }
 
         //initialize js validations if on in setting.js
@@ -202,40 +199,52 @@ function Quiz(runtime, element, initData) {
         });
 
         $(addNewCategoryBtn, element).click(function (eventObject) {
-            // get new category underscore template via ajax
+            // Add new category template to page
 
             eventObject.preventDefault();
-            var link = $(eventObject.currentTarget);
-            handler.addNewCategory(link);
+            var link = $(eventObject.currentTarget),
+                existing_categories = link.prevAll(categorySelector).length;
+
+            studioCommon.renderSingleCategory(existing_categories);
+            studioCommon.initiateHtmlEditor($(categoriesPanel));
         });
 
         $(addNewRangeBtn, element).click(function (eventObject) {
-            // get new range underscore template via ajax
+            // Add new range template to page
 
             eventObject.preventDefault();
-            var link = $(eventObject.currentTarget);
-            handler.addNewRange(link);
-        });
+            var link = $(eventObject.currentTarget),
+                existing_ranges = link.prevAll(rangeSelector).length;
 
-        $(questionPanel, element).on('click', addNewChoiceBtn, function (eventObject) {
-            // get new choice underscore template via ajax
-
-            eventObject.preventDefault();
-
-            var link = $(eventObject.currentTarget);
-
-            handler.addNewChoice(link);
+            studioCommon.renderSingleRange(existing_ranges);
+            studioCommon.initiateHtmlEditor($(rangesPanel));
         });
 
         $(step3Panel, element).on('click', addNewQuestionBtn, function (eventObject) {
-            // get new question underscore template via ajax
+            // Add new question template to page
 
             eventObject.preventDefault();
 
-            var link = $(eventObject.currentTarget);
+            var link = $(eventObject.currentTarget),
+                existing_questions = link.prevAll(questionSelector).length;
 
-            handler.addNewQuestion(link);
+            studioCommon.renderSingleQuestion(existing_questions);
+            studioCommon.initiateHtmlEditor($(questionPanel));
 
+        });
+
+        $(questionPanel, element).on('click', addNewChoiceBtn, function (eventObject) {
+            // Add new choice html to question container
+
+            eventObject.preventDefault();
+
+            var link = $(eventObject.currentTarget),
+                existing_questions = link.parent(questionSelector).prevAll(questionSelector).length,
+                existing_choices = link.prev().find(choiceSelector).length;
+
+            var choiceHtml = studioCommon.renderSingleChoice(existing_questions, existing_choices);
+
+            link.prev('ol').append(choiceHtml);
         });
 
         $(categoriesPanel, element).on('click', deleteCategoryBtn, function(eventObject){
@@ -257,22 +266,24 @@ function Quiz(runtime, element, initData) {
                     //remove deleted category html at step3 from all category selection dropdowns
                     studioCommon.removeCategoryFromOptions(category);
 
+                    //remove all tinymce binding before deleting category html
                     studioCommon.destroyEditor($(category).find('textarea'));
 
                     //remove category html from DOM at current step
                     category.remove();
 
-                    // rename all remaining categories fields attrs
+                    // rename all remaining categories fields after deletion of a category
                     var remaining_categories = categories_container.find(categorySelector);
                     $.each(remaining_categories, function (i, category) {
                         var fields = $(category).find('input[type="text"], input[type="hidden"], textarea');
                         $.each(fields, function (k, field) {
+                            //remove all previous tinymce attachments
                             studioCommon.destroyEditor(field);
                             studioCommon.updateFieldAttr($(field), i);
                         });
                     });
 
-                    // re-attache text editor after field renaming
+                    // Re-attach text editor after field renaming
                     studioCommon.initiateHtmlEditor($(categoriesPanel));
                 }
             }
@@ -286,7 +297,7 @@ function Quiz(runtime, element, initData) {
             var ranges_container = $(btn).parents(rangesPanel).first();
 
             if(ranges_container.find(rangeSelector).length == 1){
-                //show waring if tring to delete last range
+                //show waring if trying to delete last range
                 common.showMessage({success: false, warning:true, msg: 'At least one range is required'}, ranges_container.find(rangeSelector));
             } else {
                 // ask for confirmation before delete action
@@ -299,12 +310,13 @@ function Quiz(runtime, element, initData) {
                     $.each(remaining_ranges, function (i, range) {
                         var fields = $(range).find('input[type="text"], input[type="number"], input[type="hidden"], textarea');
                         $.each(fields, function (k, field) {
-                            studioCommon.destroyEditor($(field).find('textarea'));
+                            //remove all previous tinymce attachments
+                            studioCommon.destroyEditor(field);
                             studioCommon.updateFieldAttr($(field), i);
                         });
                     });
 
-                    // re-attache text editor after field renaming
+                    // re-attach text editor after field renaming
                     studioCommon.initiateHtmlEditor($(rangesPanel));
                 }
             }
@@ -325,6 +337,7 @@ function Quiz(runtime, element, initData) {
                 if (studioCommon.confirmAction('Are you sure to delete this question?')) {
                     var question = $(btn).parents(questionSelector);
 
+                    // remove all tinymce binding before deleting question html
                     studioCommon.destroyEditor($(question).find(editorSelector));
 
                     //remove question html from DOM
@@ -334,7 +347,10 @@ function Quiz(runtime, element, initData) {
                     var remaining_questions = questions_container.find(questionSelector);
                     $.each(remaining_questions, function (i, question) {
 
+                        // remove all previous tinymce attachments
                         studioCommon.destroyEditor($(question).find(editorSelector));
+
+                        // rename all questions & choices fields after deletion of a question
                         studioCommon.updateQuestionFieldAttr(question, i);
                         var question_choices = $(question).find(choiceSelector);
                         $.each(question_choices, function (j, choice) {
@@ -342,6 +358,7 @@ function Quiz(runtime, element, initData) {
                         });
                     });
 
+                    // Re-attach tinymce after fields renaming
                     studioCommon.initiateHtmlEditor($(questionPanel));
                 }
             }

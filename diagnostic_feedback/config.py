@@ -38,14 +38,12 @@ studio_assets = {
         ('public/js/src/studio/studio_common.js', 5),
         ('public/js/src/studio/studio_validator.js', 6),
         ('public/js/src/studio/quiz.js', 7),
-        ('public/js/src/studio/event_handlers.js', 8),
     ],
     'js_classes': [
         ('Setting', 0),
         ('StudioCommon', 1),
         ('CustomValidator', 2),
-        ('EventHandler', 3),
-        ('Quiz', 4),
+        ('Quiz', 3),
     ],
     'templates': [
         ('templates/studio/wizard.html', 0)
