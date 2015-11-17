@@ -254,9 +254,9 @@ function StudioCommon(runtime, element) {
                 // hide ranges html
                 // initialize tinymce text editor on textarea in categories_panel
 
-                if (xblockInitData.quiz_type == "") {
-                    commonObj.renderCategories();
-                }
+                //if (xblockInitData.quiz_type == "") {
+                //    commonObj.renderCategories();
+                //}
 
                 $(categoriesPanel).removeClass('hide').addClass('show');
                 $(rangesPanel).removeClass('show').addClass('hide');

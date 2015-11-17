@@ -44,7 +44,10 @@ function Quiz(runtime, element, initData) {
         renderSteps();
 
         function renderSteps(){
-            if (initData.quiz_type == initData.BUZ_FEED_QUIZ_VALUE){
+            if (initData.quiz_type == ""){
+                studioCommon.renderCategories();
+                studioCommon.renderRanges();
+            } else if (initData.quiz_type == initData.BUZ_FEED_QUIZ_VALUE){
                 studioCommon.renderCategories();
             } else {
                 studioCommon.renderRanges();
