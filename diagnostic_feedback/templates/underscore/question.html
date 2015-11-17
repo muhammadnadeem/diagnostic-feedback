@@ -1,6 +1,6 @@
 <div class="question">
-    <input type="hidden" class="question_id skip-validation" value="<%- id %>" >
-    <div class="question_field">
+    <input type="hidden" class="question-id skip-validation" value="<%- id %>" >
+    <div class="question-field">
         <label><span class="q-order"><%- order + 1 %>.</span></label>
         <input placeholder="Enter question title" type="text" id="question[<%- order %>][title]" name="question[<%- order %>][title]"  class="required question-title" value="<%- title %>">
         <a href="#" data-tooltip="Delete Question" class="delete-question delete-button action-button">
@@ -8,7 +8,7 @@
             <span class="sr">Delete</span>
         </a>
         <div class="question-txt-editor"><textarea placeholder="Enter your question" id="question[<%- order %>][text]" name="question[<%- order %>][text]"
-                                                   rows="5" cols="50" class="required question-txt custom_textarea"><%- text %></textarea></div>
+                                                   rows="5" cols="50" class="required question-txt custom-textarea"><%- text %></textarea></div>
 
     </div>
     <h4>Choices</h4>

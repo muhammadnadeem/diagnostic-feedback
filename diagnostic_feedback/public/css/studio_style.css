@@ -1,12 +1,4 @@
-﻿/* CSS for MyXBlock */
-
-.diagnostic-feedback-studio .myxblock_block .count {
-    font-weight: bold;
-}
-
-.diagnostic-feedback-studio .myxblock_block p {
-    cursor: pointer;
-}
+﻿/* CSS for Diagnostic-Feedback */
 
 .diagnostic-feedback-studio .hide {
     display: none;
@@ -36,11 +28,11 @@
     margin: 10px 40px;
 }
 
-.diagnostic-feedback-studio .question_field {
+.diagnostic-feedback-studio .question-field {
     margin: 10px 0 10px 0;
 }
 
-.diagnostic-feedback-studio .question_field > input{
+.diagnostic-feedback-studio .question-field > input{
     width:500px;
 }
 
@@ -52,7 +44,7 @@
 
 .diagnostic-feedback-studio .range > input,
 .diagnostic-feedback-studio .category > input,
-.diagnostic-feedback-studio .question_field > input,
+.diagnostic-feedback-studio .question-field > input,
 .diagnostic-feedback-studio .answer-choice > input {
     margin: 2px;
     padding: 6px 8px 8px;
@@ -69,7 +61,7 @@
 }
 
 .diagnostic-feedback-studio .range > input:focus,
-.diagnostic-feedback-studio .question_field > input:focus,
+.diagnostic-feedback-studio .question-field > input:focus,
 .diagnostic-feedback-studio .answer-choice > input:focus {
     background-color: rgb(255, 252, 241);
     background-image: linear-gradient(rgb(255, 252, 241), rgb(255, 254, 253));
@@ -81,12 +73,6 @@
 .diagnostic-feedback-studio .delete-choice {
     margin-top: 10px;
     margin-right: 10px;
-}
-
-
-.diagnostic-feedback-studio .choice_label {
-    font-size: 2em;
-    font-weight: bold;
 }
 
 .diagnostic-feedback-studio .answer-choice {

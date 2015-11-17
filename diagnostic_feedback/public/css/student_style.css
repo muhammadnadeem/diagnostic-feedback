@@ -2,7 +2,7 @@
     color: #4c4c4c;
 }
 
-.diagnostic-feedback-student .result_img {
+.diagnostic-feedback-student .result-img {
     float: left;
     padding-right: 10px;
     width: 200px;
@@ -16,7 +16,7 @@
     overflow-y: hidden
 }
 
-.diagnostic-feedback-student .quiz_title {
+.diagnostic-feedback-student .quiz-title {
     display: none;
     transition: color 0.25s ease-in-out 0s;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -24,49 +24,49 @@
     font-size: 2.0em;
 }
 
-.diagnostic-feedback-student .quiz_title,
-.diagnostic-feedback-student .quiz_title > i {
+.diagnostic-feedback-student .quiz-title,
+.diagnostic-feedback-student .quiz-title > i {
     color: #009fe6 !important;
 }
 
-.diagnostic-feedback-student .quiz_description,
-.diagnostic-feedback-student .quiz_question,
-.diagnostic-feedback-student .question_container,
-.diagnostic-feedback-student .user_answers {
+.diagnostic-feedback-student .quiz-description,
+.diagnostic-feedback-student .quiz-question,
+.diagnostic-feedback-student .question-container,
+.diagnostic-feedback-student .user-answers {
     display: block;
 }
 
-.diagnostic-feedback-student .quiz_description,
-.diagnostic-feedback-student .quiz_question {
+.diagnostic-feedback-student .quiz-description,
+.diagnostic-feedback-student .quiz-question {
     font-size: 1em !important;
     font-weight: normal !important;
 }
 
-.diagnostic-feedback-student .quiz_question {
+.diagnostic-feedback-student .quiz-question {
     padding-top: 1em;
 }
 
-.diagnostic-feedback-student .question_container {
+.diagnostic-feedback-student .question-container {
     border: solid 4px #DDD;
     height: 80% !important;
     width: 85% !important;
 }
 
-.diagnostic-feedback-student .question_title {
+.diagnostic-feedback-student .question-title {
     text-transform: uppercase;
     font-weight: bold;
 }
 
-.diagnostic-feedback-student .user_answers {
+.diagnostic-feedback-student .user-answers {
     padding: 20px;
 }
 
-.diagnostic-feedback-student .user_answers > input,
-.diagnostic-feedback-student .user_answers > label {
+.diagnostic-feedback-student .user-answers > input,
+.diagnostic-feedback-student .user-answers > label {
     display: inline;
 }
 
-.diagnostic-feedback-student .user_answers > label {
+.diagnostic-feedback-student .user-answers > label {
     font-size: 1em;
 }
 
@@ -86,7 +86,7 @@
     color: red !important;
 }
 
-.lesson-content .diagnostic-feedback-student .question_container {
+.lesson-content .diagnostic-feedback-student .question-container {
     height: 85% !important;
     width: 100% !important;
 }

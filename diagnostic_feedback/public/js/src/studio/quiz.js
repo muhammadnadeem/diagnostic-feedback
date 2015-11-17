@@ -22,7 +22,7 @@ function Quiz(runtime, element, initData) {
         addNewCategoryBtn = categoriesPanel+' .add-new-category',
         deleteCategoryBtn = '.delete-category',
         categorySelector = '.category',
-        editorSelector = '.custom_textarea',
+        editorSelector = '.custom-textarea',
 
         rangesPanel = '#ranges_panel',
         addNewRangeBtn =  rangesPanel+' .add-new-range',

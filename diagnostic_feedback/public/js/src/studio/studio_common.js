@@ -14,8 +14,8 @@ function StudioCommon(runtime, element) {
         questionPanel = '.diagnostic-feedback #questions_panel',
         questionSelector = '.question',
         questionOrderSelector = '.q-order',
-        questionIdSelector = '.question_id',
-        questionFieldsContainerSelector = '.question_field',
+        questionIdSelector = '.question-id',
+        questionFieldsContainerSelector = '.question-field',
         questionTxtFieldSelector = '.question-txt',
         questionTitleFieldSelector = '.question-title',
         addQuestionSelector = '.add-new-question',
@@ -25,7 +25,7 @@ function StudioCommon(runtime, element) {
         categoryIdSelector = 'input[name*="category[id]"]',
         categoryNameSelector = "input[name^='category[name]']",
         addNewCategorySelector = '.add-new-category',
-        tinyMceTextarea = '.custom_textarea',
+        tinyMceTextarea = '.custom-textarea',
 
         rangesPanel = '.diagnostic-feedback #ranges_panel',
         addNewRangeBtnSelector = '.add-new-range',
@@ -154,7 +154,7 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.initiateHtmlEditor = function(container, destroyExisting, width, height) {
-        // Add tinymce text editor on textarea with class .custom_textarea at step 2
+        // Add tinymce text editor on textarea with class .custom-textarea at step 2
 
         destroyExisting = typeof destroyExisting !== 'undefined' ? destroyExisting : false;
         width = typeof width !== 'undefined' ? width : '100%';
@@ -253,6 +253,11 @@ function StudioCommon(runtime, element) {
                 // show categories html
                 // hide ranges html
                 // initialize tinymce text editor on textarea in categories_panel
+
+                if (xblockInitData.quiz_type == "") {
+                    commonObj.renderCategories();
+                }
+
                 $(categoriesPanel).removeClass('hide').addClass('show');
                 $(rangesPanel).removeClass('show').addClass('hide');
                 commonObj.initiateHtmlEditor($(categoriesPanel), true);
@@ -261,6 +266,7 @@ function StudioCommon(runtime, element) {
                 // show ranges html
                 // hide categories html
                 // initialize tinymce text editor on textarea in ranges_panel
+
                 $(categoriesPanel).removeClass('show').addClass('hide');
                 $(rangesPanel).removeClass('hide').addClass('show');
                 commonObj.initiateHtmlEditor($(rangesPanel), true);
@@ -461,7 +467,7 @@ function StudioCommon(runtime, element) {
         //Render html for a single range
 
         if (typeof range == 'undefined') {
-            range = { name: '', min_value: 0, max_value: 0, image: '', internal_description: '', html_body: ''};
+            range = { name: '', min_value: '', max_value: '', image: '', internal_description: '', html_body: ''};
         }
 
         range['order'] = order;

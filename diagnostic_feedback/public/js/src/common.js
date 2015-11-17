@@ -5,7 +5,7 @@ function Common(runtime, element) {
             //selectors
             globalMessage = '.diagnostic-feedback .msg',
             warningMessage = '.diagnostic-feedback .validation-msg',
-            visibleUserAnswer = '.diagnostic-feedback .user_answers:visible';
+            visibleUserAnswer = '.diagnostic-feedback .user-answers:visible';
 
     cObj.clearErrors = function(){
         $('.validation-error-message').remove();

@@ -12,7 +12,7 @@ function StudentQuiz(runtime, element) {
 
         //selectors
         currentAnswerContainer = ".diagnostic-feedback .current",
-        questionId = '.question_id',
+        questionId = '.question-id',
         selectedStudentChoice = 'input[type="radio"]:checked',
 
         finalResult = '.diagnostic-feedback #response_body',
@@ -50,7 +50,7 @@ function StudentQuiz(runtime, element) {
 
         var html = '<div>';
         if (imgSrc) {
-            html += '<img class="result_img" src="' + imgSrc + '" alt="No Result image"> ' +
+            html += '<img class="result-img" src="' + imgSrc + '" alt="No Result image"> ' +
                 '<p id="html_body">' + htmlBody + '</p>';
         }
         else {
