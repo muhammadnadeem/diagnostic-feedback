@@ -44,7 +44,7 @@ function StudioCommon(runtime, element) {
         // show quiz wizard html after popup resources loading
         $(loadingDiv).hide();
         $(editQuizPanel).show();
-    }
+    };
 
     commonObj.getQuizType = function() {
         // get type of quiz from DOM
@@ -54,14 +54,14 @@ function StudioCommon(runtime, element) {
         //    type = $(quizTypeInputSelector).val();
         //}
         //return type;
-    }
+    };
 
     commonObj.closeModal = function(modal){
         // close studio edit popup
 
         modal.cancel();
         location.reload();
-    }
+    };
 
     commonObj.askCloseModal = function(modal){
         // ask form confirmation before closing studio edit popup (after step 3 saved)
@@ -70,7 +70,7 @@ function StudioCommon(runtime, element) {
         if (r == true) {
             commonObj.closeModal(modal);
         }
-    }
+    };
 
     commonObj.sumArray = function(_array){
         // return sum of an array
@@ -80,7 +80,7 @@ function StudioCommon(runtime, element) {
             total += value;
         });
         return parseFloat(total.toFixed(1));
-    }
+    };
 
     commonObj.getAllWQuestionsChoices = function(){
         // return array of array for all choices values of all questions
@@ -94,7 +94,7 @@ function StudioCommon(runtime, element) {
             questionsChoices.push(choices);
         });
         return questionsChoices;
-    }
+    };
 
     commonObj.allPossibleAnswers = function(arrayOfArrays) {
         // return all possible answers combination for all questions of a quiz
@@ -131,7 +131,7 @@ function StudioCommon(runtime, element) {
 		}
 
 		return combinations;
-	}
+	};
 
     commonObj.getChoicesList = function() {
         // Get array of values for categories added at step2
@@ -143,7 +143,7 @@ function StudioCommon(runtime, element) {
             categories.push({id: id, name: name});
         });
         return categories;
-    }
+    };
 
     commonObj.destroyEditor = function(editor){
         //check if an intance already attached with any textarea
@@ -151,7 +151,7 @@ function StudioCommon(runtime, element) {
             //remove existing attached instances
             $(editor).tinymce().destroy();
         }
-    }
+    };
 
     commonObj.initiateHtmlEditor = function(container, destroyExisting, width, height) {
         // Add tinymce text editor on textarea with class .custom-textarea at step 2
@@ -184,7 +184,7 @@ function StudioCommon(runtime, element) {
                 });
             });
         }
-    }
+    };
 
     commonObj.getStepData = function(step) {
         // Get data of a given step before sending to server
@@ -202,7 +202,7 @@ function StudioCommon(runtime, element) {
         console.log(data);
 
         return data;
-    }
+    };
 
     commonObj.updateAllResultDropwdowns = function(categories) {
         // update html of all results dropdowns to sync with categories added at step2
@@ -213,15 +213,15 @@ function StudioCommon(runtime, element) {
             var mappingOptions = commonObj.generateResultsHtml($(dropdown), categories);
             $(dropdown).html(mappingOptions);
         });
-    }
+    };
 
     commonObj.generateResultsHtml = function(dropdown, categories) {
         // generate html of result dropdown at step3
 
         // get all existing values in dropdown
-        var existing_values = [];
+        var existingValues = [];
         $.each(dropdown.find('option'), function (i, option) {
-            existing_values.push($(option).val());
+            existingValues.push($(option).val());
         });
 
         // skip already added categories and append only newly added category/categories as result
@@ -230,7 +230,7 @@ function StudioCommon(runtime, element) {
             var id = category.id;
             var name = category.name;
 
-            if (existing_values.indexOf(id) < 0) {
+            if (existingValues.indexOf(id) < 0) {
                 //append if option not exist
                 _html += "<option value='" + id + "'>" + name + "</option>";
             } else {
@@ -240,7 +240,7 @@ function StudioCommon(runtime, element) {
         });
 
         return dropdown.html() + _html;
-    }
+    };
 
     commonObj.updateNextForm = function(step, previousStepData) {
         // Manipulate DOM of next step in wizard, based on the last step selections
@@ -290,48 +290,42 @@ function StudioCommon(runtime, element) {
             }
             commonObj.initiateHtmlEditor($(questionPanel), true);
         }
-    }
-
-    //commonObj.updateUI = function(result) {
-    //    // callback for ajax call that submit step data to server
-    //    common.showMessage(result);
-    //}
+    };
 
     commonObj.updateFieldAttr = function(field, order) {
         // update the name/id of a single category/range filed
 
-        var previous_name = field.attr('name').split("][")[0];
-        var new_name = previous_name + "][" + order + "]";
-        field.attr({name: new_name, id: new_name});
-    }
+        var previousName = field.attr('name').split("][")[0];
+        var newName = previousName + "][" + order + "]";
+        field.attr({name: newName, id: newName});
+    };
 
     commonObj.updateQuestionFieldAttr = function(question, i){
         //Update name/id attributes of a given question-txt field
 
         $(question).find(questionOrderSelector).html(i + 1);
-        var question_title = 'question[' + i + '][title]';
-        var question_text = 'question[' + i + '][text]';
-        $(question).find(questionTitleFieldSelector).first().attr({'name': question_title, id: question_title});
-        $(question).find(questionTxtFieldSelector).first().attr({'name': question_text, id: question_text});
-        //return question_name;
-    }
+        var questionTitle = 'question[' + i + '][title]';
+        var questionText = 'question[' + i + '][text]';
+        $(question).find(questionTitleFieldSelector).first().attr({'name': questionTitle, id: questionTitle});
+        $(question).find(questionTxtFieldSelector).first().attr({'name': questionText, id: questionText});
+    };
 
     commonObj.updateChoiceFieldAttr = function(choice, i){
         //Update name/id attributes of a given choice field
-        var question_name = $(choice).parent().prevAll(questionFieldsContainerSelector).find(questionTxtFieldSelector).first().attr('name').split("][")[0]+ "]";
-        var ChoiceAnswer = question_name + 'answer[' + i + ']';
-        var ChoiceValue = question_name + 'value[' + i + ']';
-        var CategoryValue = question_name + 'category[' + i + ']';
+        var questionName = $(choice).parent().prevAll(questionFieldsContainerSelector).find(questionTxtFieldSelector).first().attr('name').split("][")[0]+ "]";
+        var ChoiceAnswer = questionName + 'answer[' + i + ']';
+        var ChoiceValue = questionName + 'value[' + i + ']';
+        var CategoryValue = questionName + 'category[' + i + ']';
 
         $(choice).find(choiceNameSelector).attr({id: ChoiceAnswer, name: ChoiceAnswer});
         $(choice).find(choiceResultSelector).attr({id: CategoryValue, name: CategoryValue});
         $(choice).find(choiceValueSelector).attr({id: ChoiceValue, name: ChoiceValue});
-    }
+    };
 
     commonObj.confirmAction = function(msg){
         //ask for confirmation of some action
         return confirm(msg);
-    }
+    };
 
     commonObj.generateUniqueId = function(){
         // return unique id for category/question
@@ -339,11 +333,11 @@ function StudioCommon(runtime, element) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         });
-    }
+    };
 
-    commonObj.getCategoriesList = function(field_name) {
+    commonObj.getCategoriesList = function(fieldName) {
         // Get list of categories at step2
-        return $('input[name^="' + field_name + '"]').map(function () {
+        return $('input[name^="' + fieldName + '"]').map(function () {
             var order = $(this).attr('name').split('][')[1].replace(']', ''),
                 id = $('input[name="category[id][' + order + ']"]').val();
 
@@ -359,11 +353,11 @@ function StudioCommon(runtime, element) {
 
             return {id: id, name: name, image: image, internal_description: internalDescription, html_body: htmlBody};
         }).get();
-    }
+    };
 
-    commonObj.getRangesList = function(field_name) {
+    commonObj.getRangesList = function(fieldName) {
         // Get list of ranges at step2
-        return $('input[name^="' + field_name + '"]').map(function () {
+        return $('input[name^="' + fieldName + '"]').map(function () {
             var order = $(this).attr('name').split('][')[1].replace(']', ''),
                 name = this.value,
                 minValue = $('input[name="range[min][' + order + ']"]').val(),
@@ -375,7 +369,7 @@ function StudioCommon(runtime, element) {
             return {name: name, min_value: minValue, max_value: maxValue, image: image,
                 internal_description: internalDescription, html_body: htmlBody};
         }).get();
-    }
+    };
 
     commonObj.getStep1Data = function() {
         // Return first step data
@@ -385,7 +379,7 @@ function StudioCommon(runtime, element) {
             description: $(quizDescriptionSelector).val(),
             type: type
         }
-    }
+    };
 
     commonObj.getStep2Data = function() {
         // Get data of step2
@@ -401,7 +395,7 @@ function StudioCommon(runtime, element) {
             }
         }
 
-    }
+    };
 
     commonObj.getStep3Data = function() {
         // Get step3 data before posting to server
@@ -413,7 +407,7 @@ function StudioCommon(runtime, element) {
                 question_title: $(container).find(questionTitleFieldSelector).val(),
                 question_txt: $(container).find(questionTxtFieldSelector).val(),
                 choices: []
-            }
+            };
 
             var id = $(container).find(questionIdSelector).first().val();
             if(!id){
@@ -434,14 +428,14 @@ function StudioCommon(runtime, element) {
             questions.push(questionObj);
         });
         return {'questions': questions};
-    }
+    };
 
     commonObj.removeCategoryFromOptions = function(category){
         // remove category option from all result dropdowns at step 3
-        var category_id = category.find(categoryIdSelector).val();
+        var categoryId = category.find(categoryIdSelector).val();
 
-        $(allResultChoiceSelector + " option[value='"+category_id+"']").remove();
-    }
+        $(allResultChoiceSelector + " option[value='" + categoryId + "']").remove();
+    };
 
 
     commonObj.renderSingleCategory = function(order, category){
@@ -449,11 +443,11 @@ function StudioCommon(runtime, element) {
 
         if(typeof category == 'undefined') {
             category = {id: '', name: '', image: '', internal_description: '', html_body: ''};
-        };
+        }
 
         if(typeof category.id == 'undefined') {
             category['id'] = '';
-        };
+        }
 
         category['order'] = order;
 
@@ -461,7 +455,7 @@ function StudioCommon(runtime, element) {
             html = tpl(category);
 
         $(html).insertBefore($(categoriesPanel).find(addNewCategorySelector));
-    }
+    };
 
     commonObj.renderSingleRange = function(order, range){
         //Render html for a single range
@@ -476,23 +470,23 @@ function StudioCommon(runtime, element) {
             html = tpl(range);
 
         $(html).insertBefore($(rangesPanel).find(addNewRangeBtnSelector));
-    }
+    };
 
 
-    commonObj.renderSingleChoice = function(q_order, c_order, choice, returnChoiceObj){
+    commonObj.renderSingleChoice = function(qOrder, cOrder, choice, returnChoiceObj){
         //Render html for a single choice
 
-        var quiz_type = commonObj.getQuizType();
+        var quizType = commonObj.getQuizType();
         var returnChoiceObj = typeof returnChoiceObj !== 'undefined' ? returnChoiceObj : false;
 
         if(typeof choice == 'undefined') {
             choice = {name: '', value: '', category_id: '' };
-        };
+        }
 
-        choice['q_order'] = q_order;
-        choice['c_order'] = c_order;
+        choice['q_order'] = qOrder;
+        choice['c_order'] = cOrder;
         choice['resultChoicesOptions'] = commonObj.getChoicesList();
-        choice['quiz_type'] = quiz_type;
+        choice['quiz_type'] = quizType;
         choice['BUZ_FEED_QUIZ_VALUE'] = xblockInitData.BUZ_FEED_QUIZ_VALUE;
 
         if(returnChoiceObj){
@@ -503,7 +497,7 @@ function StudioCommon(runtime, element) {
 
             return html;
         }
-    }
+    };
 
     commonObj.renderSingleQuestion = function(order, question){
         //Render html for a single question
@@ -515,7 +509,7 @@ function StudioCommon(runtime, element) {
                 text: '',
                 choices: []
             }
-        };
+        }
 
         question['order'] = order;
 
@@ -523,8 +517,8 @@ function StudioCommon(runtime, element) {
         if(question.choices.length > 0) {
             // Render all existing choices
             var choices = [];
-            $.each(question.choices, function (c_order, choice) {
-                choices.push(commonObj.renderSingleChoice(order, c_order, choice, true));
+            $.each(question.choices, function (cOrder, choice) {
+                choices.push(commonObj.renderSingleChoice(order, cOrder, choice, true));
             });
             question['choices'] = choices;
         } else {
@@ -536,7 +530,7 @@ function StudioCommon(runtime, element) {
             html = tpl(question);
 
         $(html).insertBefore($(questionPanel).find(addQuestionSelector));
-    }
+    };
 
 
     commonObj.renderCategories = function(){
@@ -551,7 +545,7 @@ function StudioCommon(runtime, element) {
             // Render new category html
             commonObj.renderSingleCategory(0);
         }
-    }
+    };
 
     commonObj.renderRanges = function(){
         //Render all ranges html
@@ -565,7 +559,7 @@ function StudioCommon(runtime, element) {
             // Render new range html
             commonObj.renderSingleRange(0);
         }
-    }
+    };
 
     commonObj.renderQuestions = function(){
         //Render all questions html
@@ -579,6 +573,6 @@ function StudioCommon(runtime, element) {
             // Render new question html
             commonObj.renderSingleQuestion(0);
         }
-    }
+    };
 
 }

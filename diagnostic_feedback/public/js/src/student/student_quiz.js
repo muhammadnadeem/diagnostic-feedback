@@ -117,11 +117,11 @@ function StudentQuiz(runtime, element) {
         function initialize(event) {
             //If the form is reloaded and the user already have answered some of the questions,
             //he will be resumed to where he left.
-            var completed_step = parseInt($(completedStepSelector).val());
+            var completedStep = parseInt($(completedStepSelector).val());
 
-            if (completed_step > 0) {
+            if (completedStep > 0) {
                 studentQuiz.movingToStep = true;
-                form.children("div").steps("setStep", completed_step);
+                form.children("div").steps("setStep", completedStep);
             }
         }
 

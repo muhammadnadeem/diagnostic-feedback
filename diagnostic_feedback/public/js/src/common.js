@@ -2,18 +2,18 @@ function Common(runtime, element) {
     //contains common js b/w studio and student view
     var cObj = this,
 
-            //selectors
-            globalMessage = '.diagnostic-feedback .msg',
-            warningMessage = '.diagnostic-feedback .validation-msg',
-            visibleUserAnswer = '.diagnostic-feedback .user-answers:visible';
+        //selectors
+        globalMessage = '.diagnostic-feedback .msg',
+        warningMessage = '.diagnostic-feedback .validation-msg',
+        visibleUserAnswer = '.diagnostic-feedback .user-answers:visible';
 
     cObj.clearErrors = function(){
         $('.validation-error-message').remove();
-    }
+    };
 
     cObj.showValidationError = function(msgObj){
         $('<div class="validation-error-message">' + msgObj.msg + '<div>').insertBefore($(visibleUserAnswer).first());
-    }
+    };
 
     cObj.showGlobalMessage = function(msgObj){
         // display message at top right of page
@@ -42,7 +42,7 @@ function Common(runtime, element) {
                 msg.slideUp('slow');
             }, 3000);
         }
-    }
+    };
 
     cObj.showChildMessage = function(container, msgObj){
         // append message to given container
@@ -68,7 +68,7 @@ function Common(runtime, element) {
                 });
             }, 3000);
         }
-    }
+    };
 
     cObj.showMessage = function(data, container) {
         // show messages at top of page or inside some container
@@ -77,5 +77,5 @@ function Common(runtime, element) {
         } else {
             cObj.showGlobalMessage(data);
         }
-    }
+    };
 }

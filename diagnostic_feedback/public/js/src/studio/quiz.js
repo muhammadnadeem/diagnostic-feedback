@@ -17,29 +17,30 @@ function Quiz(runtime, element, initData) {
         //selectors
         var form = $(".diagnostic-feedback #questionnaire-form"),
 
-        editQuestionPanel = ".diagnostic-feedback #edit_questionnaire_panel",
-        categoriesPanel = '.diagnostic-feedback #categories_panel',
-        addNewCategoryBtn = categoriesPanel+' .add-new-category',
-        deleteCategoryBtn = '.delete-category',
-        categorySelector = '.category',
-        editorSelector = '.custom-textarea',
+            editQuestionPanel = ".diagnostic-feedback #edit_questionnaire_panel",
+            categoriesPanel = '.diagnostic-feedback #categories_panel',
+            addNewCategoryBtn = categoriesPanel+' .add-new-category',
+            deleteCategoryBtn = '.delete-category',
+            categorySelector = '.category',
+            editorSelector = '.custom-textarea',
 
-        rangesPanel = '#ranges_panel',
-        addNewRangeBtn =  rangesPanel+' .add-new-range',
-        deleteRangeBtn = '.delete-range',
-        rangeSelector = '.range',
+            rangesPanel = '#ranges_panel',
+            addNewRangeBtn =  rangesPanel+' .add-new-range',
+            deleteRangeBtn = '.delete-range',
+            rangeSelector = '.range',
 
-        step1Panel = ".diagnostic-feedback section[step='1']",
-        step3Panel = ".diagnostic-feedback section[step='3']",
-        questionPanel = '.diagnostic-feedback #questions_panel',
-        addNewQuestionBtn = '.add-new-question',
-        deleteQuestionBtn = '.delete-question',
-        questionSelector = '.question',
+            step1Panel = ".diagnostic-feedback section[step='1']",
+            step3Panel = ".diagnostic-feedback section[step='3']",
+            questionPanel = '.diagnostic-feedback #questions_panel',
+            addNewQuestionBtn = '.add-new-question',
+            deleteQuestionBtn = '.delete-question',
+            questionSelector = '.question',
 
-        addNewChoiceBtn = '.add-new-choice',
-        deleteChoiceBtn = '.delete-choice',
-        choiceSelector = '.answer-choice',
-        toolTipSelector = '.diagnostic-feedback .custom-tooltip';
+            addNewChoiceBtn = '.add-new-choice',
+            deleteChoiceBtn = '.delete-choice',
+            choiceSelector = '.answer-choice',
+            toolTipSelector = '.diagnostic-feedback .custom-tooltip',
+            closeMsgBtnSelector = '#close_msg';
 
         renderSteps();
 
@@ -206,9 +207,9 @@ function Quiz(runtime, element, initData) {
 
             eventObject.preventDefault();
             var link = $(eventObject.currentTarget),
-                existing_categories = link.prevAll(categorySelector).length;
+                existingCategories = link.prevAll(categorySelector).length;
 
-            studioCommon.renderSingleCategory(existing_categories);
+            studioCommon.renderSingleCategory(existingCategories);
             studioCommon.initiateHtmlEditor($(categoriesPanel));
         });
 
@@ -217,9 +218,9 @@ function Quiz(runtime, element, initData) {
 
             eventObject.preventDefault();
             var link = $(eventObject.currentTarget),
-                existing_ranges = link.prevAll(rangeSelector).length;
+                existingRanges = link.prevAll(rangeSelector).length;
 
-            studioCommon.renderSingleRange(existing_ranges);
+            studioCommon.renderSingleRange(existingRanges);
             studioCommon.initiateHtmlEditor($(rangesPanel));
         });
 
@@ -229,9 +230,9 @@ function Quiz(runtime, element, initData) {
             eventObject.preventDefault();
 
             var link = $(eventObject.currentTarget),
-                existing_questions = link.prevAll(questionSelector).length;
+                existingQuestions = link.prevAll(questionSelector).length;
 
-            studioCommon.renderSingleQuestion(existing_questions);
+            studioCommon.renderSingleQuestion(existingQuestions);
             studioCommon.initiateHtmlEditor($(questionPanel));
 
         });
@@ -242,10 +243,10 @@ function Quiz(runtime, element, initData) {
             eventObject.preventDefault();
 
             var link = $(eventObject.currentTarget),
-                existing_questions = link.parent(questionSelector).prevAll(questionSelector).length,
-                existing_choices = link.prev().find(choiceSelector).length;
+                existingQuestions = link.parent(questionSelector).prevAll(questionSelector).length,
+                existingChoices = link.prev().find(choiceSelector).length;
 
-            var choiceHtml = studioCommon.renderSingleChoice(existing_questions, existing_choices);
+            var choiceHtml = studioCommon.renderSingleChoice(existingQuestions, existingChoices);
 
             link.prev('ol').append(choiceHtml);
         });
@@ -255,12 +256,12 @@ function Quiz(runtime, element, initData) {
 
             eventObject.preventDefault();
 
-            var btn = $(eventObject.currentTarget);
-            var categories_container = $(btn).parents(categoriesPanel).first();
+            var btn = $(eventObject.currentTarget),
+                categoriesContainer = $(btn).parents(categoriesPanel).first();
 
-            if(categories_container.find(categorySelector).length == 1){
+            if(categoriesContainer.find(categorySelector).length == 1){
                 // show waring if trying to delete last category
-                common.showMessage({success: false, warning:true, msg: 'At least one category is required'}, categories_container.find(categorySelector));
+                common.showMessage({success: false, warning:true, msg: 'At least one category is required'}, categoriesContainer.find(categorySelector));
             } else {
                 // ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this category?')) {
@@ -276,8 +277,8 @@ function Quiz(runtime, element, initData) {
                     category.remove();
 
                     // rename all remaining categories fields after deletion of a category
-                    var remaining_categories = categories_container.find(categorySelector);
-                    $.each(remaining_categories, function (i, category) {
+                    var remainingCategories = categoriesContainer.find(categorySelector);
+                    $.each(remainingCategories, function (i, category) {
                         var fields = $(category).find('input[type="text"], input[type="hidden"], textarea');
                         $.each(fields, function (k, field) {
                             //remove all previous tinymce attachments
@@ -297,11 +298,11 @@ function Quiz(runtime, element, initData) {
             eventObject.preventDefault();
 
             var btn = $(eventObject.currentTarget);
-            var ranges_container = $(btn).parents(rangesPanel).first();
+            var rangesContainer = $(btn).parents(rangesPanel).first();
 
-            if(ranges_container.find(rangeSelector).length == 1){
+            if(rangesContainer.find(rangeSelector).length == 1){
                 //show waring if trying to delete last range
-                common.showMessage({success: false, warning:true, msg: 'At least one range is required'}, ranges_container.find(rangeSelector));
+                common.showMessage({success: false, warning:true, msg: 'At least one range is required'}, rangesContainer.find(rangeSelector));
             } else {
                 // ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this range?')) {
@@ -309,8 +310,8 @@ function Quiz(runtime, element, initData) {
                     studioCommon.destroyEditor($(range).find('textarea'));
                     range.remove();
 
-                    var remaining_ranges = ranges_container.find(rangeSelector);
-                    $.each(remaining_ranges, function (i, range) {
+                    var remainingRanges = rangesContainer.find(rangeSelector);
+                    $.each(remainingRanges, function (i, range) {
                         var fields = $(range).find('input[type="text"], input[type="number"], input[type="hidden"], textarea');
                         $.each(fields, function (k, field) {
                             //remove all previous tinymce attachments
@@ -330,11 +331,11 @@ function Quiz(runtime, element, initData) {
             eventObject.preventDefault();
 
             var btn = $(eventObject.currentTarget);
-            var questions_container = $(btn).parents(questionPanel).first();
+            var questionsContainer = $(btn).parents(questionPanel).first();
 
-            if(questions_container.find(questionSelector).length == 1){
+            if(questionsContainer.find(questionSelector).length == 1){
                 //show waning if tring to delete last question
-                common.showMessage({success: false, warning:true, msg: 'At least one question is required'}, questions_container.find(questionSelector));
+                common.showMessage({success: false, warning:true, msg: 'At least one question is required'}, questionsContainer.find(questionSelector));
             } else {
                 //ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this question?')) {
@@ -347,16 +348,16 @@ function Quiz(runtime, element, initData) {
                     question.remove();
 
                     // rename all remaining question fields including its choice
-                    var remaining_questions = questions_container.find(questionSelector);
-                    $.each(remaining_questions, function (i, question) {
+                    var remainingQuestions = questionsContainer.find(questionSelector);
+                    $.each(remainingQuestions, function (i, question) {
 
                         // remove all previous tinymce attachments
                         studioCommon.destroyEditor($(question).find(editorSelector));
 
                         // rename all questions & choices fields after deletion of a question
                         studioCommon.updateQuestionFieldAttr(question, i);
-                        var question_choices = $(question).find(choiceSelector);
-                        $.each(question_choices, function (j, choice) {
+                        var questionChoices = $(question).find(choiceSelector);
+                        $.each(questionChoices, function (j, choice) {
                             studioCommon.updateChoiceFieldAttr(choice, j);
                         });
                     });
@@ -373,11 +374,11 @@ function Quiz(runtime, element, initData) {
             eventObject.preventDefault();
 
             var btn = $(eventObject.currentTarget);
-            var answers_container = $(btn).parents(questionSelector).first();
+            var answersContainer = $(btn).parents(questionSelector).first();
 
-            if(answers_container.find(choiceSelector).length == 1){
+            if(answersContainer.find(choiceSelector).length == 1){
                 //show warning if trying to delete last choice
-                common.showMessage({success: false, warning:true, msg: 'At least one answer is required'}, answers_container);
+                common.showMessage({success: false, warning:true, msg: 'At least one answer is required'}, answersContainer);
             } else {
                 //ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this choice?')){
@@ -385,8 +386,8 @@ function Quiz(runtime, element, initData) {
                     $(btn).parent(choiceSelector).remove();
 
                     // rename all remaining choices fields of specific question
-                    var remaining_choices = answers_container.find(choiceSelector);
-                    $.each(remaining_choices, function (j, choice) {
+                    var remainingChoices = answersContainer.find(choiceSelector);
+                    $.each(remainingChoices, function (j, choice) {
                         studioCommon.updateChoiceFieldAttr(choice, j);
                     });
                 }
@@ -399,7 +400,7 @@ function Quiz(runtime, element, initData) {
             select.attr({'selected': 'selected'});
         });
 
-        $(editQuestionPanel, element).on('click', '#close_msg', function(eventObject) {
+        $(editQuestionPanel, element).on('click', closeMsgBtnSelector, function(eventObject) {
             eventObject.preventDefault();
 
             var btn = $(eventObject.currentTarget);

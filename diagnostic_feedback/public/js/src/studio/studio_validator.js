@@ -4,14 +4,14 @@ function CustomValidator(runtime, element){
     showInvalidChoiceValueWarning = false;
 
     var validatorObj = this,
-    studioCommon = new StudioCommon(),
-    common = new Common(),
+        studioCommon = new StudioCommon(),
+        common = new Common(),
 
-    //selectors
-    rangeMinSelector = "input[name^='range[min]']",
-    rangeMaxSelector = "input[name^='range[max]']",
-    rangesPanel = '.diagnostic-feedback #ranges_panel',
-    rangeSelector = '.range';
+        //selectors
+        rangeMinSelector = "input[name^='range[min]']",
+        rangeMaxSelector = "input[name^='range[max]']",
+        rangesPanel = '.diagnostic-feedback #ranges_panel',
+        rangeSelector = '.range';
 
 
     validatorObj.validateMinMax = function(range){
@@ -21,20 +21,20 @@ function CustomValidator(runtime, element){
         // return true/false
         var valid = true;
 
-        var range_min_value = $(range).find(rangeMinSelector).val();
-        var range_max_value = $(range).find(rangeMaxSelector).val();
-        if (range_min_value != "" && isNaN(parseFloat(range_min_value))) {
+        var rangeMinValue = $(range).find(rangeMinSelector).val();
+        var rangeMaxValue = $(range).find(rangeMaxSelector).val();
+        if (rangeMinValue != "" && isNaN(parseFloat(rangeMinValue))) {
             valid = false;
             common.showMessage({success: valid, msg: 'Range Min value must be float'});
-        } else if (range_max_value != "" && isNaN(parseFloat(range_max_value))) {
+        } else if (rangeMaxValue != "" && isNaN(parseFloat(rangeMaxValue))) {
             valid = false;
             common.showMessage({success: valid, msg: 'Range Max value must be float'});
-        } else if (range_min_value != "" && range_max_value != "" && parseFloat(range_max_value) <= parseFloat(range_min_value)) {
+        } else if (rangeMinValue != "" && rangeMaxValue != "" && parseFloat(rangeMaxValue) <= parseFloat(rangeMinValue)) {
             valid = false;
             common.showMessage({success: valid, msg: 'Min value must be < Max'});
         }
         return valid;
-    }
+    };
 
     validatorObj.makeRangeArray = function(start, end) {
         // return float array from start to end with step = 0.1
@@ -46,59 +46,58 @@ function CustomValidator(runtime, element){
             range.push(i.toFixed(1));
         }
         return range;
-    }
+    };
 
-    // TO-DO test this logic for large ranges
     validatorObj.validateViaArraysComparisions = function(range){
         // validate if any two ranges are overlapping
 
         var valid = true;
-        var range1_min_value = parseFloat($(range).find(rangeMinSelector).val());
-        var range1_max_value = parseFloat($(range).find(rangeMaxSelector).val());
+        var range1MinValue = parseFloat($(range).find(rangeMinSelector).val());
+        var range1MaxValue = parseFloat($(range).find(rangeMaxSelector).val());
         var nextRanges = $(range).nextAll(rangeSelector);
-        $.each(nextRanges, function(n, next_range){
-            var range2_min_value = parseFloat($(next_range).find(rangeMinSelector).val());
-            var range2_max_value = parseFloat($(next_range).find(rangeMaxSelector).val());
+        $.each(nextRanges, function(n, nextRange){
+            var range2MinValue = parseFloat($(nextRange).find(rangeMinSelector).val());
+            var range2MaxValue = parseFloat($(nextRange).find(rangeMaxSelector).val());
 
-            var range1 = validatorObj.makeRangeArray(range1_min_value, range1_max_value);
-            var range2 = validatorObj.makeRangeArray(range2_min_value, range2_max_value);
+            var range1 = validatorObj.makeRangeArray(range1MinValue, range1MaxValue);
+            var range2 = validatorObj.makeRangeArray(range2MinValue, range2MaxValue);
 
             // check if both ranges are overlapping
             if($(range1).filter(range2).length > 0) {
                 valid = false;
                 common.showMessage({success: valid, msg: 'Overlapping ranges found ['
-                + range1_min_value + "-" + range1_max_value + "] & [" + range2_min_value+ "-" + range2_max_value + "]"});
+                + range1MinValue + "-" + range1MaxValue + "] & [" + range2MinValue+ "-" + range2MaxValue + "]"});
                 return valid;
             };
-        })
+        });
         return valid;
-    }
+    };
 
     validatorObj.validateViaSimpleComparisons = function(range){
         // validate if any two ranges are overlapping
 
         var valid = true,
-        range1_min_value = parseFloat($(range).find(rangeMinSelector).val()),
-        range1_max_value = parseFloat($(range).find(rangeMaxSelector).val()),
+        range1MinValue = parseFloat($(range).find(rangeMinSelector).val()),
+        range1MaxValue = parseFloat($(range).find(rangeMaxSelector).val()),
         nextRanges = $(range).nextAll(rangeSelector);
 
-        $.each(nextRanges, function(n, next_range){
-            var range2_min_value = parseFloat($(next_range).find(rangeMinSelector).val()),
-            range2_max_value = parseFloat($(next_range).find(rangeMaxSelector).val()),
+        $.each(nextRanges, function(n, nextRange){
+            var range2MinValue = parseFloat($(nextRange).find(rangeMinSelector).val()),
+            range2MaxValue = parseFloat($(nextRange).find(rangeMaxSelector).val()),
 
             //overlap = range1.min <= range2.max && range2.min <= range1.max;
-            overlap = range1_min_value <= range2_max_value && range2_min_value <= range1_max_value;
+            overlap = range1MinValue <= range2MaxValue && range2MinValue <= range1MaxValue;
 
             // check if both ranges are overlapping
             if(overlap) {
                 valid = false;
                 common.showMessage({success: valid, msg: 'Overlapping ranges found ['
-                + range1_min_value + "-" + range1_max_value + "] & [" + range2_min_value+ "-" + range2_max_value + "]"});
+                + range1MinValue + "-" + range1MaxValue + "] & [" + range2MinValue+ "-" + range2MaxValue + "]"});
                 return valid;
-            };
-        })
+            }
+        });
         return valid;
-    }
+    };
 
 
     validatorObj.validateDiagnosticQuizStep2 = function(){
@@ -117,7 +116,7 @@ function CustomValidator(runtime, element){
         });
 
         return valid;
-    }
+    };
 
     validatorObj.isExistInRanges = function(answer, ranges){
         // check if answer sum exist in any ranges defined at step 2
@@ -132,7 +131,7 @@ function CustomValidator(runtime, element){
         });
 
         return valid;
-    }
+    };
 
     validatorObj.validateDiagnosticQuizStep3 = function(){
         // validate step 3 of diagnostic quiz
@@ -157,7 +156,7 @@ function CustomValidator(runtime, element){
             }
         });
         return valid;
-    }
+    };
 
     validatorObj.customStepValidation =  function(step) {
         // custom validation for each wizard step
@@ -175,5 +174,5 @@ function CustomValidator(runtime, element){
             }
         }
         return valid;
-    }
+    };
 }
