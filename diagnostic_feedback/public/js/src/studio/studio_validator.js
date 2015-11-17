@@ -2,6 +2,7 @@
 function CustomValidator(runtime, element){
     // contains all additional validation logic for wizard steps
     showInvalidChoiceValueWarning = false;
+
     var validatorObj = this,
     studioCommon = new StudioCommon(),
     common = new Common(),
@@ -9,7 +10,7 @@ function CustomValidator(runtime, element){
     //selectors
     rangeMinSelector = "input[name^='range[min]']",
     rangeMaxSelector = "input[name^='range[max]']",
-    rangesPanel = '#ranges_panel',
+    rangesPanel = '.diagnostic-feedback #ranges_panel',
     rangeSelector = '.range';
 
 

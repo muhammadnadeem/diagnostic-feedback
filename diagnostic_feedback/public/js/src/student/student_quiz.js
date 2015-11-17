@@ -7,28 +7,39 @@ function StudentQuiz(runtime, element) {
     /* Javascript for Student view in LMS.*/
 
     var common = new Common(),
-        form = $("#student_view_form"),
+        form = $(".diagnostic-feedback #student_view_form"),
+        studentViewFormSelector = ".diagnostic-feedback #student_view_form",
 
-    //selectors
-        currentAnswerContainer = ".current",
+        //selectors
+        currentAnswerContainer = ".diagnostic-feedback .current",
         questionId = '.question_id',
         selectedStudentChoice = 'input[type="radio"]:checked',
 
-        finalResult = '#response_body',
-        choiceSelector = '.answer-choice';
+        finalResult = '.diagnostic-feedback #response_body',
+        choiceSelector = '.diagnostic-feedback .answer-choice',
+
+        nextActionSelector = '.diagnostic-feedback ul[role="menu"] a[href*="next"]',
+        previousActionSelector = '.diagnostic-feedback ul[role="menu"] a[href*="previous"]',
+        finishActionSelector = '.diagnostic-feedback ul[role="menu"] a[href*="finish"]',
+        cancelActionSelector = '.diagnostic-feedback ul[role="menu"] a[href*="cancel"]',
+        completedStepSelector = ".diagnostic-feedback #completed_step",
+        studentViewFormSecSelector = ".diagnostic-feedback #student_view_form section",
+        choiceSelectedBtnSelector = "input[type='radio']",
+        exportProgressSelector = '.diagnostic-feedback #export_progress',
+        exportDataBtnSelector = "#export_data";
 
     function hideActions() {
         // hide next, previous, finish action button
         // show start over button
-        $('ul[role="menu"] a[href*="next"], ul[role="menu"] a[href*="previous"], ul[role="menu"] a[href*="finish"]').hide();
-        $('ul[role="menu"] a[href*="cancel"]').show();
+        $(nextActionSelector + ', '+ previousActionSelector + ', ' + finishActionSelector ).hide();
+        $(cancelActionSelector).show();
     }
 
     function resetActions() {
         // hide start over button
         // show next, previous, finish action button
-        $('ul[role="menu"] a[href*="next"], ul[role="menu"] a[href*="previous"]').show();
-        $('ul[role="menu"] a[href*="cancel"]').hide();
+        $(nextActionSelector + ', ' + previousActionSelector).show();
+        $(cancelActionSelector).hide();
     }
 
     function showResult(result) {
@@ -106,7 +117,7 @@ function StudentQuiz(runtime, element) {
         function initialize(event) {
             //If the form is reloaded and the user already have answered some of the questions,
             //he will be resumed to where he left.
-            var completed_step = parseInt($("#completed_step").val());
+            var completed_step = parseInt($(completedStepSelector).val());
 
             if (completed_step > 0) {
                 studentQuiz.movingToStep = true;
@@ -117,7 +128,7 @@ function StudentQuiz(runtime, element) {
         function changeStep(event, currentIndex, newIndex) {
             //on every step change this method either save the data to the server or skip it.
             var currentStep = currentIndex + 1;
-            var isLast = (newIndex == $("#student_view_form section").length - 1);
+            var isLast = (newIndex == $(studentViewFormSecSelector).length - 1);
             return saveOrSkip(isLast, currentStep);
 
         }
@@ -126,7 +137,7 @@ function StudentQuiz(runtime, element) {
             //If the form is reloaded and the user have answered all the questions,
             //he will be showed the result and start over button.
 
-            var isLast = (currentIndex == $("#student_view_form section").length - 1);
+            var isLast = (currentIndex == $(studentViewFormSecSelector).length - 1);
             if (isLast) {
                 hideActions();
             }
@@ -135,7 +146,7 @@ function StudentQuiz(runtime, element) {
         function startOver(event) {
             //If user have answered all the questions, start over button shown to again start the Quiz
             studentQuiz.startOver = true;
-            $(choiceSelector).find('input[type="radio"]').removeAttr('checked');
+            $(choiceSelector).find(choiceSelectedBtnSelector).removeAttr('checked');
             form.children("div").steps("setStep", 0);
         }
 
@@ -196,16 +207,16 @@ function StudentQuiz(runtime, element) {
         function updateStatus(response) {
             console.log(response);
 	        if(response.export_pending){
-                $('#export_progress').html('The report is currently being generated…');
+                $(exportProgressSelector).html('The report is currently being generated…');
                 setTimeout(getStatus, 1000);
             } else {
-               $('#export_progress').html('Report is successfully generated. Downloading…');
+               $(exportProgressSelector).html('Report is successfully generated. Downloading…');
                 window.location.href = response.download_url;
             }
         }
 
 
-        $("#student_view_form", element).on('click', "#export_data", function(eventObject) {
+        $(studentViewFormSelector, element).on('click', exportDataBtnSelector, function(eventObject) {
             eventObject.preventDefault();
 
             var link = $(eventObject.currentTarget);

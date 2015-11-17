@@ -1,41 +1,47 @@
 function StudioCommon(runtime, element) {
     var commonObj = this,
-    setting = new Setting(),
+        setting = new Setting(),
 
-    //selector
-    loadingDiv = '.wizard-loading',
-    editQuizPanel = '#edit_questionnaire_panel',
+        //selectors
+        quizTypeSelector = ".diagnostic-feedback #type option:selected",
+        //quizTypeInputSelector = ".diagnostic-feedback input[name='type']",
+        loadingDiv = '.diagnostic-feedback .wizard-loading',
+        editQuizPanel = '.diagnostic-feedback #edit_questionnaire_panel',
 
-    quizTitleSelector = 'input[name="title"]',
-    quizDescriptionSelector = 'textarea[name="description"]',
+        quizTitleSelector = '.diagnostic-feedback input[name="title"]',
+        quizDescriptionSelector = '.diagnostic-feedback textarea[name="description"]',
 
-    questionPanel = '#questions_panel',
-    questionSelector = '.question',
-    questionOrderSelector = '.q-order',
-    questionIdSelector = '.question_id',
-    questionFieldsContainerSelector = '.question_field',
-    questionTxtFieldSelector = '.question-txt',
-    questionTitleFieldSelector = '.question-title',
+        questionPanel = '.diagnostic-feedback #questions_panel',
+        questionSelector = '.question',
+        questionOrderSelector = '.q-order',
+        questionIdSelector = '.question_id',
+        questionFieldsContainerSelector = '.question_field',
+        questionTxtFieldSelector = '.question-txt',
+        questionTitleFieldSelector = '.question-title',
+        addQuestionSelector = '.add-new-question',
 
-    categoriesPanel = "#categories_panel",
-    categorySelector = '.category',
-    categoryIdSelector = 'input[name*="category[id]"]',
-    categoryNameSelector = "input[name^='category[name]']",
-    tinyMceTextarea = '.custom_textarea',
+        categoriesPanel = ".diagnostic-feedback #categories_panel",
+        categorySelector = '.category',
+        categoryIdSelector = 'input[name*="category[id]"]',
+        categoryNameSelector = "input[name^='category[name]']",
+        addNewCategorySelector = '.add-new-category',
+        tinyMceTextarea = '.custom_textarea',
 
-    rangesPanel = '#ranges_panel',
+        rangesPanel = '.diagnostic-feedback #ranges_panel',
+        addNewRangeBtnSelector = '.add-new-range',
 
-    allChoiceValuesInputs = '.answer-choice .answer-value',
-    allResultChoicesDropdowns = '.answer-choice .result-choice',
-    choiceValueSelector = 'input[name*="]value["]',
-    choiceValueClsSelector = '.answer-value',
-    choiceNameSelector = 'input[name*=answer]',
-    choiceResultSelector = '.result-choice:visible',
-    choiceNameClsSelector = '.answer-txt';
+        allChoiceValuesInputs = '.diagnostic-feedback .answer-choice .answer-value',
+        allResultChoicesDropdowns = '.diagnostic-feedback .answer-choice .result-choice',
+        choiceValueSelector = 'input[name*="]value["]',
+        choiceValueClsSelector = '.answer-value',
+        choiceNameSelector = 'input[name*=answer]',
+        choiceResultSelector = '.result-choice:visible',
+        allResultChoiceSelector = '.diagnostic-feedback .result-choice',
+        choiceNameClsSelector = '.answer-txt';
+
 
     commonObj.showQuizForm = function(){
         // show quiz wizard html after popup resources loading
-
         $(loadingDiv).hide();
         $(editQuizPanel).show();
     }
@@ -43,19 +49,11 @@ function StudioCommon(runtime, element) {
     commonObj.getQuizType = function() {
         // get type of quiz from DOM
 
-        var type = $("#type option:selected").val();
-        if (!type) {
-            type = $('input[name="type"]').val();
-        }
-        return type;
-    }
-
-    commonObj.scrollToBottom = function(){
-        // scroll down to the newly added category, range, question
-
-        var container = $('.wizard .content');
-        var height = container[0].scrollHeight;
-        container.scrollTop(height);
+        return $(quizTypeSelector).val();
+        //if (!type) {
+        //    type = $(quizTypeInputSelector).val();
+        //}
+        //return type;
     }
 
     commonObj.closeModal = function(modal){
@@ -145,15 +143,6 @@ function StudioCommon(runtime, element) {
             categories.push({id: id, name: name});
         });
         return categories;
-    }
-
-    commonObj.destroyAllEditors = function(){
-        $.each($("section .custom_textarea"), function(editor){
-           if ($(editor).tinymce()) {
-                //remove existing attached instances
-                $(editor).tinymce().destroy();
-            }
-        });
     }
 
     commonObj.destroyEditor = function(editor){
@@ -444,11 +433,14 @@ function StudioCommon(runtime, element) {
     commonObj.removeCategoryFromOptions = function(category){
         // remove category option from all result dropdowns at step 3
         var category_id = category.find(categoryIdSelector).val();
-        $(".result-choice option[value='"+category_id+"']").remove();
+
+        $(allResultChoiceSelector + " option[value='"+category_id+"']").remove();
     }
 
 
     commonObj.renderSingleCategory = function(order, category){
+        //Render html for a single category
+
         if(typeof category == 'undefined') {
             category = {id: '', name: '', image: '', internal_description: '', html_body: ''};
         };
@@ -462,24 +454,28 @@ function StudioCommon(runtime, element) {
         var tpl = _.template(xblockInitData.categoryTpl),
             html = tpl(category);
 
-        $(html).insertBefore($(categoriesPanel).find('.add-new-category'));
+        $(html).insertBefore($(categoriesPanel).find(addNewCategorySelector));
     }
 
     commonObj.renderSingleRange = function(order, range){
+        //Render html for a single range
+
         if (typeof range == 'undefined') {
             range = { name: '', min_value: 0, max_value: 0, image: '', internal_description: '', html_body: ''};
-        };
+        }
 
         range['order'] = order;
 
         var tpl = _.template(xblockInitData.rangeTpl),
             html = tpl(range);
 
-        $(html).insertBefore($(rangesPanel).find('.add-new-range'));
+        $(html).insertBefore($(rangesPanel).find(addNewRangeBtnSelector));
     }
 
 
     commonObj.renderSingleChoice = function(q_order, c_order, choice, returnChoiceObj){
+        //Render html for a single choice
+
         var quiz_type = commonObj.getQuizType();
         var returnChoiceObj = typeof returnChoiceObj !== 'undefined' ? returnChoiceObj : false;
 
@@ -504,6 +500,7 @@ function StudioCommon(runtime, element) {
     }
 
     commonObj.renderSingleQuestion = function(order, question){
+        //Render html for a single question
 
         if(typeof question == 'undefined') {
             question = {
@@ -516,49 +513,64 @@ function StudioCommon(runtime, element) {
 
         question['order'] = order;
 
+        // Render if questiong already have choices
         if(question.choices.length > 0) {
+            // Render all existing choices
             var choices = [];
             $.each(question.choices, function (c_order, choice) {
                 choices.push(commonObj.renderSingleChoice(order, c_order, choice, true));
             });
             question['choices'] = choices;
         } else {
+            // Render new empty choice
             question['choices'] = [commonObj.renderSingleChoice(order, 0, undefined, true)];
         }
 
         var tpl = _.template(xblockInitData.questionTpl),
             html = tpl(question);
 
-        $(html).insertBefore($(questionPanel).find('.add-new-question'));
+        $(html).insertBefore($(questionPanel).find(addQuestionSelector));
     }
 
 
     commonObj.renderCategories = function(){
+        //Render all categories html
+
         if(xblockInitData.results.length > 0){
+            // Render all existing categories
             $.each(xblockInitData.results, function(order, catergory){
                 commonObj.renderSingleCategory(order, catergory);
             });
         } else {
+            // Render new category html
             commonObj.renderSingleCategory(0);
         }
     }
 
     commonObj.renderRanges = function(){
+        //Render all ranges html
+
         if(xblockInitData.results.length > 0){
+            // Render all existing ranges
             $.each(xblockInitData.results, function(order, range){
                 commonObj.renderSingleRange(order, range);
             });
         } else {
+            // Render new range html
             commonObj.renderSingleRange(0);
         }
     }
 
     commonObj.renderQuestions = function(){
+        //Render all questions html
+
         if(xblockInitData.questions.length > 0){
+            // Render all existing questions
             $.each(xblockInitData.questions, function(order, question){
                 commonObj.renderSingleQuestion(order, question);
             });
         } else {
+            // Render new question html
             commonObj.renderSingleQuestion(0);
         }
     }

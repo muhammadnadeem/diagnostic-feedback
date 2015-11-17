@@ -15,10 +15,10 @@ function Quiz(runtime, element, initData) {
         studioCommon.showQuizForm();
 
         //selectors
-        var form = $("#questionnaire-form"),
+        var form = $(".diagnostic-feedback #questionnaire-form"),
 
-        editQuestionPanel = "#edit_questionnaire_panel",
-        categoriesPanel = '#categories_panel',
+        editQuestionPanel = ".diagnostic-feedback #edit_questionnaire_panel",
+        categoriesPanel = '.diagnostic-feedback #categories_panel',
         addNewCategoryBtn = categoriesPanel+' .add-new-category',
         deleteCategoryBtn = '.delete-category',
         categorySelector = '.category',
@@ -29,9 +29,9 @@ function Quiz(runtime, element, initData) {
         deleteRangeBtn = '.delete-range',
         rangeSelector = '.range',
 
-        step1Panel = "section[step='1']",
-        step3Panel = "section[step='3']",
-        questionPanel = '#questions_panel',
+        step1Panel = ".diagnostic-feedback section[step='1']",
+        step3Panel = ".diagnostic-feedback section[step='3']",
+        questionPanel = '.diagnostic-feedback #questions_panel',
         addNewQuestionBtn = '.add-new-question',
         deleteQuestionBtn = '.delete-question',
         questionSelector = '.question',
@@ -39,7 +39,7 @@ function Quiz(runtime, element, initData) {
         addNewChoiceBtn = '.add-new-choice',
         deleteChoiceBtn = '.delete-choice',
         choiceSelector = '.answer-choice',
-        toolTipSelector = '.custom-tooltip';
+        toolTipSelector = '.diagnostic-feedback .custom-tooltip';
 
         renderSteps();
 

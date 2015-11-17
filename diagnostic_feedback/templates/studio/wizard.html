@@ -1,85 +1,90 @@
-<div class="editor">
-	<div class="wrapper-comp-settings is-active editor	">
-		<h1 class="wizard-loading">Loading Wizard, Please wait</h1>
-		<div id="edit_questionnaire_panel" style="display: none;">
-            <div class="msg"><h3></h3></div>
-		    <form id="questionnaire-form" action="#">
-                <div>
-                    <!-- Step 1 Html -->
-                    <h3>Basic Info</h3>
-                    <section step="1">
-                    <hr/>
-                        <ul class="list-input settings-list">
-                            <li class="field comp-setting-entry metadata_entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="title" class="label setting-label">Quiz Title</label>
-                                    <input id="title" name="title" type="text" class="required field-data-control" value="{{self.title}}">
-                                </div>
-                            </li>
-                            <li class="field comp-setting-entry metadata_entry">
-                                <div class="wrapper-comp-setting">
-                                {% if not self.quiz_type %}
-                                    <label for="type" class="label setting-label">Quiz Type</label>
-                                    <select id="type" name="type" class="required field-data-control">
-                                        <option value=""> -- Select Type -- </option>
-                                        {% for t in self.types %}
-                                            <option value="{{t.value}}" {% if t.value == self.quiz_type %} selected="selected" {% endif %} >
-                                                {{t.label}}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                {% else %}
+<div class="diagnostic-feedback diagnostic-feedback-studio">
+    <div class="editor">
+        <div class="wrapper-comp-settings is-active editor	">
+            <h1 class="wizard-loading">Loading Wizard, Please wait</h1>
+            <div id="edit_questionnaire_panel" style="display: none;">
+                <div class="msg"><h3></h3></div>
+                <form id="questionnaire-form" action="#">
+                    <div>
+                        <!-- Step 1 start -->
+                        <h3>Basic Info</h3>
+                        <section step="1">
+                        <hr/>
+                            <ul class="list-input settings-list">
+                                <li class="field comp-setting-entry metadata_entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="title" class="label setting-label">Quiz Title</label>
+                                        <input id="title" name="title" type="text" class="required field-data-control" value="{{self.title}}">
+                                    </div>
+                                </li>
+                                <li class="field comp-setting-entry metadata_entry">
+                                    <div class="wrapper-comp-setting">
+                                    {% if not self.quiz_type %}
                                         <label for="type" class="label setting-label">Quiz Type</label>
-                                        <select id="type" name="type" class="required field-data-control" disabled="disabled">
+                                        <select id="type" name="type" class="required field-data-control">
+                                            <option value=""> -- Select Type -- </option>
                                             {% for t in self.types %}
-                                                {% if t.value == self.quiz_type %}
-                                                    <option value="{{t.value}}" selected="selected"  >
-                                                        {{t.label}}
-                                                    </option>
-                                                {% endif %}
+                                                <option value="{{t.value}}" {% if t.value == self.quiz_type %} selected="selected" {% endif %} >
+                                                    {{t.label}}
+                                                </option>
                                             {% endfor %}
                                         </select>
-                                    {% endif %}
-                                </div>
-                            </li>
-                            <li class="field comp-setting-entry metadata_entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="description" class="label setting-label">Description</label>
-                                    <textarea id="description" name="description" rows="5" cols="50" class="required field-data-control custom_textarea">{{self.description}}</textarea>
-                                </div>
-                            </li>
-                        </ul>
-                    </section>
+                                    {% else %}
+                                            <label for="type" class="label setting-label">Quiz Type</label>
+                                            <select id="type" name="type" class="required field-data-control" disabled="disabled">
+                                                {% for t in self.types %}
+                                                    {% if t.value == self.quiz_type %}
+                                                        <option value="{{t.value}}" selected="selected"  >
+                                                            {{t.label}}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                                <li class="field comp-setting-entry metadata_entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="description" class="label setting-label">Description</label>
+                                        <textarea id="description" name="description" rows="5" cols="50" class="required field-data-control custom_textarea">{{self.description}}</textarea>
+                                    </div>
+                                </li>
+                            </ul>
+                        </section>
+                        <!-- Step 1 end -->
 
-                    <!-- Step 2 Html -->
-                    <h3>Results</h3>
-                    <section step="2">
-                        <div id="categories_panel" class="fields_container hide">
-                            <h4>Categories *</h4>
+                        <!-- Step 2 start -->
+                        <h3>Results</h3>
+                        <section step="2">
+                            <div id="categories_panel" class="fields_container hide">
+                                <h4>Categories *</h4>
 
-                            <a class="add-new-category button button-new" href="#"><i class="icon fa fa-plus"></i>Add Category</a>
-                        </div>
-                        <div id="ranges_panel" class="fields_container hide">
-                            <h3>Range(s)</h3>
+                                <a class="add-new-category button button-new" href="#"><i class="icon fa fa-plus"></i>Add Category</a>
+                            </div>
+                            <div id="ranges_panel" class="fields_container hide">
+                                <h3>Range(s)</h3>
 
-                             <a href="#" class="add-new-range button button-new" title="Click to add a new Range">
-                                <i class="icon fa fa-plus"></i>New Range
-                            </a>
-                        </div>
-                    </section>
+                                 <a href="#" class="add-new-range button button-new" title="Click to add a new Range">
+                                    <i class="icon fa fa-plus"></i>New Range
+                                </a>
+                            </div>
+                        </section>
+                        <!-- Step 2 end -->
 
-                    <!-- Step 3 Html -->
-                    <h3>Questions</h3>
-                    <section step="3">
-                        <div id="questions_panel">
+                        <!-- Step 3 start -->
+                        <h3>Questions</h3>
+                        <section step="3">
+                            <div id="questions_panel">
 
-                            <a href="#" class="add-new-question button button-new" title="Click to add a new Question">
-                                <i class="icon fa fa-plus"></i>New Question
-                            </a>
-                        </div>
-                    </section>
-                </div>
-		    </form>
-		</div>
-	</div>
+                                <a href="#" class="add-new-question button button-new" title="Click to add a new Question">
+                                    <i class="icon fa fa-plus"></i>New Question
+                                </a>
+                            </div>
+                        </section>
+                        <!-- Step 3 end -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

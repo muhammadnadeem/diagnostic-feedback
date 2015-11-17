@@ -1,52 +1,53 @@
-<div class="msg"><h3></h3></div>
-<form id="student_view_form">
-    {% if user_is_staff %} <a href="#" id="export_data">Download Data</a><span id="export_progress"></span> {% endif %}
-    {% if questions %}
-        <h1 class="quiz_title"><i class="icon fa fa-list"></i> {{self.title}} </h1>
-        <h3 class="quiz_description">{{self.description|safe}}</h3>
-        <div class="question_div">
-            <input type="hidden" name="completed_step" id="completed_step" value="{{self.current_step}}">
-            {% for question in questions %}
-            <h3 style="display:none;">Question</h3>
+<div class="diagnostic-feedback diagnostic-feedback-student">
+    <div class="msg"><h3></h3></div>
+    <form id="student_view_form">
+        {% if user_is_staff %} <a href="#" id="export_data">Download Data</a><span id="export_progress"></span> {% endif %}
+        {% if questions %}
+            <h1 class="quiz_title"><i class="icon fa fa-list"></i> {{self.title}} </h1>
+            <h3 class="quiz_description">{{self.description|safe}}</h3>
+            <div class="question_div">
+                <input type="hidden" name="completed_step" id="completed_step" value="{{self.current_step}}">
+                {% for question in questions %}
+                <h3 style="display:none;">Question</h3>
 
-            <section class="answer-choice question_container">
-                <div class="question_title">{{ question.title }} </div>
-                <div class="quiz_question">{{ question.text|safe }} </div>
-                <div class="user_answers">
-                    {% for choice in question.choices %}
-                         {% if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE %}
-                             <input style="display : inline" class="required" type="radio" name="choice_name_{{ question.id}}"
-                                {% if question.student_choice == choice.category_id %}
-                                    checked="checked"
-                                {% endif %}
-                                value="{{ choice.category_id}}" />
-                         {% else %}
-                               <input style="display : inline" class="required" type="radio" name="choice_name_{{ question.id}}"
-                                {% if question.student_choice == choice.value  %}
-                                    checked="checked"
-                                {% endif %}
-                                value="{{ choice.value }}" />
+                <section class="answer-choice question_container">
+                    <div class="question_title">{{ question.title }} </div>
+                    <div class="quiz_question">{{ question.text|safe }} </div>
+                    <div class="user_answers">
+                        {% for choice in question.choices %}
+                             {% if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE %}
+                                 <input style="display : inline" class="required" type="radio" name="choice_name_{{ question.id}}"
+                                    {% if question.student_choice == choice.category_id %}
+                                        checked="checked"
+                                    {% endif %}
+                                    value="{{ choice.category_id}}" />
+                             {% else %}
+                                   <input style="display : inline" class="required" type="radio" name="choice_name_{{ question.id}}"
+                                    {% if question.student_choice == choice.value  %}
+                                        checked="checked"
+                                    {% endif %}
+                                    value="{{ choice.value }}" />
+                            {% endif %}
+                            <label>{{choice.name }}</label> <br>
+                        {% endfor %}
+                        <input type="hidden" class="question_id" value="{{ question.id }}"/>
+                    </div>
+                </section>
+                {% endfor %}
+
+                <h3 style="display:none;">Result</h3>
+                <section id="response" class="question_container">
+                    <div id="response_body">
+                        {% if result %}
+                            {% if result.img %} <img class="result_img" src="{{result.img}}" alt="No Result image"> {% endif %}
+                            <p id="html_body">{{result.html_body|safe}}</p>
                         {% endif %}
-                        <label>{{choice.name }}</label> <br>
-                    {% endfor %}
-                    <input type="hidden" class="question_id" value="{{ question.id }}"/>
-                </div>
-            </section>
-            {% endfor %}
-
-            <h3 style="display:none;">Result</h3>
-            <section id="response" class="question_container">
-                <div id="response_body">
-                    {% if result %}
-                        {% if result.img %} <img class="result_img" src="{{result.img}}" alt="No Result image"> {% endif %}
-                        <p id="html_body">{{result.html_body|safe}}</p>
-                    {% endif %}
-                </div>
-            </section>
-        </div>
-    {% else %}
-        <h1> No questions !!!!! </h1>
-    {% endif %}
-</form>
-
+                    </div>
+                </section>
+            </div>
+        {% else %}
+            <h1> No questions !!!!! </h1>
+        {% endif %}
+    </form>
+</div>
 

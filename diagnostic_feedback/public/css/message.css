@@ -1,4 +1,4 @@
-.msg{
+.diagnostic-feedback .msg{
     background-size: 40px 40px;
     background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
                         transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
@@ -19,7 +19,7 @@
     margin: 0 30px 0 0;
 }
 
-.validation-msg{
+.diagnostic-feedback .validation-msg{
     background-size: 40px 40px;
     background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
                         transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
@@ -35,31 +35,31 @@
     z-index:999;
 }
 
-.info-msg{
+.diagnostic-feedback .info-msg{
      background-color: #4ea5cd;
      border-color: #3b8eb5;
 }
 
-.error-msg{
+.diagnostic-feedback .error-msg{
      background-color: #de4343;
      border-color: #c43d3d;
 }
      
-.warning-msg{
+.diagnostic-feedback .warning-msg{
      background-color: #eaaf51;
      border-color: #d99a36;
 }
 
-.success-msg{
+.diagnostic-feedback .success-msg{
      background-color: #61b832;
      border-color: #55a12c;
 }
 
-.msg h3{
+.diagnostic-feedback .msg h3{
      margin: 0 0 5px 0;                                                  
 }
 
-.msg p{
+.diagnostic-feedback .msg p{
      margin: 0;                                                  
 }
 

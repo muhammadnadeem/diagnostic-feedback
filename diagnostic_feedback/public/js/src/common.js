@@ -2,16 +2,17 @@ function Common(runtime, element) {
     //contains common js b/w studio and student view
     var cObj = this,
 
-    //selectors
-    globalMessage = '.msg',
-    warningMessage = '.validation-msg';
+            //selectors
+            globalMessage = '.diagnostic-feedback .msg',
+            warningMessage = '.diagnostic-feedback .validation-msg',
+            visibleUserAnswer = '.diagnostic-feedback .user_answers:visible';
 
     cObj.clearErrors = function(){
         $('.validation-error-message').remove();
     }
 
     cObj.showValidationError = function(msgObj){
-        $('<div class="validation-error-message">' + msgObj.msg + '<div>').insertBefore($('.user_answers:visible').first());
+        $('<div class="validation-error-message">' + msgObj.msg + '<div>').insertBefore($(visibleUserAnswer).first());
     }
 
     cObj.showGlobalMessage = function(msgObj){

@@ -1,50 +1,59 @@
 ﻿/* CSS for MyXBlock */
 
-.myxblock_block .count {
+.diagnostic-feedback-studio .myxblock_block .count {
     font-weight: bold;
 }
 
-.myxblock_block p {
+.diagnostic-feedback-studio .myxblock_block p {
     cursor: pointer;
 }
 
-.hide {
+.diagnostic-feedback-studio .hide {
     display: none;
 }
 
-.show {
+.diagnostic-feedback-studio .show {
     display: block;
 }
 
-#edit_questionnaire_panel {
+.diagnostic-feedback-studio #edit_questionnaire_panel {
     padding: 2px;
 }
 
-.range, .add-new-range, .category, .add-new-category, .question, .add-new-question {
+.diagnostic-feedback-studio .range,
+.diagnostic-feedback-studio .add-new-range,
+.diagnostic-feedback-studio .category,
+.diagnostic-feedback-studio .add-new-category,
+.diagnostic-feedback-studio .question,
+.diagnostic-feedback-studio .add-new-question {
 
     margin: 20px;
 }
 
-.answer-choice, .add-new-choice{
+.diagnostic-feedback-studio .answer-choice,
+.diagnostic-feedback-studio .add-new-choice {
 
     margin: 10px 40px;
 }
 
-.question_field {
+.diagnostic-feedback-studio .question_field {
     margin: 10px 0 10px 0;
 }
 
-.question_field > input{
+.diagnostic-feedback-studio .question_field > input{
     width:500px;
 }
 
-.question-txt-editor {
+.diagnostic-feedback-studio .question-txt-editor {
     width: 500px;
     margin-left: 15px;
 }
 
 
-.range > input,.category > input, .question_field > input, .answer-choice > input {
+.diagnostic-feedback-studio .range > input,
+.diagnostic-feedback-studio .category > input,
+.diagnostic-feedback-studio .question_field > input,
+.diagnostic-feedback-studio .answer-choice > input {
     margin: 2px;
     padding: 6px 8px 8px;
     margin-bottom: 4px;
@@ -59,28 +68,32 @@
     border-radius: 2px;
 }
 
-.range > input:focus, .question_field > input:focus, .answer-choice > input:focus{
+.diagnostic-feedback-studio .range > input:focus,
+.diagnostic-feedback-studio .question_field > input:focus,
+.diagnostic-feedback-studio .answer-choice > input:focus {
     background-color: rgb(255, 252, 241);
     background-image: linear-gradient(rgb(255, 252, 241), rgb(255, 254, 253));
 }
 
 
-.delete-range, .delete-question, .delete-choice{
+.diagnostic-feedback-studio .delete-range,
+.diagnostic-feedback-studio .delete-question,
+.diagnostic-feedback-studio .delete-choice {
     margin-top: 10px;
     margin-right: 10px;
-    /*position: absolute;*/
 }
 
 
-.choice_label{
+.diagnostic-feedback-studio .choice_label {
     font-size: 2em;
     font-weight: bold;
 }
 
-.answer-choice {
+.diagnostic-feedback-studio .answer-choice {
     list-style: upper-alpha;
 }
 
-.category > .internal-description, .range > .internal-description{
+.diagnostic-feedback-studio .category > .internal-description,
+.diagnostic-feedback-studio .range > .internal-description {
     width: 100%;
 }
