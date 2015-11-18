@@ -1,4 +1,5 @@
 <div class="range">
+    <input type="hidden" id="range[order][<%- order %>]" name="range[order][<%- order %>]" class="skip-validation" value="<%- order %>" />
     <input placeholder="Range Name" type="text" id="range[name][<%- order %>]" name="range[name][<%- order %>]"  class="required" value="<%- name %>" />
     <input placeholder="Range Min" type="number" step="0.1" id="range[min][<%- order %>]" name="range[min][<%- order %>]" class="required" value="<%- min_value %>" />
     <input placeholder="Range Max"  type="number" step="0.1" id="range[max][<%- order %>]" name="range[max][<%- order %>]" class="required" value="<%- max_value %>" />

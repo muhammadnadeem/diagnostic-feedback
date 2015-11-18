@@ -347,11 +347,12 @@ function StudioCommon(runtime, element) {
             }
 
             var name = this.value,
-            image = $('input[name="category[image][' + order + ']"]').val(),
-            internalDescription = $('input[name="category[internal_description][' + order + ']"]').val(),
-            htmlBody = $('textarea[name="category[html_body][' + order + ']"]').val();
+                catOrder = $('input[name="category[order][' + order + ']"]').val(),
+                image = $('input[name="category[image][' + order + ']"]').val(),
+                internalDescription = $('input[name="category[internal_description][' + order + ']"]').val(),
+                htmlBody = $('textarea[name="category[html_body][' + order + ']"]').val();
 
-            return {id: id, name: name, image: image, internal_description: internalDescription, html_body: htmlBody};
+            return {id: id, name: name, order: catOrder,  image: image, internal_description: internalDescription, html_body: htmlBody};
         }).get();
     };
 
@@ -360,14 +361,14 @@ function StudioCommon(runtime, element) {
         return $('input[name^="' + fieldName + '"]').map(function () {
             var order = $(this).attr('name').split('][')[1].replace(']', ''),
                 name = this.value,
+                rangeOrder = $('input[name="range[order][' + order + ']"]').val(),
                 minValue = $('input[name="range[min][' + order + ']"]').val(),
                 maxValue = $('input[name="range[max][' + order + ']"]').val(),
                 image = $('input[name="range[image][' + order + ']"]').val(),
                 internalDescription = $('input[name="range[internal_description][' + order + ']"]').val(),
                 htmlBody = $('textarea[name="range[html_body][' + order + ']"]').val();
 
-            return {name: name, min_value: minValue, max_value: maxValue, image: image,
-                internal_description: internalDescription, html_body: htmlBody};
+            return {name: name, order: rangeOrder, min_value: minValue, max_value: maxValue, image: image, internal_description: internalDescription, html_body: htmlBody};
         }).get();
     };
 

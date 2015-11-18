@@ -10,6 +10,7 @@ class Category(Result):
 
     def __init__(self, **params):
         self.id = params['id']
+        self.order = params['order']
         self.name = params['name']
         self.internal_description = params['internal_description']
         self.image = params['image']
@@ -22,7 +23,7 @@ class Category(Result):
         :param category: posted category
         :return: category object
         """
-        return cls(id=category.get('id', ''), name=category.get('name').strip(), image=category.get('image', ''),
+        return cls(id=category.get('id', ''), order=category.get('order', ''), name=category.get('name').strip(), image=category.get('image', ''),
                    internal_description=category.get('internal_description', ''),
                    html_body=category.get('html_body', ''))
 
@@ -31,7 +32,7 @@ class Category(Result):
         return category's json in required format to save
         :return: dict
         """
-        return {'id': self.id, 'name': self.name, 'image': self.image,
+        return {'id': self.id, 'order' : self.order, 'name': self.name, 'image': self.image,
                 'internal_description': self.internal_description,
                 'html_body': self.html_body}
 

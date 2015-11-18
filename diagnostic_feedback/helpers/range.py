@@ -10,6 +10,7 @@ class Range(Result):
     max_value = 0
 
     def __init__(self, **params):
+        self.order = params['order']
         self.name = params['name']
         self.min_value = params['min_value']
         self.max_value = params['max_value']
@@ -24,7 +25,7 @@ class Range(Result):
         :param range: posted range
         :return: range object
         """
-        return cls(name=_range.get('name').strip(),
+        return cls(order=_range.get('order').strip(), name=_range.get('name').strip(),
                    min_value=_range.get('min_value').strip(), max_value=_range.get('max_value').strip(),
                    image=_range.get('image', ''), internal_description=_range.get('internal_description', ''),
                    html_body=_range.get('html_body', ''))
@@ -34,7 +35,7 @@ class Range(Result):
         return range json in required format to save
         :return: dict
         """
-        return {'name': self.name, 'min_value': self.min_value, 'max_value': self.max_value,
+        return {'order': self.order, 'name': self.name, 'min_value': self.min_value, 'max_value': self.max_value,
                 'image': self.image, 'internal_description': self.internal_description, 'html_body': self.html_body}
 
     @classmethod
