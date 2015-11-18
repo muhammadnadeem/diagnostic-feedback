@@ -24,6 +24,9 @@ function Quiz(runtime, element, initData) {
             categorySelector = '.category',
             editorSelector = '.custom-textarea',
 
+            accordionSelector = '#accordion',
+            accordionGrpSelector = ".group",
+
             rangesPanel = '#ranges_panel',
             addNewRangeBtn =  rangesPanel+' .add-new-range',
             deleteRangeBtn = '.delete-range',
@@ -42,16 +45,27 @@ function Quiz(runtime, element, initData) {
             toolTipSelector = '.diagnostic-feedback .custom-tooltip',
             closeMsgBtnSelector = '#close_msg';
 
-        renderSteps();
+
 
         function renderSteps(){
             if (initData.quiz_type == ""){
+
                 studioCommon.renderCategories();
+                studioCommon.createAccordion(categoriesPanel+ " " + accordionSelector, 'categories');
+
                 studioCommon.renderRanges();
+                studioCommon.createAccordion(rangesPanel+ " " + accordionSelector, 'ranges');
+
             } else if (initData.quiz_type == initData.BUZ_FEED_QUIZ_VALUE){
+
                 studioCommon.renderCategories();
+                studioCommon.createAccordion(categoriesPanel+ " " + accordionSelector, 'categories');
+
             } else {
+
                 studioCommon.renderRanges();
+                studioCommon.createAccordion(rangesPanel+ " " + accordionSelector, 'ranges');
+
             }
             studioCommon.renderQuestions();
         }
@@ -137,7 +151,9 @@ function Quiz(runtime, element, initData) {
             // if return true next stepp will be loaded
             // if return false validation errors will be shown
 
-            var customValidated = false;
+            var fieldToIgnore = '',
+                quizType = studioCommon.getQuizType(),
+                customValidated = false;
             tinyMCE.triggerSave();
 
             if (currentIndex > newIndex){
@@ -151,14 +167,38 @@ function Quiz(runtime, element, initData) {
                 if (setting.jsValidation) {
                     //ignore hidden fields; will validate on current step showing fields
                     //form.validate().settings.ignore = ":disabled,:hidden";
-                    var fieldToIgnore = [
-                        'section:visible .skip-validation',
-                        'section:visible input:hidden',
-                        'section:visible select:hidden',
-                        'section:hidden input',
-                        'section:hidden textarea',
-                        'section:hidden select',
-                    ]
+
+                    if (currentStep == 2 ) {
+                        if (quizType == xblockInitData.BUZ_FEED_QUIZ_VALUE){
+                            fieldToIgnore = [
+                                'section:visible .skip-validation',
+                                'section:visible #ranges_panel input:hidden',
+                                'section:visible #ranges_panel select:hidden',
+                                'section:hidden input',
+                                'section:hidden textarea',
+                                'section:hidden select'
+                            ]
+                        } else {
+                            fieldToIgnore = [
+                                'section:visible .skip-validation',
+                                'section:visible #categories_panel input:hidden',
+                                'section:visible #categories_panel select:hidden',
+                                'section:hidden input',
+                                'section:hidden textarea',
+                                'section:hidden select'
+                            ]
+                        }
+
+                    } else {
+                        fieldToIgnore = [
+                            'section:visible .skip-validation',
+                            'section:visible input:hidden',
+                            'section:visible select:hidden',
+                            'section:hidden input',
+                            'section:hidden textarea',
+                            'section:hidden select'
+                        ]
+                    }
                     form.validate().settings.ignore = fieldToIgnore.join(", ");
 
                     // run jquery.validate
@@ -207,10 +247,11 @@ function Quiz(runtime, element, initData) {
 
             eventObject.preventDefault();
             var link = $(eventObject.currentTarget),
-                existingCategories = link.prevAll(categorySelector).length;
+                existingCategories = link.prev().find(accordionGrpSelector).length;
 
             studioCommon.renderSingleCategory(existingCategories);
             studioCommon.initiateHtmlEditor($(categoriesPanel));
+            studioCommon.refreshAccordion(categoriesPanel + " " + accordionSelector);
         });
 
         $(addNewRangeBtn, element).click(function (eventObject) {
@@ -218,10 +259,11 @@ function Quiz(runtime, element, initData) {
 
             eventObject.preventDefault();
             var link = $(eventObject.currentTarget),
-                existingRanges = link.prevAll(rangeSelector).length;
+                existingRanges = link.prev().find(accordionGrpSelector).length;
 
             studioCommon.renderSingleRange(existingRanges);
             studioCommon.initiateHtmlEditor($(rangesPanel));
+            studioCommon.refreshAccordion(rangesPanel + " " + accordionSelector);
         });
 
         $(step3Panel, element).on('click', addNewQuestionBtn, function (eventObject) {
@@ -255,7 +297,6 @@ function Quiz(runtime, element, initData) {
             // delete some category
 
             eventObject.preventDefault();
-
             var btn = $(eventObject.currentTarget),
                 categoriesContainer = $(btn).parents(categoriesPanel).first();
 
@@ -265,30 +306,26 @@ function Quiz(runtime, element, initData) {
             } else {
                 // ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this category?')) {
-                    var category = $(btn).parent(categorySelector);
+                    var category = $(btn).parents(accordionGrpSelector);
 
                     //remove deleted category html at step3 from all category selection dropdowns
                     studioCommon.removeCategoryFromOptions(category);
 
                     //remove all tinymce binding before deleting category html
-                    studioCommon.destroyEditor($(category).find('textarea'));
+                    //studioCommon.destroyEditor($(category).find('textarea'));
+
+                    //remove all previous tinymce attachments
+                    studioCommon.destoryAllEditors(categoriesContainer);
 
                     //remove category html from DOM at current step
                     category.remove();
 
-                    // rename all remaining categories fields after deletion of a category
-                    var remainingCategories = categoriesContainer.find(categorySelector);
-                    $.each(remainingCategories, function (i, category) {
-                        var fields = $(category).find('input[type="text"], input[type="hidden"], textarea');
-                        $.each(fields, function (k, field) {
-                            //remove all previous tinymce attachments
-                            studioCommon.destroyEditor(field);
-                            studioCommon.updateFieldAttr($(field), i);
-                        });
-                    });
+                    // refresh accordion
+                    studioCommon.refreshAccordion(categoriesPanel + " " + accordionSelector);
 
-                    // Re-attach text editor after field renaming
-                    studioCommon.initiateHtmlEditor($(categoriesPanel));
+                    // rename all remaining categories fields after deletion of a category
+                    studioCommon.processCategories(categoriesContainer);
+
                 }
             }
         });
@@ -306,22 +343,20 @@ function Quiz(runtime, element, initData) {
             } else {
                 // ask for confirmation before delete action
                 if (studioCommon.confirmAction('Are you sure to delete this range?')) {
-                    var range = $(btn).parent(rangeSelector);
-                    studioCommon.destroyEditor($(range).find('textarea'));
+                    var range = $(btn).parents(accordionGrpSelector);
+
+                    //studioCommon.destroyEditor($(range).find('textarea'));
+
+                    studioCommon.destoryAllEditors(rangesContainer);
+
                     range.remove();
 
-                    var remainingRanges = rangesContainer.find(rangeSelector);
-                    $.each(remainingRanges, function (i, range) {
-                        var fields = $(range).find('input[type="text"], input[type="number"], input[type="hidden"], textarea');
-                        $.each(fields, function (k, field) {
-                            //remove all previous tinymce attachments
-                            studioCommon.destroyEditor(field);
-                            studioCommon.updateFieldAttr($(field), i);
-                        });
-                    });
+                    // refresh accordion
+                    studioCommon.refreshAccordion(rangesPanel + " " + accordionSelector);
 
-                    // re-attach text editor after field renaming
-                    studioCommon.initiateHtmlEditor($(rangesPanel));
+                    // rename all remaining categories fields after deletion of a category
+                    studioCommon.processRanges(rangesContainer);
+
                 }
             }
         });
@@ -408,6 +443,8 @@ function Quiz(runtime, element, initData) {
             btn.parents("h3").first().html("");
             msgDiv.slideUp('slow');
         });
+
+        renderSteps();
 
         studioCommon.initiateHtmlEditor($(step1Panel), true);
 

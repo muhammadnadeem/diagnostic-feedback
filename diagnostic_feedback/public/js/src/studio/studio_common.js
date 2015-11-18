@@ -4,7 +4,8 @@ function StudioCommon(runtime, element) {
 
         //selectors
         quizTypeSelector = ".diagnostic-feedback #type option:selected",
-        //quizTypeInputSelector = ".diagnostic-feedback input[name='type']",
+        accordionSelector = '#accordion',
+
         loadingDiv = '.diagnostic-feedback .wizard-loading',
         editQuizPanel = '.diagnostic-feedback #edit_questionnaire_panel',
 
@@ -25,10 +26,15 @@ function StudioCommon(runtime, element) {
         categoryIdSelector = 'input[name*="category[id]"]',
         categoryNameSelector = "input[name^='category[name]']",
         addNewCategorySelector = '.add-new-category',
+        categoryOrderSelector = ".category-order",
+        categoryOrderFieldSelector = "input[id*='category[order]']",
         tinyMceTextarea = '.custom-textarea',
 
         rangesPanel = '.diagnostic-feedback #ranges_panel',
+        rangeSelector = '.range',
         addNewRangeBtnSelector = '.add-new-range',
+        rangeOrderSelector = ".range-order",
+        rangeOrderFieldSelector = "input[id*='range[order]']",
 
         allChoiceValuesInputs = '.diagnostic-feedback .answer-choice .answer-value',
         allResultChoicesDropdowns = '.diagnostic-feedback .answer-choice .result-choice',
@@ -145,6 +151,17 @@ function StudioCommon(runtime, element) {
         return categories;
     };
 
+    commonObj.destoryAllEditors = function(container){
+
+        var editors = container.find(tinyMceTextarea);
+        $.each(editors, function(i, editor){
+            if ($(editor).tinymce()) {
+                //remove existing attached instances
+                $(editor).tinymce().destroy();
+            }
+        });
+    };
+
     commonObj.destroyEditor = function(editor){
         //check if an intance already attached with any textarea
         if ($(editor).tinymce()) {
@@ -162,6 +179,7 @@ function StudioCommon(runtime, element) {
 
         if(setting.tinyMceAvailable){
             $.each(container.find(tinyMceTextarea), function (i, textarea) {
+
                 if(destroyExisting){
                     commonObj.destroyEditor(textarea);
                 }
@@ -431,6 +449,96 @@ function StudioCommon(runtime, element) {
         return {'questions': questions};
     };
 
+    commonObj.refreshAccordion = function(_id){
+        $( _id ).accordion('refresh');
+    };
+
+    commonObj.processCategories = function(categoriesContainer){
+
+        var remainingCategories = categoriesContainer.find(categorySelector);
+
+        $.each(remainingCategories, function (i, category) {
+            var fields = $(category).find('input[type="text"], input[type="hidden"], textarea');
+
+            $(category).parent().prev().find(categoryOrderSelector).html(i + 1);
+            $(category).find(categoryOrderFieldSelector).val(i);
+
+            $.each(fields, function (k, field) {
+                commonObj.updateFieldAttr($(field), i);
+            });
+        });
+
+        // Re-attach text editor after field renaming
+        commonObj.initiateHtmlEditor($(categoriesPanel));
+    };
+
+    commonObj.processRanges = function(rangesContainer){
+
+
+        var remainingRanges = rangesContainer.find(rangeSelector);
+        $.each(remainingRanges, function (i, range) {
+            var fields = $(range).find('input[type="text"], input[type="number"], input[type="hidden"], textarea');
+
+            $(range).parent().prev().find(rangeOrderSelector).html(i + 1);
+            $(range).find(rangeOrderFieldSelector).val(i);
+
+            $.each(fields, function (k, field) {
+                commonObj.updateFieldAttr($(field), i);
+            });
+        });
+
+        // re-attach text editor after field renaming
+        commonObj.initiateHtmlEditor($(rangesPanel));
+    };
+
+    //commonObj.reorderCategories = function(){
+    //    var categoriesContainer = $(categoriesPanel);
+    //    var remainingCategories = categoriesContainer.find(categorySelector);
+    //
+    //    $.each(remainingCategories, function (i, category) {
+    //        var fields = $(category).find('input[type="text"], input[type="hidden"], textarea');
+    //        $.each(fields, function (k, field) {
+    //            $(category).parent().prev().find(categoryOrderSelector).html(i + 1);
+    //
+    //            //remove all previous tinymce attachments
+    //            commonObj.destroyEditor(field);
+    //            commonObj.updateFieldAttr($(field), i);
+    //        });
+    //    });
+    //
+    //    // Re-attach text editor after field renaming
+    //    commonObj.initiateHtmlEditor($(categoriesPanel));
+    //};
+
+    commonObj.createAccordion = function(_id, type) {
+        $( _id )
+        .accordion({
+            active: 0,
+            header: '> div > h3',
+            autoHeight: false,
+            collapsible: true
+        })
+        .sortable({
+            axis: 'y',
+            handle: 'h3',
+            stop: function( event, ui ) {
+                // IE doesn't register the blur when sorting
+                // so trigger focusout handlers to remove .ui-state-focus
+                ui.item.children( 'h3' ).triggerHandler( 'focusout' );
+                if (type == 'categories'){
+                    var categoriesContainer = $(categoriesPanel);
+                    commonObj.destoryAllEditors(categoriesContainer);
+                    commonObj.processCategories(categoriesContainer);
+                } else {
+                    var rangesContainer = $(rangesPanel);
+                    commonObj.destoryAllEditors(rangesContainer);
+                    commonObj.processRanges(rangesContainer);
+                }
+
+            }
+        });
+    };
+
     commonObj.removeCategoryFromOptions = function(category){
         // remove category option from all result dropdowns at step 3
         var categoryId = category.find(categoryIdSelector).val();
@@ -455,7 +563,7 @@ function StudioCommon(runtime, element) {
         var tpl = _.template(xblockInitData.categoryTpl),
             html = tpl(category);
 
-        $(html).insertBefore($(categoriesPanel).find(addNewCategorySelector));
+        $(categoriesPanel).find(accordionSelector).append(html);
     };
 
     commonObj.renderSingleRange = function(order, range){
@@ -470,7 +578,8 @@ function StudioCommon(runtime, element) {
         var tpl = _.template(xblockInitData.rangeTpl),
             html = tpl(range);
 
-        $(html).insertBefore($(rangesPanel).find(addNewRangeBtnSelector));
+        //$(html).insertBefore($(rangesPanel).find(addNewRangeBtnSelector));
+         $(rangesPanel).find(accordionSelector).append(html);
     };
 
 
@@ -546,7 +655,11 @@ function StudioCommon(runtime, element) {
             // Render new category html
             commonObj.renderSingleCategory(0);
         }
+
+
     };
+
+
 
     commonObj.renderRanges = function(){
         //Render all ranges html

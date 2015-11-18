@@ -1,14 +1,24 @@
-<div class="category">
-    <input type="hidden" id="category[order][<%- order %>]" name="category[order][<%- order %>]" class="skip-validation" value="<%- order %>" />
-    <input type="hidden" id="category[id][<%- order %>]" name="category[id][<%- order %>]" class="skip-validation" value="<%- id %>" />
-    <input placeholder="Name" type="text" id="category[name][<%- order %>]" name="category[name][<%- order %>]"  class="required" value="<%- name %>" />
-    <input placeholder="Image" type="text" id="category[image][<%- order %>]" name="category[image][<%- order %>]"  value="<%- image %>" />
-    <a href="#" data-tooltip="Delete" class="delete-category delete-button action-button">
-        <i class="icon fa fa-trash-o"></i>
-        <span class="sr">Delete</span>
-    </a>
-    <input placeholder="Internal Description" class="internal-description" type="text"
-           id="category[internal_description][<%- order %>]" name="category[internal_description][<%- order %>]" value="<%- internal_description %>" />
+<div class='group'>
+    <h3>
+        <span class="category-order"><%- order + 1 %></span>
+        <span class="action-button">
+            <a href="#" data-tooltip="Delete" class="delete-category delete-button action-button">
+                <i class="icon fa fa-trash-o"></i>
+                <span class="sr">Delete</span>
+            </a>
+        </span>
+    </h3>
+    <div>
+        <div class="category">
+            <input type="hidden" id="category[order][<%- order %>]" name="category[order][<%- order %>]" class="skip-validation" value="<%- order %>" />
+            <input type="hidden" id="category[id][<%- order %>]" name="category[id][<%- order %>]" class="skip-validation" value="<%- id %>" />
+            <input placeholder="Name" type="text" id="category[name][<%- order %>]" name="category[name][<%- order %>]"  class="required" value="<%- name %>" />
+            <input placeholder="Image" type="text" id="category[image][<%- order %>]" name="category[image][<%- order %>]"  value="<%- image %>" />
 
-    <textarea class="custom-textarea" placeholder="Html Body" id="category[html_body][<%- order %>]" name="category[html_body][<%- order %>]"><%- html_body %></textarea>
+            <input placeholder="Internal Description" class="internal-description" type="text"
+                   id="category[internal_description][<%- order %>]" name="category[internal_description][<%- order %>]" value="<%- internal_description %>" />
+
+            <textarea class="custom-textarea" placeholder="Html Body" id="category[html_body][<%- order %>]" name="category[html_body][<%- order %>]"><%- html_body %></textarea>
+        </div>
+    </div>
 </div>
