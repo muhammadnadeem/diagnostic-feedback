@@ -70,7 +70,7 @@ function StudioCommon(runtime, element, initData) {
     choiceValueSelector = 'input[name*="]value["]',
     choiceValueClsSelector = '.answer-value',
     choiceNameSelector = 'input[name*=answer]',
-    choiceResultSelector = '.result-choice:visible',
+    choiceResultSelector = '.result-choice',
     allResultChoiceSelector = '.diagnostic-feedback .result-choice',
     choiceNameClsSelector = '.answer-txt';
 
@@ -642,7 +642,6 @@ function StudioCommon(runtime, element, initData) {
         $(container).find(questionIdSelector).first().val(id);
       }
       questionObj['id'] = id;
-
       var answerChoicesInputs = $(container).find(choiceNameClsSelector);
       $.each(answerChoicesInputs, function (j, choice) {
         var answerChoice = {
