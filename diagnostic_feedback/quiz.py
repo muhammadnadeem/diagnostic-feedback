@@ -224,6 +224,15 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
             }
         )
 
+    def get_attached_groups(self):
+        # return already attached groups
+        groups = []
+        for r in self.results:
+            if r['group'] not in groups:
+                groups.append(r['group'])
+
+        return groups
+
     def studio_view(self, context):
         """
         it will loads studio view
@@ -246,6 +255,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
                 'DEFAULT_GROUP': self.DEFAULT_GROUP,
                 'questions': self.questions,
                 'groups': self.groups,
+                'attachedGroups': self.get_attached_groups(),
                 'categoryTpl': loader.load_unicode('templates/underscore/category.html'),
                 'rangeTpl': loader.load_unicode('templates/underscore/range.html'),
                 'questionTpl': loader.load_unicode('templates/underscore/question.html'),

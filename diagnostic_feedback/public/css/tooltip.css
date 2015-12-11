@@ -6,6 +6,7 @@
     color: #FF6E00;
     margin: 0;
     padding: 0;
+    width: 0;
 }
 
 .diagnostic-feedback div.custom-tooltip:hover {

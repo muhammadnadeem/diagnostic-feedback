@@ -14,7 +14,7 @@ function StudioCommon(runtime, element, initData) {
   var commonObj = this,
     setting = new Setting(),
     allGroups = initData.groups,
-    attachedGroups = [],
+    attachedGroups = initData.attachedGroups,
 
     // selector' to scope elements for the current XBlock instance, to
     // differentiate multiple diagnostic feedback blocks on one page
@@ -40,6 +40,7 @@ function StudioCommon(runtime, element, initData) {
     accordionGrpSelector = ".group",
 
     editQuestionPanel = ".diagnostic-feedback .edit_questionnaire_panel",
+    wizardContentSelector = editQuestionPanel + " .content",
     questionPanelSelector = '.diagnostic-feedback .questions_panel',
     questionSelector = '.question',
     questionIdSelector = '.question-id',
@@ -234,7 +235,9 @@ function StudioCommon(runtime, element, initData) {
 
     $field.next(addNewGroupBtn).remove();
     if((ui.content.length === 0 && term.trim() != '') || !(termInGroups)){
-      $field.after('<a href="#" class="add-new-group" title="'+gettext('Create and attach new group')+'"><i class="icon fa fa-plus"></i> '+term+'</a>');
+      $field.after('<div class="custom-tooltip add-new-group">' +
+        '<a href="#" title="'+gettext('Create and attach new group')+'">' +
+        '<i class="icon fa fa-plus"></i></a></div>');
     }
 
   };
@@ -261,6 +264,7 @@ function StudioCommon(runtime, element, initData) {
       $(grpAutoCompleteSelector, element);
 
     elements.autocomplete({
+      appendTo: wizardContentSelector,
       source: commonObj.getGroups,
       select: commonObj.autoCompleteOnSelect,
       response: commonObj.parseAutoCompleteResponse
@@ -840,7 +844,7 @@ function StudioCommon(runtime, element, initData) {
     question['order'] = order;
     question['block_id'] = initData.block_id;
     question['DEFAULT_GROUP'] = initData.DEFAULT_GROUP;
-    question['allGroups'] = allGroups;
+    question['allGroups'] = attachedGroups;
 
     // Render if questiong already have choices
     if (question.choices.length > 0) {
