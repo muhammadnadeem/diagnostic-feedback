@@ -26,4 +26,3 @@ class DiagnosticChoice(Choice):
         :return: dict
         """
         return {'name': self.name, 'value': self.value}
-

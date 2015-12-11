@@ -9,7 +9,7 @@
 }
 
 .diagnostic-feedback div.custom-tooltip:hover {
-    z-index:1005;
+    z-index: 1005;
 }
 
 .diagnostic-feedback div.custom-tooltip label {
@@ -20,9 +20,9 @@
 .diagnostic-feedback div.custom-tooltip:hover label.error:not(.checked) {
     display: inline-block !important;
     position: absolute;
-    left:2em;
-    width:150px;
-    padding:5px;
+    left: 2em;
+    width: 150px;
+    padding: 5px;
     background-color: #4c4c4c;
     border: 2px solid #000;
     border-radius: 5px;

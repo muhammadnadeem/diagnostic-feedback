@@ -6,8 +6,7 @@ class StudentChoiceValidator(BaseValidator):
         method to validate student answer
     """
 
-    @classmethod
-    def validate(cls, data):
+    def validate(self, data):
         """
         validate if user is providing answer of a question
         :param data: posted answer data
@@ -21,15 +20,14 @@ class StudentChoiceValidator(BaseValidator):
         student_choice = data.get('student_choice')
         current_step = str(data.get('currentStep'))
 
-        if cls.is_empty(question_id):
+        if self.is_empty(question_id):
             valid = False
-            validation_message = 'question id is required'
-        elif cls.is_empty(student_choice):
+            validation_message = self._('Question id is required')
+        elif self.is_empty(student_choice):
             valid = False
-            validation_message = 'Student Choice is required'
-        elif cls.is_empty(current_step):
+            validation_message = self._('Student Choice is required')
+        elif self.is_empty(current_step):
             valid = False
-            validation_message = 'current step is required'
+            validation_message = self._('Current step is required')
 
         return valid, validation_message
-

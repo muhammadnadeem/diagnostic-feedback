@@ -1,7 +1,17 @@
 from .config import student_assets, studio_assets
-
 from xblockutils.resources import ResourceLoader
+
 loader = ResourceLoader(__name__)
+
+
+class XBlockWithTranslationServiceMixin(object):
+    """
+    Mixin providing access to i18n service
+    """
+    def _(self, text):
+        """ Translate text """
+        # noinspection PyUnresolvedReferences
+        return self.runtime.service(self, "i18n").ugettext(text)
 
 
 class ResourceMixin(object):
@@ -18,7 +28,8 @@ class ResourceMixin(object):
         templates = self.sort_resources_by_order(student_assets.get('templates', [])
                                                  if view == 'student' else studio_assets.get('templates', [])
                                                  )
-        for template, order in templates:
+        for template_obj in templates:
+            template = template_obj[0]
             fragment.add_content(loader.render_template(template, context))
 
     def add_css(self, fragment, view):
@@ -27,7 +38,8 @@ class ResourceMixin(object):
         css_resources = self.sort_resources_by_order(student_assets.get('css', [])
                                                      if view == 'student' else studio_assets.get('css', [])
                                                      )
-        for css, order in css_resources:
+        for css_obj in css_resources:
+            css = css_obj[0]
             if css.startswith('http'):
                 fragment.add_css_url(css)
             else:
@@ -39,7 +51,8 @@ class ResourceMixin(object):
         js_resources = self.sort_resources_by_order(student_assets.get('js', [])
                                                     if view == 'student' else studio_assets.get('js', [])
                                                     )
-        for js, order in js_resources:
+        for js_obj in js_resources:
+            js = js_obj[0]
             if js.startswith('http'):
                 fragment.add_javascript_url(js)
             else:
@@ -51,5 +64,6 @@ class ResourceMixin(object):
         js_classes = self.sort_resources_by_order(student_assets.get('js_classes', [])
                                                   if view == 'student' else studio_assets.get('js_classes', [])
                                                   )
-        for _class, order in js_classes:
+        for _class_obj in js_classes:
+            _class = _class_obj[0]
             fragment.initialize_js(_class, json_args)

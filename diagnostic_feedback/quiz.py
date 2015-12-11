@@ -1,96 +1,120 @@
 import logging
+import json
 import copy
-
 from xblock.core import XBlock
 from xblock.fields import Scope, String, List, Integer, Dict
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
-
-from .resource import ResourceMixin
+from .mixins import ResourceMixin, XBlockWithTranslationServiceMixin
 from .quiz_result import QuizResultMixin
-
 from .helpers import MainHelper
 from .validators import Validator
 from .sub_api import my_api
 from .data_tool import ExportDataBlock
+from datetime import datetime
 
 log = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
 
 
-@XBlock.wants('user')
-class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
-    """
+# Make '_' a no-op so we can scrape strings
+def _(text):
+    return text
 
+
+@XBlock.needs('i18n')
+@XBlock.wants('user')
+class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTranslationServiceMixin):
     """
-    BUZ_FEED_QUIZ_VALUE = "BFQ"
-    BUZ_FEED_QUIZ_LABEL = "Buzz Feed Quiz"
+    An XBlock which can be used to add diagnostic quiz
+    """
+    BUZZFEED_QUIZ_VALUE = "BFQ"
+    BUZZFEED_QUIZ_LABEL = _("BuzzFeed-style")
     DIAGNOSTIC_QUIZ_VALUE = "DG"
-    DIAGNOSTIC_QUIZ_LABEL = "Diagnostic Quiz"
+    DIAGNOSTIC_QUIZ_LABEL = _("Diagnostic-style")
+    DEFAULT_GROUP = _('Default Group')
 
     display_name = String(
-        display_name="Diagnostic Feedback",
-        help="This name appears in the horizontal navigation at the top of the page.",
+        display_name=_("Diagnostic Feedback"),
+        help=_("This name appears in the horizontal navigation at the top of the page."),
         scope=Scope.settings,
-        default="Diagnostic Feedback"
+        default=""
     )
 
     title = String(
         default='',
         scope=Scope.content,
-        help='Title of quiz'
+        help=_("Title of quiz")
     )
 
     description = String(
-        default='',
+        default="",
         scope=Scope.content,
-        help='Description of quiz'
+        help=_("Description of quiz")
     )
 
     questions = List(
         default=[],
-        help="This will hold list of question with respective choices",
+        help=_("This will hold list of question with respective choices"),
         scope=Scope.content,
     )
 
     student_choices = Dict(
         default={},
-        help="This will hold user provided answers of questions",
+        help=_("This will hold user provided answers of questions"),
         scope=Scope.user_state,
     )
 
     quiz_type = String(
-        default='',
+        default="",
         scope=Scope.content,
-        help='Type of quiz'
+        help=_("Type of quiz")
     )
 
     results = List(
         default=[],
         scope=Scope.content,
-        help='List of results'
+        help=_("List of results")
     )
 
     student_result = String(
         default='',
         scope=Scope.user_state,
-        help='Calculated feedback of each user'
+        help=_("Calculated feedback of each user")
     )
 
     types = List(
         default=[
-            {"value": BUZ_FEED_QUIZ_VALUE, "label": BUZ_FEED_QUIZ_LABEL},
+            {"value": BUZZFEED_QUIZ_VALUE, "label": BUZZFEED_QUIZ_LABEL},
             {"value": DIAGNOSTIC_QUIZ_VALUE, "label": DIAGNOSTIC_QUIZ_LABEL},
         ],
         scope=Scope.content,
-        help='List of results'
+        help=_("List of results")
+    )
+
+    groups = List(
+        default=[DEFAULT_GROUP],
+        scope=Scope.content,
+        help=_("List of results")
     )
 
     current_step = Integer(
         default=0,
         scope=Scope.user_state,
-        help='To control which question should be shown to student'
+        help=_("To control which question should be shown to student")
     )
+
+    @property
+    def display_name_with_default(self):
+        return self.title
+
+    @property
+    def additional_publish_event_data(self):
+        return {
+            'user_id': self.scope_ids.user_id,
+            'block_id': self.get_block_id(),
+            'component_id': self.scope_ids.usage_id
+        }
 
     def get_fragment(self, context, view='studio', json_args=None):
         """
@@ -125,23 +149,63 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
             else:
                 question['student_choice'] = self.student_choices.get(question['id'], '')
 
+    def get_block_id(self):
+        """
+        Return ID of `block`
+        """
+        usage_id = self.scope_ids.usage_id
+        # Try accessing block ID. If usage_id does not have it, return usage_id itself
+        return unicode(getattr(usage_id, 'block_id', usage_id))
+
+    def get_question(self, question_id):
+        """
+        Return Question object for given question id
+        """
+        question = {}
+        for question in self.questions:
+            if question['id'] == question_id:
+                question = question
+                break
+
+        return question
+
+    def get_buzzfeed_answer(self, choices, student_choice):
+        """
+        Return buzzfeed quiz answer label from question choices using student choice
+        """
+        choice_name = ''
+        for choice in choices:
+            if choice['category_id'] == student_choice:
+                choice_name = choice['name']
+                break
+
+        return choice_name
+
+    def get_diagnostic_answer(self, choices, student_choice):
+        """
+        Return diagnostic quiz answer label from question choices using student choice
+        """
+        choice_name = ''
+        for choice in choices:
+            if str(choice['value']) == student_choice:
+                choice_name = choice['name']
+                break
+
+        return choice_name
+
     def student_view(self, context=None):
         """
         it will loads student view
         :param context: context
         :return: fragment
         """
+
         context = {
             'questions': copy.deepcopy(self.questions),
             'self': self,
+            'block_id': "xblock-{}".format(self.get_block_id()),
             'user_is_staff': self.user_is_staff()
         }
-
-        from submissions import api as my_api
-        if my_api:
-            log.info("my api found")
-        else:
-            log.info("my api not found")
 
         if self.student_choices:
             self.append_choice(context['questions'])
@@ -149,12 +213,16 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         # return final result to show if user already completed the quiz
         if self.questions and self.current_step:
             if len(self.questions) == self.current_step:
-                if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
-                    context['result'] = self.get_buzz_feed_result()
-                else:
-                    context['result'] = self.get_diagnostic_result()
+                context['result'] = self.get_result()
 
-        return self.get_fragment(context, 'student')
+        return self.get_fragment(
+            context,
+            'student',
+            {
+                'quiz_type': self.quiz_type,
+                'quiz_title': self.title
+            }
+        )
 
     def studio_view(self, context):
         """
@@ -162,22 +230,28 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         :param context: context
         :return: fragment
         """
+        block_id = "xblock-{}".format(self.get_block_id())
         context['self'] = self
+        context['block_id'] = block_id
+
         return self.get_fragment(
             context,
             'studio',
             {
                 'quiz_type': self.quiz_type,
+                'block_id': block_id,
                 'results': self.results,
-                'BUZ_FEED_QUIZ_VALUE': self.BUZ_FEED_QUIZ_VALUE,
+                'BUZZFEED_QUIZ_VALUE': self.BUZZFEED_QUIZ_VALUE,
+                'DIAGNOSTIC_QUIZ_VALUE': self.DIAGNOSTIC_QUIZ_VALUE,
+                'DEFAULT_GROUP': self.DEFAULT_GROUP,
                 'questions': self.questions,
+                'groups': self.groups,
                 'categoryTpl': loader.load_unicode('templates/underscore/category.html'),
                 'rangeTpl': loader.load_unicode('templates/underscore/range.html'),
                 'questionTpl': loader.load_unicode('templates/underscore/question.html'),
                 'choiceTpl': loader.load_unicode('templates/underscore/choice.html')
             }
         )
-
 
     @XBlock.json_handler
     def save_data(self, data, suffix=''):
@@ -194,7 +268,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
 
         if not step:
             success = False
-            response_message = 'missing step number'
+            response_message = self._('missing step number')
         else:
             try:
                 is_valid_data, response_message = Validator.validate(self, data)
@@ -209,7 +283,6 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
 
         return {'step': step, 'success': success, 'msg': response_message}
 
-
     @XBlock.json_handler
     def save_choice(self, data, suffix=''):
         """
@@ -219,40 +292,53 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         :return: response dict
         """
 
-        result = ""
+        student_result = ""
         response_message = ""
 
         try:
-            success, response_message = Validator.validate_student_answer(data)
+            success, response_message = Validator.validate_student_answer(self, data)
             if success:
+                question_id = data['question_id']
+                question_data = self.get_question(question_id)
+                if self.quiz_type == self.BUZZFEED_QUIZ_VALUE:
+                    question_answer = self.get_buzzfeed_answer(question_data['choices'], data['student_choice'])
+                else:
+                    question_answer = self.get_diagnostic_answer(question_data['choices'], data['student_choice'])
+
+                event_data = {
+                    'question_id': question_id,
+                    'question_title': question_data['title'],
+                    'question_text': question_data['text'],
+                    'answer': question_answer,
+                    'time': datetime.now()
+                }
+
                 # save student answer
-                self.student_choices[data['question_id']] = data['student_choice']
+                self.student_choices[question_id] = data['student_choice']
                 if self.current_step < data['currentStep']:
                     self.current_step = data['currentStep']
 
-                if my_api:
-                    log.info("have my_api intance")
-                    # Also send to the submissions API:
-                    item_key = self.student_item_key
-                    item_key['item_id'] = data['question_id']
-                    my_api.create_submission(item_key, self.student_choices[data['question_id']])
-                else:
-                    log.info("not my_api intance")
-
+                self.runtime.publish(self, 'xblock.diagnostic_feedback.question.submitted', event_data)
                 # calculate feedback result if user answering last question
                 if data['isLast']:
-                    if self.quiz_type == self.BUZ_FEED_QUIZ_VALUE:
-                        success = True
-                        result = self.get_buzz_feed_result()
-                    else:
-                        success = True
-                        result = self.get_diagnostic_result()
+                    student_result = self.get_result()
 
-                response_message = "Your response is saved"
+                    if my_api:
+                        log.info("have sub_api instance")
+                        # Also send to the submissions API:
+                        item_key = self.student_item_key
+                        item_key['item_id'] = self.get_block_id()
+                        submission_data = self.create_submission_data()
+                        submission_data['final_result'] = student_result
+                        my_api.create_submission(item_key, json.dumps(submission_data))
+                    else:
+                        log.info("not sub_api intance")
+
+                response_message = self._("Your response is saved")
         except Exception as ex:
             success = False
             response_message += str(ex)
-        return {'success': success, 'student_result': result, 'msg': response_message}
+        return {'success': success, 'student_result': student_result, 'response_msg': response_message}
 
     @XBlock.json_handler
     def start_over_quiz(self, data, suffix=''):
@@ -264,7 +350,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
         """
 
         success = True
-        response_message = "student data cleared"
+        response_message = self._("student data cleared")
 
         self.student_choices = {}
         self.student_result = ""
@@ -272,9 +358,59 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock):
 
         return {'success': success, 'msg': response_message}
 
+    @XBlock.json_handler
+    def get_groups(self, data, suffix=''):
+        """
+        Return list of group starting with a search term
+        """
+        groups = [s for s in filter(lambda x: x.lower().startswith(data.get('term', '').lower()), self.groups)]
+        return groups
+
+    @XBlock.json_handler
+    def add_group(self, data, suffix=''):
+        """
+        Add new group in self.groups list
+        """
+        success = True
+        grp_name = data.get('name', '')
+        if grp_name not in self.groups:
+            msg = self._('Group added successfully.')
+            self.groups.append(grp_name)
+
+        else:
+            msg = self._('Group already exist.')
+            success = False
+
+        return {'success': success, 'msg': msg, 'grp_name': grp_name}
+
+    @XBlock.json_handler
+    def publish_event(self, data, suffix=''):
+        """
+        Publish data for analytics purposes
+        """
+        event_type = data.pop('event_type')
+        data['time'] = datetime.now()
+
+        self.runtime.publish(self, event_type, data)
+        return {'result': 'ok'}
+
+    def create_submission_data(self):
+        """
+        Return a complete submission data as quiz completed
+        """
+        submission = {}
+        for question in self.questions:
+            question_id = question['id']
+            question_data = self.get_question(question_id)
+            if self.quiz_type == self.BUZZFEED_QUIZ_VALUE:
+                question_answer = self.get_buzzfeed_answer(question_data['choices'], self.student_choices[question_id])
+            else:
+                question_answer = self.get_diagnostic_answer(question_data['choices'], self.student_choices[question_id])
+
+            submission[question_id] = {
+                'question_text': question['text'],
+                'answer': question_answer
+            }
 
 
-
-
-
-
+        return submission

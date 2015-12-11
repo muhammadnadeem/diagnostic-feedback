@@ -8,12 +8,13 @@
     display: block;
 }
 
-.diagnostic-feedback-studio #edit_questionnaire_panel {
+.diagnostic-feedback-studio .edit_questionnaire_panel {
     padding: 2px;
 }
 
 .diagnostic-feedback-studio .range,
 .diagnostic-feedback-studio .add-new-range,
+.diagnostic-feedback-studio .add-new-group,
 .diagnostic-feedback-studio .category,
 .diagnostic-feedback-studio .add-new-category,
 .diagnostic-feedback-studio .question,
@@ -32,15 +33,14 @@
     margin: 10px 0 10px 0;
 }
 
-.diagnostic-feedback-studio .question-field > input{
-    width:500px;
+.diagnostic-feedback-studio .question-field > input {
+    width: 500px;
 }
 
 .diagnostic-feedback-studio .question-txt-editor {
     width: 500px;
-    margin-left: 15px;
+    margin-left: 0px;
 }
-
 
 .diagnostic-feedback-studio .range > input,
 .diagnostic-feedback-studio .category > input,
@@ -54,7 +54,7 @@
     background-image: none;
     background-color: #f2f2f2;
     font-size: 0.75em;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
     font-family: 'Open Sans', sans-serif;
     color: #4c4c4c;
     border-radius: 2px;
@@ -66,7 +66,6 @@
     background-color: rgb(255, 252, 241);
     background-image: linear-gradient(rgb(255, 252, 241), rgb(255, 254, 253));
 }
-
 
 .diagnostic-feedback-studio .delete-range,
 .diagnostic-feedback-studio .delete-question,
@@ -84,7 +83,13 @@
     width: 100%;
 }
 
-.diagnostic-feedback-studio .answer-choice > .result-choice {
+.diagnostic-feedback-studio .category > .image-url,
+.diagnostic-feedback-studio .range > .image-url {
+    width: 225px;
+}
+
+.diagnostic-feedback-studio .answer-choice > .result-choice,
+.diagnostic-feedback-studio .question-group {
     margin: 2px;
     padding: 6px 8px 8px;
     margin-bottom: 4px;
@@ -96,6 +101,13 @@
     min-width: 150px;
 }
 
+.diagnostic-feedback-studio .wizard > .actions {
+    border-top: #eee solid;
+}
+
+.diagnostic-feedback-studio .wizard > .actions a, .diagnostic-feedback-studio .wizard > .actions a:hover, .diagnostic-feedback-studio .wizard > .actions a:active {
+    margin-bottom: -26px;
+}
 
 /* Jquery-UI overrides */
 .diagnostic-feedback-studio .ui-accordion .ui-accordion-content {
@@ -111,10 +123,6 @@
     padding: 5px;
 }
 
-/*.diagnostic-feedback-studio .ui-accordion .ui-accordion-header .ui-icon {*/
-    /*margin-left: 8px;*/
-/*}*/
-
 .diagnostic-feedback-studio .ui-accordion .ui-accordion-header .action-button {
     float: right;
 }
@@ -122,4 +130,23 @@
 .diagnostic-feedback-studio .ui-accordion .ui-accordion-header .action-button a {
     padding: 0;
     margin: 0;
+}
+/* end */
+
+.diagnostic-feedback-studio .sort-title {
+    margin-left: 10px;
+}
+
+.diagnostic-feedback-studio .group-error {
+    border-top: 3px outset #ff0000;
+}
+
+.diagnostic-feedback-studio .text-help {
+    font-size: 1.2rem;
+    line-height: 1.776rem;}
+.group-mapping {
+    border: 1px solid #403B3B;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: #9dc8e2;
 }

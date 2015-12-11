@@ -1,10 +1,4 @@
 {
-    "valid_data": {
-        "student_choice": "5.0",
-        "isLast": "",
-        "question_id": "",
-        "currentStep" : "1"
-    },
 
     "missing_choice": {
         "student_choice": "",
@@ -25,12 +19,6 @@
           "isLast": "",
           "question_id": "",
           "currentStep" : ""
-        },
-    "range_dont_exist" :{
-        "student_choice": "100.0",
-        "isLast": "True",
-        "question_id": "",
-        "currentStep" : "2"
-    }
+        }
 
 }

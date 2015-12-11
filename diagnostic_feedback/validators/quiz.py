@@ -6,9 +6,7 @@ class QuizValidator(BaseValidator):
         hold method to validate quiz
     """
 
-
-    @classmethod
-    def invalid_quiz_type(cls, _type, valid_types):
+    def invalid_quiz_type(self, _type, valid_types):
         """
         check if provided type is valid
         :param _type: type to save
@@ -16,16 +14,17 @@ class QuizValidator(BaseValidator):
         :return: Boolean
         """
 
-        return not(_type in [t['value'] for t in valid_types])
+        return not (_type in [t['value'] for t in valid_types])
 
-    @classmethod
-    def basic_validate(cls, data, quiz):
+    def validate(self, data):
         """
         validate quiz title & quiz_type
         :param data: quiz data
         :param quiz: object of xblock
         :return: Boolean, validation message in case of error
         """
+
+        # _ = quiz.runtime.service(quiz, "i18n")
 
         valid = True
         validation_message = ''
@@ -34,15 +33,14 @@ class QuizValidator(BaseValidator):
         description = data.get('description')
         _type = data.get('type')
 
-        if cls.is_empty(title):
+        if self.is_empty(title):
             valid = False
-            validation_message = 'title is required'
-        elif cls.is_empty(description):
+            validation_message = self._('Title is required')
+        elif self.is_empty(description):
             valid = False
-            validation_message = 'description is required'
-        elif not quiz.quiz_type and cls.invalid_quiz_type(_type, quiz.types):
+            validation_message = self._('Description is required')
+        elif not self.xblock.quiz_type and self.invalid_quiz_type(_type, self.xblock.types):
             valid = False
-            validation_message = 'type is invalid'
+            validation_message = self._('Type is invalid')
 
         return valid, validation_message
-

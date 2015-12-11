@@ -19,6 +19,7 @@ def package_data(pkg, roots):
 
     return {pkg: data}
 
+
 setup(
     name='xblock-diagnostic-feedback',
     version='0.1',

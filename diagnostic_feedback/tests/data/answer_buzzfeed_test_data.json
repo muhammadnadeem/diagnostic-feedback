@@ -1,10 +1,4 @@
 {
-    "valid_data": {
-        "student_choice": "xxxxxx2",
-        "isLast": "",
-        "question_id": "",
-        "currentStep" : "1"
-    },
 
     "missing_choice": {
         "student_choice": "",

@@ -38,7 +38,6 @@
     list-style: none !important;
 }
 
-
 .diagnostic-feedback .wizard > .steps > ul > li {
     display: block;
     width: 25%;
@@ -91,7 +90,6 @@
     background: #ff3111;
     color: #fff;
 }
-
 
 .diagnostic-feedback .wizard > .steps .current-info {
     position: absolute;
@@ -254,13 +252,11 @@
 }
 
 @media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
+(-o-min-device-pixel-ratio: 5/4),
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 120dpi) {
     /* Style adjustments for high resolution devices */
 }
-
-
 
 /*
     Wizard
@@ -271,7 +267,6 @@
     display: block;
     width: 100%;
 }
-
 
 .diagnostic-feedback .wizard > .content {
     display: block;
@@ -286,13 +281,10 @@
     border-radius: 5px;
 }
 
-
-
 .diagnostic-feedback .wizard > .content > .body {
     float: left;
     position: absolute;
     width: 90%;
-    height: 100%;
     padding: 2.5%;
 }
 
@@ -308,7 +300,6 @@
     text-align: right;
     width: 100%;
 }
-
 
 .diagnostic-feedback .wizard > .content > .body label.error {
     color: #8a1f11;

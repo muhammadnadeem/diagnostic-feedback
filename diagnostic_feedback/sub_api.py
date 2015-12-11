@@ -22,6 +22,7 @@ Integrations between these XBlocks and the edX Submissions API
 """
 
 import logging
+
 log = logging.getLogger(__name__)
 
 try:
@@ -33,6 +34,7 @@ except ImportError:
 
 class SubmittingXBlockMixin(object):
     """ Simplifies use of the submissions API by an XBlock """
+
     @property
     def student_item_key(self):
         """ Get the student_item_dict required for the submissions API """

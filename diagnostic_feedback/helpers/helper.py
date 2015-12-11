@@ -2,7 +2,6 @@ from . import Range, Category, Question
 
 
 class MainHelper(object):
-
     @classmethod
     def save_filtered_data(cls, quiz, data):
         """
@@ -16,7 +15,7 @@ class MainHelper(object):
             if not quiz.quiz_type and data.get('type'):
                 quiz.quiz_type = data['type']
 
-        if step == 2 and quiz.quiz_type == quiz.BUZ_FEED_QUIZ_VALUE:
+        if step == 2 and quiz.quiz_type == quiz.BUZZFEED_QUIZ_VALUE:
             results = Category.filter_results(data)
             quiz.results = results
 

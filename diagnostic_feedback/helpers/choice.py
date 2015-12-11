@@ -1,7 +1,6 @@
-
 class Choice(object):
     """
-    hold shared attributes of buzz feed/diagnostic choices
+    hold shared attributes of buzzfeed/diagnostic choices
     """
 
     name = ""

@@ -1,6 +1,5 @@
 from .base_validator import BaseValidator
 from .category import CategoryValidator
-from .choice import ChoiceValidator
 from .question import QuestionValidator
 from .quiz import QuizValidator
 from .range import RangeValidator

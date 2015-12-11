@@ -1,8 +1,10 @@
-function Setting(runtime, element){
-    // global settings for js code
-    var setting = this;
+function Setting(runtime, element, initData) {
+  "use strict";
 
-    setting.debug = true;
-    setting.jsValidation = true;
-    setting.tinyMceAvailable = (typeof $.fn.tinymce !== 'undefined'); // check if Studio includes a copy of tinyMCE and its jQuery plugin
+  // global settings for js code
+  var setting = this;
+
+  setting.debug = true;
+  setting.jsValidation = true;
+  setting.tinyMceAvailable = (typeof $.fn.tinymce !== 'undefined'); // check if Studio includes a copy of tinyMCE and its jQuery plugin
 }

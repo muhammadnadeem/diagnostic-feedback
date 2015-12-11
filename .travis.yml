@@ -1,0 +1,20 @@
+language: python
+python:
+    - "2.7"
+before_install:
+    - "export DISPLAY=:99"
+    - "sh -e /etc/init.d/xvfb start"
+install:
+    - "pip install -e git://github.com/edx/xblock-sdk.git@22c1b2f173919bef22f2d9d9295ec5396d02dffd#egg=xblock-sdk"
+    - "pip install -r requirements.txt"
+    - "pip install -r $VIRTUAL_ENV/src/xblock-sdk/requirements/base.txt"
+    - "pip install -r $VIRTUAL_ENV/src/xblock-sdk/requirements/test.txt"
+    - "pip uninstall -y xblock-diagnostic-feedback && python setup.py sdist && pip install dist/xblock-diagnostic-feedback-0.1.tar.gz"
+    - "pip install -r tests-requirements.txt"
+    - "mkdir var"
+script:
+    - pep8 diagnostic_feedback --max-line-length=120
+    - pylint diagnostic_feedback --disable=all --enable=function-redefined,undefined-variable,unused-variable
+    - python run_tests.py
+notifications:
+  email: false

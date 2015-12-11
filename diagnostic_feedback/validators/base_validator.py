@@ -2,11 +2,16 @@
 
 class BaseValidator(object):
     """
-        generic method to validate values
+    Generic method' for validation
     """
+    xblock = None
+    _ = None
 
-    @classmethod
-    def is_empty(cls, value):
+    def __init__(self, xblock):
+        self.xblock = xblock
+        self._ = xblock._
+
+    def is_empty(self, value):
         """
         check for empty string
         :param value: string to test
@@ -14,8 +19,7 @@ class BaseValidator(object):
         """
         return not value.strip()
 
-    @classmethod
-    def invalid_url(cls, url):
+    def invalid_url(self, url):
         """
         check for valid url
         :param value: url to test
@@ -23,8 +27,7 @@ class BaseValidator(object):
         """
         return url.strip() and not url.strip().startswith('http')
 
-    @classmethod
-    def empty_list(cls, lst):
+    def empty_list(self, lst):
         """
         check if a list is empty
         :param lst: list to test
@@ -32,8 +35,7 @@ class BaseValidator(object):
         """
         return not bool(lst)
 
-    @classmethod
-    def drange(cls, start, stop, step):
+    def drange(self, start, stop, step):
         """
         generate array of decimals with provided step value
         :param start: range start

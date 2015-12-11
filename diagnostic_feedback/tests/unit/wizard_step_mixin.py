@@ -2,16 +2,16 @@ import json
 
 
 class WizardStepMixin(object):
-    def save_wizard_step1(self, type):
+    def save_wizard_step1(self, _type):
         res = json.loads(self._block.handle('save_data', self.make_request(json.dumps({
             "step": 1,
             "title": "Test",
             "description": "Test description",
-            "type": type
+            "type": _type
         }))).body)
         return res
 
-    def save_buzfeed_step2(self):
+    def save_buzzfeed_step2(self):
         res = json.loads(self._block.handle('save_data', self.make_request(json.dumps({
             "step": 2,
             "categories": [
@@ -53,7 +53,7 @@ class WizardStepMixin(object):
         }))).body)
         return res
 
-    def save_buzfeed_step3(self):
+    def save_buzzfeed_step3(self):
         res = json.loads(self._block.handle('save_data', self.make_request(json.dumps({
             "step": 3,
             "questions": [
@@ -69,7 +69,8 @@ class WizardStepMixin(object):
                             "choice_category": "xxxxxx2"
                         }
                     ],
-                    "id": "qxxxxxx1"
+                    "id": "qxxxxxx1",
+                    "question_title": "BuzzFeed"
                 },
                 {
                     "question_txt": "This is second question",
@@ -79,7 +80,8 @@ class WizardStepMixin(object):
                             "choice_category": "xxxxxx2"
                         }
                     ],
-                    "id": "qxxxxxx2"
+                    "id": "qxxxxxx2",
+                    "question_title": "BuzzFeed"
                 }
             ]
         }))).body)
@@ -104,7 +106,8 @@ class WizardStepMixin(object):
                         }
                     ],
                     "id": "a93bb28f-a3be-40bc-8405-a46d10ade37a",
-                    "question_txt": "what is a?"
+                    "question_txt": "what is a?",
+                    "question_title": "Diagnostic"
                 },
                 {
                     "choices": [
@@ -121,7 +124,8 @@ class WizardStepMixin(object):
                         }
                     ],
                     "id": "6e4b4aef-6b80-4525-b00f-5430f6c6f75f",
-                    "question_txt": "what is b?"}]
+                    "question_txt": "what is b?",
+                    "question_title": "Diagnostic"}]
 
         }))).body)
         return res

@@ -10,12 +10,15 @@ class Question(object):
     id = ""
     title = ""
     text = ""
+    group = ""
     choices = ""
 
     def __init__(self, **params):
         self.id = params['id']
+        self.order = params['order']
         self.title = params['title']
         self.text = params['text']
+        self.group = params['group']
         self.choices = params['choices']
 
     @classmethod
@@ -26,15 +29,16 @@ class Question(object):
         :param choices: posted choices for each question
         :return: question object
         """
-        return cls(id=question.get('id', ''), title=question.get('question_title', ''),
-                   text=question.get('question_txt', ''), choices=choices)
+        return cls(id=question.get('id', ''), order=question.get('order', ''), title=question.get('question_title', ''),
+                   group=question.get('group'), text=question.get('question_txt', ''), choices=choices)
 
     def get_json(self):
         """
         return question json in required format to save
         :return: dict
         """
-        return {'id': self.id, 'title': self.title, 'text': self.text, 'choices': self.choices}
+        return {'id': self.id, 'order': self.order, 'title': self.title, 'text': self.text, 'group': self.group,
+                'choices': self.choices}
 
     @classmethod
     def filter_question(cls, data, quiz_type):

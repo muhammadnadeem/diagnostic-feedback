@@ -1,52 +1,51 @@
+{% load i18n %}
 <div class="diagnostic-feedback diagnostic-feedback-studio">
     <div class="editor">
         <div class="wrapper-comp-settings is-active editor	">
-            <h1 class="wizard-loading">Loading Wizard, Please wait</h1>
-            <div id="edit_questionnaire_panel" style="display: none;">
+            <h1 class="wizard-loading">{% trans "Loading Wizard, Please wait" %}</h1>
+
+            <div class="hide edit_questionnaire_panel">
                 <div class="msg"><h3></h3></div>
-                <form id="questionnaire-form" action="#">
+                <form class="questionnaire-form" action="#">
                     <div>
                         <!-- Step 1 start -->
-                        <h3>Basic Info</h3>
+                        <h3>{% trans "Basic Info" %}</h3>
                         <section step="1">
-                        <hr/>
+                            <hr/>
                             <ul class="list-input settings-list">
                                 <li class="field comp-setting-entry metadata_entry">
                                     <div class="wrapper-comp-setting">
-                                        <label for="title" class="label setting-label">Quiz Title</label>
-                                        <input id="title" name="title" type="text" class="required field-data-control" value="{{self.title}}">
+                                        <label for="{{block_id}}_title" class="label setting-label">{% trans "Quiz Title" %}</label>
+                                        <input id="{{block_id}}_title" name="{{block_id}}_title" type="text" class="required field-data-control"
+                                               required value="{{self.title}}">
                                     </div>
                                 </li>
                                 <li class="field comp-setting-entry metadata_entry">
                                     <div class="wrapper-comp-setting">
-                                    {% if not self.quiz_type %}
-                                        <label for="type" class="label setting-label">Quiz Type</label>
-                                        <select id="type" name="type" class="required field-data-control">
-                                            <option value=""> -- Select Type -- </option>
+                                        {% if not self.quiz_type %}
+                                        <label for="{{block_id}}_type" class="label setting-label">{% trans "Quiz Type" %}</label>
+                                        <select id="{{block_id}}_type" name="{{block_id}}_type" class="required field-data-control" required>
+                                            <option value="">{% trans "Select Type" %}</option>
                                             {% for t in self.types %}
-                                                <option value="{{t.value}}" {% if t.value == self.quiz_type %} selected="selected" {% endif %} >
-                                                    {{t.label}}
-                                                </option>
+                                            <option value="{{t.value}}" {% if t.value == self.quiz_type %}
+                                                    selected="selected" {% endif %}>
+                                                {{t.label}}
+                                            </option>
                                             {% endfor %}
                                         </select>
-                                    {% else %}
-                                            <label for="type" class="label setting-label">Quiz Type</label>
-                                            <select id="type" name="type" class="required field-data-control" disabled="disabled">
-                                                {% for t in self.types %}
-                                                    {% if t.value == self.quiz_type %}
-                                                        <option value="{{t.value}}" selected="selected"  >
-                                                            {{t.label}}
-                                                        </option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </select>
+                                        {% else %}
+                                        <p class="label setting-label">{% trans "Quiz Type" %}
+    </p>{% for t in self.types %} {% if t.value == self.quiz_type %} {{t.label}} {% endif %} {% endfor %}
+                                        <input type="hidden" id="{{block_id}}_type" name="{{block_id}}_type" value="{{ self.quiz_type }}"/>
                                         {% endif %}
                                     </div>
+                                    <span class="tip setting-help">{% trans "Type cannot be changed once it is set." %}</span>
                                 </li>
                                 <li class="field comp-setting-entry metadata_entry">
                                     <div class="wrapper-comp-setting">
-                                        <label for="description" class="label setting-label">Description</label>
-                                        <textarea id="description" name="description" rows="5" cols="50" class="required field-data-control custom-textarea">{{self.description}}</textarea>
+                                        <label for="{{block_id}}_description" class="label setting-label">{% trans "Description" %}</label>
+                                        <textarea id="{{block_id}}_description" name="{{block_id}}_description" rows="5" cols="50"
+                                                  class="required field-data-control custom-textarea" required>{{self.description}}</textarea>
                                     </div>
                                 </li>
                             </ul>
@@ -56,35 +55,41 @@
                         <!-- Step 2 start -->
                         <h3>Results</h3>
                         <section step="2">
+                            <div class="fields-container hide categories_panel">
+                                <h4>{% trans "Categories" %} *</h4>
+                                <span class="text-help">{% trans "Drag a collapsed category to prioritize for tie-breaking." %}</span>
+                                <div class='accordion'>
 
-                            <div id="categories_panel" class="fields-container hide">
-                                <h4>Categories *</h4>
-                                <div id='accordion'>
+                               </div>
 
-                                </div>
-
-                                <a class="add-new-category button button-new" href="#"><i class="icon fa fa-plus"></i>Add Category</a>
+                                <a class="add-new-category button button-new" href="#"><i class="icon fa fa-plus"></i>
+                                    {% trans "Add Category" %}</a>
                             </div>
-                            <div id="ranges_panel" class="fields-container hide">
-                                <h3>Range(s)</h3>
-                                <div id='accordion'>
+                            <div class="fields-container hide ranges_panel">
+                                <h3>{% trans "Ranges" %}</h3>
+                                <span class="text-help">{% trans "Drag a collapsed range to prioritize for tie-breaking." %}</span>
+                                <div class='accordion'>
 
-                                </div>
+                               </div>
 
-                                 <a href="#" class="add-new-range button button-new" title="Click to add a new Range">
-                                    <i class="icon fa fa-plus"></i>New Range
+                                <a href="#" class="add-new-range button button-new" title="Click to add a new Range">
+                                    <i class="icon fa fa-plus"></i>{% trans "Add Range" %}
                                 </a>
                             </div>
                         </section>
                         <!-- Step 2 end -->
 
                         <!-- Step 3 start -->
-                        <h3>Questions</h3>
+                        <h3>{% trans "Questions" %}</h3>
                         <section step="3">
-                            <div id="questions_panel">
+                            <div class="questions_panel">
+                                <div class='accordion'>
 
-                                <a href="#" class="add-new-question button button-new" title="Click to add a new Question">
-                                    <i class="icon fa fa-plus"></i>New Question
+                               </div>
+
+                                <a href="#" class="add-new-question button button-new"
+                                   title="Click to add a new Question">
+                                    <i class="icon fa fa-plus"></i>{% trans "Add Question" %}
                                 </a>
                             </div>
                         </section>
@@ -93,8 +98,5 @@
                 </form>
             </div>
         </div>
-
-
     </div>
 </div>
-

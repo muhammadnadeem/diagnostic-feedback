@@ -18,7 +18,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":""
+                "id":"",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -28,7 +29,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -47,7 +49,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -57,7 +60,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":""
+                "id":"",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -76,7 +80,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -86,7 +91,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -105,7 +111,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"",
@@ -115,17 +122,28 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
-    "missing_ques_choices_case1":{
+    "missing_ques_title_case1":{
         "step":3,
         "questions":[
             {
                 "question_txt":"This is first question",
-                "choices":[],
-                "id":"qxxxxxx1"
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_category":"xxxxxx1"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_category":"xxxxxx2"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : ""
             },
             {
                 "question_txt":"This is second question",
@@ -135,7 +153,61 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
+            }
+        ]
+    },
+    "missing_ques_title_case2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_category":"xxxxxx1"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_category":"xxxxxx2"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_category":"xxxxxx2"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : ""
+            }
+        ]
+    },
+    "missing_ques_choices_case1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[],
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_category":"xxxxxx2"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -154,12 +226,14 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
                 "choices":[],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -178,7 +252,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -188,7 +263,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -207,7 +283,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -217,7 +294,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -236,7 +314,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -246,7 +325,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -265,7 +345,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -275,7 +356,8 @@
                         "choice_category":""
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -294,7 +376,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -304,7 +387,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -323,7 +407,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -333,7 +418,8 @@
                         "choice_category":"xxxxxx3"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     },
@@ -352,7 +438,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx1"
+                "id":"qxxxxxx1",
+                "question_title" : "Buzzfeed"
             },
             {
                 "question_txt":"This is second question",
@@ -362,7 +449,8 @@
                         "choice_category":"xxxxxx2"
                     }
                 ],
-                "id":"qxxxxxx2"
+                "id":"qxxxxxx2",
+                "question_title" : "Buzzfeed"
             }
         ]
     }

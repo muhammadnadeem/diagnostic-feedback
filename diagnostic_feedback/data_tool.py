@@ -2,10 +2,7 @@ import json
 import logging
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, List
-from xblockutils.resources import ResourceLoader
 from .sub_api import SubmittingXBlockMixin, my_api
-from .tasks import export_dg_data as export_data_task
-loader = ResourceLoader(__name__)
 
 PAGE_SIZE = 15
 
@@ -13,6 +10,7 @@ PAGE_SIZE = 15
 # Make '_' a no-op so we can scrape strings
 def _(text):
     return text
+
 
 log = logging.getLogger(__name__)
 
@@ -64,10 +62,13 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
         # Unfortunately this is a bit inefficient due to the ReportStore API
         if not self.last_export_result or self.last_export_result['error'] is not None:
             return None
-        from lms.djangoapps.instructor_task.models import ReportStore
-        report_store = ReportStore.from_config(config_name='GRADES_DOWNLOAD')
-        course_key = getattr(self.scope_ids.usage_id, 'course_key', None)
-        return dict(report_store.links_for(course_key)).get(self.last_export_result['report_filename'])
+        try:
+            from lms.djangoapps.instructor_task.models import ReportStore
+            report_store = ReportStore.from_config(config_name='GRADES_DOWNLOAD')
+            course_key = getattr(self.scope_ids.usage_id, 'course_key', None)
+            return dict(report_store.links_for(course_key)).get(self.last_export_result['report_filename'])
+        except Exception:
+            pass
 
     def _get_status(self):
         self.check_pending_export()
@@ -83,7 +84,7 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
         """
         If we're waiting for an export, see if it has finished, and if so, get the result.
         """
-        # from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             log.info("------------ in check_pending_export - checking status ---------------")
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
@@ -93,7 +94,6 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
     @XBlock.json_handler
     def start_export(self, data, suffix=''):
         """ Start a new asynchronous export """
-        block_type = "QuizBlock"
         log.info("------------ in start_export ---------------")
         root_block_id = self.scope_ids.usage_id
         root_block_id = unicode(getattr(root_block_id, 'block_id', root_block_id))
@@ -111,6 +111,8 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
             log.info("------------ in start_export - my_api found ---------------")
         else:
             log.info("------------ in start_export - my_api not found ---------------")
+
+        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         async_result = export_data_task.delay(
             # course_id not available in workbench.
             unicode(getattr(self.runtime, 'course_id', 'course_id')),
@@ -131,12 +133,12 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
             log.info(async_result.id)
             # The task is running asynchronously. Store the result ID so we can query its progress:
             self.active_export_task_id = async_result.id
-            #diagnostic_feedback.tasks.export_data
+
         return self._get_status()
 
     @XBlock.json_handler
     def cancel_export(self, request, suffix=''):
-        # from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
+        from .tasks import export_data as export_data_task  # Import here since this is edX LMS specific
         if self.active_export_task_id:
             async_result = export_data_task.AsyncResult(self.active_export_task_id)
             async_result.revoke()

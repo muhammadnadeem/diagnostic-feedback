@@ -1,15 +1,30 @@
-__author__ = 'attiya'
+import itertools
+import copy
+from collections import defaultdict
+
+
+class StudentResultPresenter(object):
+    html_body = ''
+
+    def __init__(self, **data):
+        self.html_body = data.get('html_body', '')
+
+    def generate_result(self):
+        return {_property: getattr(self, _property) for _property in dir(self) if
+                not _property.startswith('__') and not callable(getattr(self, _property))}
 
 
 class QuizResultMixin(object):
-    msg = 'No result found'
-    img = ''
-    html_body = ''
+    """
+    Return result to student at a quiz completed
+    """
 
-    def get_buzz_feed_result(self):
+    def get_buzzfeed_result(self):
         """
-            Calculate the result of Buzz Feed Quiz type
+            Calculate the result of BuzzFeed Quiz type
         """
+        final_result = []
+
         outcomes = {}
         for choice in self.student_choices:
             if outcomes.get(self.student_choices[choice]):
@@ -17,10 +32,31 @@ class QuizResultMixin(object):
             else:
                 outcomes[self.student_choices[choice]] = 1
 
-        # get the outcome of user based on user's selected values
-        result = self.get_result_by_choices(outcomes)
-        self.student_result = result['id']
-        final_result = self.get_result(result)
+        keys = outcomes.keys()
+        calculated_results = copy.deepcopy(self.results)
+        for d in calculated_results:
+            if d['id'] in outcomes:
+                d.update({'count': outcomes[d['id']]})
+
+        filtered_results = filter(lambda d: d['id'] in keys, calculated_results)
+        sorted_results = sorted(filtered_results, key=lambda d: d['group'])
+        groups = itertools.groupby(sorted_results, lambda item: item["group"])
+
+        for key, group in groups:
+            group = list(group)
+            m = max([d['count'] for d in group])
+            group_max_result = [d for d in group if d['count'] == m]
+            group_min_order = min(group_max_result, key=lambda d: d['order'])
+            final_result.append(group_min_order)
+
+        if not final_result:
+            final_result.append({
+                'id': '',
+                'name': '',
+                'image': '',
+                'html_body': 'we cannot calculate your outcome',
+            })
+
         return final_result
 
     def get_diagnostic_result(self):
@@ -29,38 +65,54 @@ class QuizResultMixin(object):
         Calculate the result of Diagnostic Quiz type
 
         """
-        final_result = {
-            'msg': 'we cannot calculate your outcome',
-            'img': self.img,
-            'html_body': 'we cannot calculate your outcome'
-        }
-        total_value = 0.0
-        for choice in self.student_choices.values():
-            total_value += float(choice)
-        for result in self.results:
-            if float(result['min_value']) <= total_value <= float(result['max_value']):
-                final_result.clear()
-                final_result = self.get_result(result)
-                break
+        final_result = []
 
-        self.student_result = result['name']
+        question_groups = {q['id']: q['group'] for q in self.questions}
+        outcomes = defaultdict(int)
+        for choice, value in self.student_choices.iteritems():
+            outcomes[question_groups[choice]] += float(value)
+
+        for result in self.results:
+            value = outcomes[result['group']]
+            if float(result['min_value']) <= value <= float(result['max_value']):
+                final_result.append(result)
+
+        if not final_result:
+            final_result.append({
+                'name': '',
+                'min_value': '',
+                'max_value': '',
+                'image': '',
+                'html_body': 'we cannot calculate your outcome'
+            })
         return final_result
 
-    def get_result(self, result):
-
+    def get_result(self):
         """
-            save the student result and returns the data of student's result
+        Get result for student based on his/her answer'
         """
-        self.msg = "You are %s" % str(result['name'])
-        if result['image']:
-            self.img = result['image']
-        self.html_body = result['html_body']
-        return {'msg': self.msg, 'img': self.img, 'html_body': self.html_body}
 
-    def get_result_by_choices(self, outcomes):
-        max_outcome = max(outcomes.iteritems(), key=lambda v: v[1])[0]
-        for result in self.results:
-            if max_outcome in result['id']:
-                break
+        if self.quiz_type == self.BUZZFEED_QUIZ_VALUE:
+            results = self.get_buzzfeed_result()
+        else:
+            results = self.get_diagnostic_result()
+
+        final_html = ''
+        student_results = []
+        for result in results:
+            student_results.append(result['name'])
+            html_body = result['html_body']
+            if result['image']:
+                html_body = '<img class="result-img" src="{}" alt="{}">{}'.format(result['image'], result['name'],
+                                                                                  result['html_body'])
+            final_html += '<div class="result">{}</div><hr>'.format(html_body)
+
+        self.student_result = ", ".join(student_results)
+
+        replace_urls = getattr(self.runtime, 'replace_urls', lambda html: html)
+        html_body = replace_urls(final_html)
+
+        presenter = StudentResultPresenter(html_body=html_body)
+        result = presenter.generate_result()
+
         return result
-

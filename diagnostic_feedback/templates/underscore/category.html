@@ -1,24 +1,65 @@
 <div class='group'>
     <h3>
-        <span class="category-order"><%- order + 1 %></span>
+        <span class="category-order"><%- order + 1 %>
+        </span>
+        <span class="sort-title">
+            <% if (!name) { %>
+                <%- gettext('Untitled') %>
+            <% } else { %>
+                <%- name %>
+            <% }%>
+        </span>
+        ( <span class="sort-title-group">
+            <% if (!group) { %>
+                <%- DEFAULT_GROUP %>
+            <% } else { %>
+                 <%- group %>
+            <% }%>
+        </span> )
         <span class="action-button">
-            <a href="#" data-tooltip="Delete" class="delete-category delete-button action-button">
+            <a href="#" data-tooltip="<%- gettext('Delete Category') %>" class="delete-category delete-button action-button">
                 <i class="icon fa fa-trash-o"></i>
-                <span class="sr">Delete</span>
+                <span class="sr"><%- gettext('Delete') %></span>
             </a>
         </span>
     </h3>
     <div>
+
         <div class="category">
-            <input type="hidden" id="category[order][<%- order %>]" name="category[order][<%- order %>]" class="skip-validation" value="<%- order %>" />
-            <input type="hidden" id="category[id][<%- order %>]" name="category[id][<%- order %>]" class="skip-validation" value="<%- id %>" />
-            <input placeholder="Name" type="text" id="category[name][<%- order %>]" name="category[name][<%- order %>]"  class="required" value="<%- name %>" />
-            <input placeholder="Image" type="text" id="category[image][<%- order %>]" name="category[image][<%- order %>]"  value="<%- image %>" />
+            <input type="hidden" id="<%- block_id %>_category[order][<%- order %>]"
+                   name="<%- block_id %>_category[order][<%- order %>]"
+                   class="skip-validation" value="<%- order %>" />
 
-            <input placeholder="Internal Description" class="internal-description" type="text"
-                   id="category[internal_description][<%- order %>]" name="category[internal_description][<%- order %>]" value="<%- internal_description %>" />
+            <input type="hidden" id="<%- block_id %>_category[id][<%- order %>]"
+                   name="<%- block_id %>_category[id][<%- order %>]" class="skip-validation"
+                   value="<%- id %>"/>
 
-            <textarea class="custom-textarea" placeholder="Html Body" id="category[html_body][<%- order %>]" name="category[html_body][<%- order %>]"><%- html_body %></textarea>
+            <input placeholder="<%- gettext('Name') %>" type="text"
+                   id="<%- block_id %>_category[name][<%- order %>]"
+                   name="<%- block_id %>_category[name][<%- order %>]"
+                   class="required sort-title-source" required value="<%- name %>"/>
+
+            <input placeholder="<%- gettext('Image URL') %> (e.g. /static/img15.jpg)" type="text"
+                   class="image-url"
+                   id="<%- block_id %>_category[image][<%- order %>]"
+                   name="<%- block_id %>_category[image][<%- order %>]" value="<%- image %>"/>
+
+            <input type="text" placeholder="<%- gettext('Attach to a group') %>"
+                   id="<%- block_id %>_category[group][<%- order %>]"
+                   name="<%- block_id %>_category[group][<%- order %>]"
+                   class="group-auto-complete category-autocomplete"
+                   value="<%- group %>" />
+
+            <input placeholder="<%- gettext('Notes for author; not shown to students') %>"
+                   class="internal-description"
+                   type="text"
+                   id="<%- block_id %>_category[internal_description][<%- order %>]"
+                   name="<%- block_id %>_category[internal_description][<%- order %>]"
+                   value="<%- internal_description %>"/>
+
+            <textarea class="custom-textarea" placeholder="<%- gettext('Html Body') %>"
+                  id="<%- block_id %>_category[html_body][<%- order %>]"
+                  name="<%- block_id %>_category[html_body][<%- order %>]"><%- html_body %></textarea>
         </div>
     </div>
 </div>
