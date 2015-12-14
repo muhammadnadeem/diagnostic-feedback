@@ -1,7 +1,9 @@
 import itertools
 import copy
+import logging
 from collections import defaultdict
 
+log = logging.getLogger(__name__)
 
 class StudentResultPresenter(object):
     html_body = ''
@@ -43,6 +45,7 @@ class QuizResultMixin(object):
         groups = itertools.groupby(sorted_results, lambda item: item["group"])
 
         for key, group in groups:
+            log.info("Info: Calculating result for {}".format(key))
             group = list(group)
             m = max([d['count'] for d in group])
             group_max_result = [d for d in group if d['count'] == m]
