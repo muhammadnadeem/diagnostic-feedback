@@ -51,6 +51,8 @@ class RangeValidator(BaseValidator):
             name = _range.get('name')
             min_value = _range.get('min_value')
             max_value = _range.get('max_value')
+            group = _range.get('group')
+            order = _range.get('order')
 
             if self.is_empty(name):
                 valid = False
@@ -61,7 +63,12 @@ class RangeValidator(BaseValidator):
             elif self.bigger_min_val(min_value, max_value):
                 valid = False
                 validation_message = self._('Min > Max')
-
+            elif self.is_empty(group):
+                valid = False
+                validation_message = self._('Group is required')
+            elif self.is_empty(order):
+                valid = False
+                validation_message = self._('Order is required')
             if not valid:
                 break
 

@@ -105,6 +105,14 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
                 assert_equals(res['success'], False)
             elif _type == 'missing_name_case2':
                 assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_2':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_2':
+                assert_equals(res['success'], False)
             elif _type == 'valid':
                 assert_equals(res['success'], True)
 
@@ -139,6 +147,14 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
             elif _type == 'overlapping_ranges_case2':
                 assert_equals(res['success'], False)
             elif _type == 'overlapping_ranges_case3':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_2':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_2':
                 assert_equals(res['success'], False)
             elif _type == 'valid':
                 assert_equals(res['success'], True)
@@ -195,6 +211,19 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
                 assert_equals(res['success'], False)
             elif _type == 'missing_ques_choice_txt_case2':
                 assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_2':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_2':
+                assert_equals(res['success'], False)
+            elif _type == 'invalid_group_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'invalid_group_case_2':
+                assert_equals(res['success'], False)
+
             elif _type == 'valid':
                 assert_equals(res['success'], True)
 
@@ -249,6 +278,18 @@ class DiagnosticFeedbackAjaxTest(BaseTest, WizardStepMixin):
             elif _type == 'invalid_datatype_choice_value_case1':
                 assert_equals(res['success'], False)
             elif _type == 'invalid_datatype_choice_value_case2':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_group_case_2':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'missing_order_case_2':
+                assert_equals(res['success'], False)
+            elif _type == 'invalid_group_case_1':
+                assert_equals(res['success'], False)
+            elif _type == 'invalid_group_case_2':
                 assert_equals(res['success'], False)
 
             elif _type == 'valid':

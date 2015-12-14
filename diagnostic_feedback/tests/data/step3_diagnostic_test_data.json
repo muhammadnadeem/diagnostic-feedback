@@ -423,6 +423,216 @@
             }
         ]
     },
+    "missing_group_case_1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"12.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : "Diagnostic",
+                "group" : "",
+                "order" : "0"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"25.0"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : "Diagnostic",
+                "group" : "group 2",
+                "order" : "1"
+            }
+        ]
+    },
+    "missing_group_case_2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"12.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : "Diagnostic",
+                "group" : "group 1",
+                "order" : "0"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"25.0"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : "Diagnostic",
+                "group" : "",
+                "order" : "0"
+            }
+        ]
+    },
+    "missing_order_case_1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"12.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : "Diagnostic",
+                "group" : "group 1",
+                "order" : ""
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"25.0"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : "Diagnostic",
+                "group" : "group 2",
+                "order" : "1"
+            }
+        ]
+    },
+    "missing_order_case_2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"12.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : "Diagnostic",
+                "group" : "group 1",
+                "order" : "0"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"25.0"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : "Diagnostic",
+                "group" : "group 2",
+                "order" : ""
+            }
+        ]
+    },
+    "invalid_group_case_1":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"12.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : "Diagnostic",
+                "group" : "group 3",
+                "order" : "0"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"25.0"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : "Diagnostic",
+                "group" : "group 1",
+                "order" : "0"
+            }
+        ]
+    },
+    "invalid_group_case_2":{
+        "step":3,
+        "questions":[
+            {
+                "question_txt":"This is first question",
+                "choices":[
+                    {
+                        "choice_txt":"Good",
+                        "choice_value":"12.0"
+                    },
+                    {
+                        "choice_txt":"Bad",
+                        "choice_value":"3.0"
+                    }
+                ],
+                "id":"qxxxxxx1",
+                "question_title" : "Diagnostic",
+                "group" : "group 1",
+                "order" : "0"
+            },
+            {
+                "question_txt":"This is second question",
+                "choices":[
+                    {
+                        "choice_txt":"Vary Bad",
+                        "choice_value":"25.0"
+                    }
+                ],
+                "id":"qxxxxxx2",
+                "question_title" : "Diagnostic",
+                "group" : "group 4",
+                "order" : "0"
+            }
+        ]
+    },
     "valid":{
         "step":3,
         "questions":[
@@ -431,7 +641,7 @@
                 "choices":[
                     {
                         "choice_txt":"Good",
-                        "choice_value":"2.0"
+                        "choice_value":"12.0"
                     },
                     {
                         "choice_txt":"Bad",
@@ -439,18 +649,22 @@
                     }
                 ],
                 "id":"qxxxxxx1",
-                "question_title" : "Diagnostic"
+                "question_title" : "Diagnostic",
+                "group" : "group 1",
+                "order" : "0"
             },
             {
                 "question_txt":"This is second question",
                 "choices":[
                     {
                         "choice_txt":"Vary Bad",
-                        "choice_value":"3.0"
+                        "choice_value":"25.0"
                     }
                 ],
                 "id":"qxxxxxx2",
-                "question_title" : "Diagnostic"
+                "question_title" : "Diagnostic",
+                "group" : "group 2",
+                "order" : "1"
             }
         ]
     }

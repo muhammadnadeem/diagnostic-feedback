@@ -15,6 +15,10 @@ class QuestionValidator(BaseValidator):
         valid_ids = [result['id'] for result in self.xblock.results]
         return not (category in valid_ids)
 
+    def invalid_group(self, group):
+        valid_groups = [result['group'] for result in self.xblock.results]
+        return not (group in valid_groups)
+
     def validate_choice(self, choices):
         """
         validate choices for a given question
@@ -74,6 +78,8 @@ class QuestionValidator(BaseValidator):
             question_title = question.get('question_title', '')
             question_txt = question.get('question_txt', '')
             choices = question.get('choices', [])
+            order = question.get('order', '')
+            group = question.get('group' , '')
 
             # check for question id availablity
             if self.is_empty(_id):
@@ -89,6 +95,18 @@ class QuestionValidator(BaseValidator):
             elif self.is_empty(question_txt):
                 valid = False
                 validation_message = ' {} {} {}'.format(self._('question'), question_order, self._("text required"))
+
+            elif self.is_empty(order):
+                valid = False
+                validation_message = ' {} {} {}'.format(self._('question'), question_order, self._("order required"))
+
+            elif self.is_empty(group):
+                valid = False
+                validation_message = ' {} {} {}'.format(self._('question'), question_order, self._("group required"))
+
+            elif self.invalid_group(group):
+                valid = False
+                validation_message = ' {} {} {}'.format(self._('question'), question_order, self._("invalid group found"))
 
             # if question is valid, check its choices validity
             if valid:
