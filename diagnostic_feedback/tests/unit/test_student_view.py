@@ -55,7 +55,7 @@ class StudentViewAjaxTest(BaseTest, WizardStepMixin):
         res = self.save_diagnostic_step3()
         assert_equals(res['success'], True)
 
-        for i, question_data in enumerate(self._block.questions):
+        for question_data in self._block.questions:
             for _type, data in self._daignostic_answer.items():
                 if _type == 'missing_id':
                     data['question_id'] = ''
@@ -89,7 +89,7 @@ class StudentViewAjaxTest(BaseTest, WizardStepMixin):
         res = self.save_buzzfeed_step3()
         assert_equals(res['success'], True)
 
-        for i, question_data in enumerate(self._block.questions):
+        for question_data in self._block.questions:
             for _type, data in self._buzzfeed_answer.items():
                 if _type == 'missing_id':
                     data['question_id'] = ''

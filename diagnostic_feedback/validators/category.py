@@ -26,7 +26,7 @@ class CategoryValidator(BaseValidator):
             _id = category.get('id', '')
             name = category.get('name', '')
             group = category.get('group', '')
-            order = category.get('order' , '')
+            order = category.get('order', '')
 
             if self.is_empty(_id):
                 valid = False
