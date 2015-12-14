@@ -353,6 +353,13 @@ function StudioCommon(runtime, element, initData) {
     allGroups.push(group);
   };
 
+  commonObj.getOptionsList = function (dropdown){
+    return $(dropdown).find('option').map(function() {
+      var _value = $(this).val();
+      if(_value != "") { return $(this).val(); }
+    }).get()
+  };
+
   commonObj.updateAllGroupDropwdowns = function () {
     // update html of all group dropdowns to sync with groups added at step2
 
@@ -361,7 +368,14 @@ function StudioCommon(runtime, element, initData) {
       var selectedValue = $(dropdown).val();
       var groupOptions = commonObj.generateGroupsHtml($(dropdown), attachedGroups);
       $(dropdown).html(groupOptions);
+
+      var options = commonObj.getOptionsList(dropdown);
+      if(options.indexOf(selectedValue) < 0){
+        selectedValue = "";
+      }
+
       $(dropdown).val(selectedValue);
+      commonObj.updateSortingGroupTxt($(dropdown), selectedValue);
 
       if(initData.BUZZFEED_QUIZ_VALUE){
         var selectedGroup = $(dropdown).val(),
