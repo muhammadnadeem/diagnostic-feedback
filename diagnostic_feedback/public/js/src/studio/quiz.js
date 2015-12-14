@@ -181,14 +181,15 @@ function Quiz(runtime, element, initData) {
       // if return true next stepp will be loaded
       // if return false validation errors will be shown
 
+     // generic validation rules
      var fieldToIgnore = [
-         'section:visible .skip-validation',
-         'section:hidden input',
-         'section:hidden textarea',
-         'section:hidden select'
-       ],
-        quizType = studioCommon.getQuizType(),
-        customValidated = false;
+       'section:visible .skip-validation',
+       'section:hidden input',
+       'section:hidden textarea',
+       'section:hidden select'
+     ],
+     quizType = studioCommon.getQuizType(),
+     customValidated = false;
 
       tinyMCE.triggerSave();
 
@@ -203,23 +204,34 @@ function Quiz(runtime, element, initData) {
         if (setting.jsValidation) {
           //ignore hidden fields; will validate on current step showing fields
           if (currentStep == 2 ) {
-              if (quizType == initData.BUZZFEED_QUIZ_VALUE){
-                  fieldToIgnore = fieldToIgnore.concat([
-                      'section:visible .ranges_panel input:hidden',
-                      'section:visible .ranges_panel select:hidden'
-                  ]);
-              } else {
-                  fieldToIgnore = fieldToIgnore.concat([
-                      'section:visible .categories_panel input:hidden',
-                      'section:visible .categories_panel select:hidden'
-                  ]);
-              }
+            // add step-2 related validation rules
+            if (quizType == initData.BUZZFEED_QUIZ_VALUE){
+              // in buzzfeed-style quiz ignore diagnostic-style quiz (ranges) related fields
+              fieldToIgnore = fieldToIgnore.concat([
+                'section:visible .ranges_panel input:hidden',
+                'section:visible .ranges_panel select:hidden'
+              ]);
+            } else {
+              // in diagnostic-style quiz ignore buzzfeed-style quiz (categories) related fields
+              fieldToIgnore = fieldToIgnore.concat([
+                'section:visible .categories_panel input:hidden',
+                'section:visible .categories_panel select:hidden'
+              ]);
+            }
 
           } else {
+            // add step-3 related validation rules
+            if(quizType == initData.BUZZFEED_QUIZ_VALUE){
+              // in buzzfeed-style quiz ignore diagnostic-style quiz related fields
               fieldToIgnore = fieldToIgnore.concat([
-                  'section:visible input:hidden',
-                  'section:visible select:hidden'
+                'section:visible input.answer-value:hidden'
               ]);
+            }else {
+              // in diagnostic-style quiz ignore buzzfeed-style quiz related fields
+              fieldToIgnore = fieldToIgnore.concat([
+                'section:visible select.result-choice:hidden'
+              ]);
+            }
           }
           $form.validate().settings.ignore = fieldToIgnore.join(", ");
 
