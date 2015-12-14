@@ -583,7 +583,7 @@ function StudioCommon(runtime, element, initData) {
         minValue = $('input[name*="range[min][' + order + ']"]', element).val(),
         maxValue = $('input[name*="range[max][' + order + ']"]', element).val(),
         image = $('input[name*="range[image][' + order + ']"]', element).val(),
-        internalDescription = $('input[name="range[internal_description][' + order + ']"]').val(),
+        internalDescription = $('input[name="range[internal_description][' + order + ']"]', element).val(),
         htmlBody = $('textarea[name*="range[html_body][' + order + ']"]', element).val();
       group = commonObj.termInStrArray(group, allGroups) ? group.trim() : initData.DEFAULT_GROUP;
       return {
