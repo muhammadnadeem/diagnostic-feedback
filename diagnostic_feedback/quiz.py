@@ -415,12 +415,12 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
             if self.quiz_type == self.BUZZFEED_QUIZ_VALUE:
                 question_answer = self.get_buzzfeed_answer(question_data['choices'], self.student_choices[question_id])
             else:
-                question_answer = self.get_diagnostic_answer(question_data['choices'], self.student_choices[question_id])
+                question_answer = self.get_diagnostic_answer(question_data['choices'],
+                                                             self.student_choices[question_id])
 
             submission[question_id] = {
                 'question_text': question['text'],
                 'answer': question_answer
             }
-
 
         return submission

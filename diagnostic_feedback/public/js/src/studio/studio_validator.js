@@ -10,7 +10,7 @@ function CustomValidator(runtime, element, initData) {
     rangeMinSelector = "input[name*='range[min]']",
     rangeMaxSelector = "input[name*='range[max]']",
     rangeGrpSelector = "input[name*='range[group]']",
-    rangesPanel = '.diagnostic-feedback #ranges_panel',
+    rangesPanel = '.diagnostic-feedback .ranges_panel',
     grpSelector = '.group',
     rangeSelector = '.range';
 
