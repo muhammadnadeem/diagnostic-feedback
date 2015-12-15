@@ -79,7 +79,7 @@ class QuestionValidator(BaseValidator):
             question_txt = question.get('question_txt', '')
             choices = question.get('choices', [])
             order = question.get('order', '')
-            group = question.get('group' , '')
+            group = question.get('group', '')
 
             # check for question id availablity
             if self.is_empty(_id):
@@ -106,7 +106,8 @@ class QuestionValidator(BaseValidator):
 
             elif self.invalid_group(group):
                 valid = False
-                validation_message = ' {} {} {}'.format(self._('question'), question_order, self._("invalid group found"))
+                validation_message = ' {} {} {}'.format(self._('question'), question_order,
+                                                        self._("invalid group found"))
 
             # if question is valid, check its choices validity
             if valid:
