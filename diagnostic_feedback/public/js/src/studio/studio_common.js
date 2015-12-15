@@ -12,6 +12,7 @@ function StudioCommon(runtime, element, initData) {
 
 
   var commonObj = this,
+    tiny_mce_css_links = '',
     setting = new Setting(),
     allGroups = initData.groups,
     attachedGroups = initData.attachedGroups,
@@ -74,6 +75,25 @@ function StudioCommon(runtime, element, initData) {
     allResultChoiceSelector = '.diagnostic-feedback .result-choice',
     choiceNameClsSelector = '.answer-txt';
 
+
+  var CUSTOM_FONTS, STANDARD_FONTS, _getFonts;
+
+  CUSTOM_FONTS = "Default='Open Sans', Verdana, Arial, Helvetica, sans-serif;";
+
+  STANDARD_FONTS = "Andale Mono=andale mono,times;" + "Arial=arial,helvetica,sans-serif;" +
+    "Arial Black=arial black,avant garde;" + "Book Antiqua=book antiqua,palatino;" +
+    "Comic Sans MS=comic sans ms,sans-serif;" + "Courier New=courier new,courier;"
+    + "Georgia=georgia,palatino;" + "Helvetica=helvetica;" + "Impact=impact,chicago;"
+    + "Symbol=symbol;" + "Tahoma=tahoma,arial,helvetica,sans-serif;" + "Terminal=terminal,monaco;"
+    + "Times New Roman=times new roman,times;" + "Trebuchet MS=trebuchet ms,geneva;"
+    + "Verdana=verdana,geneva;" + "Webdings=webdings;" + "Wingdings=wingdings,zapf dingbats";
+
+  _getFonts = function() {
+    return CUSTOM_FONTS + STANDARD_FONTS;
+  };
+
+  tinyMCE.baseURL = "" + baseUrl + "/js/vendor/tinymce/js/tinymce";
+  tinyMCE.suffix = ".min";
 
   commonObj.notify = function (name, data){
     // Notification interface does not exist in the workbench.
@@ -271,6 +291,8 @@ function StudioCommon(runtime, element, initData) {
     });
   };
 
+  // tinymce methods start
+
   commonObj.destroyAllEditors = function(container){
     // destory all editors instances in a specific container
     var editors = container.find(tinyMceTextarea);
@@ -287,6 +309,70 @@ function StudioCommon(runtime, element, initData) {
     }
   };
 
+  commonObj.showCodeEditor = function(source) {
+    return commonObj.showCodeEditor.apply(commonObj, arguments);
+  };
+
+  commonObj.setupTinyMCE = function(ed) {
+    ed.addButton('wrapAsCode', {
+      title: 'Code block',
+      image: "" + baseUrl + "/images/ico-tinymce-code.png",
+      onclick: function() {
+        return ed.formatter.toggle('code');
+      }
+    });
+
+    ed.on('SaveImage', commonObj.saveImage);
+    ed.on('EditImage', commonObj.editImage);
+    ed.on('SaveLink', commonObj.saveLink);
+    ed.on('EditLink', commonObj.editLink);
+    ed.on('ShowCodeEditor', commonObj.showCodeEditor);
+    return ed.on('SaveCodeEditor', commonObj.saveCodeEditor);
+  };
+
+  commonObj.editImage = function(data) {
+    if (data['src']) {
+      return data['src'] = rewriteStaticLinks(data['src'], initData.base_asset_url, '/static/');
+    }
+  };
+
+  commonObj.saveImage = function(data) {
+    if (data['src']) {
+      return data['src'] = rewriteStaticLinks(data['src'], '/static/', initData.base_asset_url);
+    }
+  };
+
+  commonObj.editLink = function(data) {
+    if (data['href']) {
+      return data['href'] = rewriteStaticLinks(data['href'], initData.base_asset_url, '/static/');
+    }
+  };
+
+  commonObj.saveLink = function(data) {
+    if (data['href']) {
+      return data['href'] = rewriteStaticLinks(data['href'], '/static/', initData.base_asset_url);
+    }
+  };
+
+  commonObj.showCodeEditor = function(source) {
+    var content;
+    content = rewriteStaticLinks(source.content, initData.base_asset_url, '/static/');
+    return source.content = content;
+  };
+
+  commonObj.saveCodeEditor = function(source) {
+    var content;
+    content = rewriteStaticLinks(source.content, '/static/', initData.base_asset_url);
+    return source.content = content;
+  };
+
+  commonObj.initInstanceCallback = function(visualEditor) {
+    visualEditor.setContent(rewriteStaticLinks(visualEditor.getContent({
+      no_events: 1
+    }), '/static/', initData.base_asset_url));
+    return visualEditor.focus();
+  };
+
   commonObj.initiateHtmlEditor = function (container, destroyExisting, width, height) {
     // Add tinymce text editor on textarea with class .custom-textarea at step 2
 
@@ -294,30 +380,66 @@ function StudioCommon(runtime, element, initData) {
     width = typeof width !== 'undefined' ? width : '100%';
     height = typeof height !== 'undefined' ? height : '70px';
 
+
+
+    //initialize tinymce on a textarea
+    tiny_mce_css_links = [];
+    $("link[rel=stylesheet][href*='tinymce']").filter("[href*='content']").each(function() {
+      tiny_mce_css_links.push($(this).attr("href"));
+    });
+
+
     if (setting.tinyMceAvailable) {
       $.each(container.find(tinyMceTextarea), function (i, textarea) {
         if (destroyExisting) {
           commonObj.destroyEditor(textarea);
         }
-        // initialize tinymce on a textarea
+
         $(textarea).tinymce({
+          script_url: "" + baseUrl + "/js/vendor/tinymce/js/tinymce/tinymce.full.min.js",
+          font_formats: _getFonts(),
           theme: 'modern',
           skin: 'studio-tmce4',
+          schema: "html5",
+          convert_urls: false,
+          content_css: tiny_mce_css_links.join(", "),
+          formats: {
+            code: {inline: 'code'}
+          },
+          codemirror: {
+            path: "" + baseUrl + "/js/vendor"
+          },
+          visual: false,
+          plugins: "textcolor, link, image, codemirror",
+          image_advtab: true,
+          toolbar: "formatselect | fontselect | bold italic underline forecolor wrapAsCode | bullist numlist outdent indent blockquote | link unlink image | code",
+          block_formats: interpolate("%(paragraph)s=p;%(preformatted)s=pre;%(heading1)s=h1;%(heading2)s=h2;%(heading3)s=h3", {
+            paragraph: gettext("Paragraph"),
+            preformatted: gettext("Preformatted"),
+            heading1: gettext("Heading 1"),
+            heading2: gettext("Heading 2"),
+            heading3: gettext("Heading 3")
+          }, true),
+
           height: height,
           width: width,
-          formats: {code: {inline: 'code'}},
-          codemirror: {path: "" + baseUrl + "/js/vendor"},
-          convert_urls: false,
-          plugins: "link codemirror",
           menubar: false,
           statusbar: false,
+          valid_children: "+body[style]",
+          valid_elements: "*[*]",
+          extended_valid_elements: "*[*]",
+          invalid_elements: "",
+          browser_spellcheck: true,
+          setup: commonObj.setupTinyMCE,
+          init_instance_callback: commonObj.initInstanceCallback,
           toolbar_items_size: 'small',
-          toolbar: "formatselect | styleselect | bold italic underline forecolor wrapAsCode | bullist numlist outdent indent blockquote | link unlink | code",
           resize: "both"
         });
       });
     }
   };
+
+  // tinymce function's end
 
   commonObj.getStepData = function (step) {
     // Get data of a given step before sending to server

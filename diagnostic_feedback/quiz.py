@@ -5,6 +5,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, List, Integer, Dict
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
+from xmodule.contentstore.content import StaticContent
 from .mixins import ResourceMixin, XBlockWithTranslationServiceMixin
 from .quiz_result import QuizResultMixin
 from .helpers import MainHelper
@@ -240,6 +241,8 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
         :return: fragment
         """
         block_id = "xblock-{}".format(self.get_block_id())
+        course_key = getattr(self.scope_ids.usage_id, 'course_key', None)
+
         context['self'] = self
         context['block_id'] = block_id
 
@@ -247,6 +250,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
             context,
             'studio',
             {
+                'base_asset_url': StaticContent.get_base_url_path_for_course_assets(course_key),
                 'quiz_type': self.quiz_type,
                 'block_id': block_id,
                 'results': self.results,
