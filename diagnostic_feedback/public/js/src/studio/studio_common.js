@@ -265,6 +265,7 @@ function StudioCommon(runtime, element, initData) {
   commonObj.updateSortingGroupTxt = function(el, txt){
     // update text for group in accordion header
     if(el.hasClass('question-group')){
+      if(txt) { txt = "( " + txt + " )"; }
       el.parent().parent().parent().parent().find(sortTitleGrpSelector).text(txt);
     } else {
       el.parent().parent().parent().find(sortTitleGrpSelector).text(txt);
@@ -487,7 +488,13 @@ function StudioCommon(runtime, element, initData) {
 
     var dropDowns = $(allGroupChoicesDropdowns, element);
     $.each(dropDowns, function (i, dropdown) {
-      var selectedValue = $(dropdown).val();
+      var selectedValue = "";
+      if(attachedGroups.length == 1) {
+        selectedValue = attachedGroups[0];
+      } else {
+        selectedValue = $(dropdown).val();
+      }
+
       var groupOptions = commonObj.generateGroupsHtml($(dropdown), attachedGroups);
       $(dropdown).html(groupOptions);
 
@@ -986,7 +993,7 @@ function StudioCommon(runtime, element, initData) {
       // Render all existing choices
       var choices = [];
       $.each(question.choices, function (cOrder, choice) {
-        choices.push(commonObj.renderSingleChoice(order, cOrder, choice, true));
+        choices.push(commonObj.renderSingleChoice(order, cOrder, choice, true, question.group));
       });
       question['choices'] = choices;
     } else {

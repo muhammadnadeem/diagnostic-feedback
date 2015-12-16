@@ -79,10 +79,8 @@ function Quiz(runtime, element, initData) {
         studioCommon.renderRanges();
         studioCommon.createAccordion(rangesPanel+ " " + accordionSelector, 'ranges');
       }
-
       studioCommon.renderQuestions();
       studioCommon.createAccordion(questionPanel+ " " + accordionSelector, 'questions');
-
     }
 
     //initialize js validations if on in setting.js
