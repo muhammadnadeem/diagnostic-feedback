@@ -87,7 +87,16 @@ function StudentQuiz(runtime, element, initData) {
       // show next, previous, finish action button
       $(nextActionSelector + ', ' + previousActionSelector, element).show();
       $(cancelActionSelector, element).hide();
+        disableButton();
     }
+
+    function disableButton(){
+      $(nextActionSelector, element).parent().addClass("disabled").attr("aria-" + "disabled", "true");
+    }
+
+     function enableButton(){
+         $(nextActionSelector, element).parent().removeClass("disabled").attr("aria-" + "disabled", "false");;
+     }
 
     function showResult(result) {
       // shows result of student
@@ -217,7 +226,12 @@ function StudentQuiz(runtime, element, initData) {
 
     function changeStep(event, currentIndex, newIndex) {
       //on every step change this method either save the data to the server or skip it.
-      var currentStep = currentIndex + 1;
+
+      var btn = $(nextActionSelector, element).parent();
+      if(btn.hasClass('disabled') && newIndex > currentIndex ){
+            return false;
+        }
+        var currentStep = currentIndex + 1;
       var isLast = (newIndex == $(studentViewFormSecSelector, element).length - 1);
 
       //log event for loading question
@@ -236,6 +250,12 @@ function StudentQuiz(runtime, element, initData) {
     function updateResultHtml(event, currentIndex, newIndex) {
       //If the form is reloaded and the user have answered all the questions,
       //he will be showed the result and start over button.
+        if($(visibleAnswerChoice, element).find(selectedStudentChoice).val()){
+             enableButton();
+          }
+        else{
+            disableButton();
+        }
 
       var isLast = (currentIndex == $(studentViewFormSecSelector, element).length - 1);
       if (isLast) {
@@ -248,6 +268,7 @@ function StudentQuiz(runtime, element, initData) {
       studentQuiz.startOver = true;
       $(choiceSelector, element).find(choiceSelectedBtnSelector).removeAttr('checked');
       $form.children("div").steps("setStep", 0);
+        disableButton();
     }
 
 
@@ -308,7 +329,11 @@ function StudentQuiz(runtime, element, initData) {
         window.location.href = response.download_url;
       }
     }
-
+      $(choiceSelectedBtnSelector).on('change', function() {
+          if($(selectedStudentChoice).val()){
+             enableButton();
+          }
+    });
 
     $(studentViewFormSelector, element).on('click', exportDataBtnSelector, function (eventObject) {
       eventObject.preventDefault();
