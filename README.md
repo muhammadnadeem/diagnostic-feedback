@@ -39,15 +39,23 @@ and the associated feedback is displayed to the her.
 Usage
 -----
 
-You can enable the Diagnostic Feedback XBlocks in Studio by modifying the
-advanced settings for your course:
+   Enabling in Studio
+   ==================
 
-1. From the main page of a specific course, navigate to **Settings** ->
-   **Advanced Settings** from the top menu.
-2. Find the **Advanced Module List** setting.
-3. To enable Diagnostic Feedback for your course, add `"diagnostic-feedback "` to 
-   the modules listed there.
-5. Click **Save changes** button.
+    You can enable the Diagnostic Feedback XBlocks in Studio by modifying the
+    advanced settings for your course:
+
+    1. From the main page of a specific course, navigate to **Settings** ->
+       **Advanced Settings** from the top menu.
+    2. Find the **Advanced Module List** setting.
+    3. To enable Diagnostic Feedback for your course, add `"diagnostic-feedback "` to
+       the modules listed there.
+    4. Click **Save changes** button.
+
+   Using Diagnostic Feedback
+   ==========================
+
+    See [Usage Instructions](doc/Usage.md)
 
 Installation
 ------------
