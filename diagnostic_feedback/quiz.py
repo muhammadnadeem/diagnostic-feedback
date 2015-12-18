@@ -255,7 +255,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
             context,
             'studio',
             {
-                'base_asset_url':base_asset_url,
+                'base_asset_url': base_asset_url,
                 'quiz_type': self.quiz_type,
                 'block_id': block_id,
                 'results': self.results,
@@ -382,6 +382,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
         """
         Add new group in self.groups list
         """
+
         success = True
         grp_name = data.get('name', '')
         if grp_name not in self.groups:
