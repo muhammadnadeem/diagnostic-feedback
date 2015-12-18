@@ -15,13 +15,13 @@ Following is a step-by-step explanation of the authoring process:
     drop-down. Another thing to note here is that once set, this type cannot be changed
     during subsequent edits of this Quiz.
 
-    See (img/diagnostic/step-1-type.jpg)
+    See [Type]  (img/diagnostic/step-1-type.jpg)
 
 3.  After adding description below [Quiz Type]. Click the [Next] button. Hitting ‘Next’
     at any step of this wizard saves the current values. This will take you to the screen
     to define your ranges (results): 
 
-    See (img/diagnostic/ranges.jpg)
+    See [Range] (img/diagnostic/ranges.jpg)
 
     1.  Range Name (for internal use only, not visible to students)
     2.  Minimum Value for Range
@@ -40,15 +40,15 @@ Following is a step-by-step explanation of the authoring process:
     the defined range but since ‘Range 1’ belongs to the group ‘Culture’ and ‘Range 3’ belongs
     to ‘Communication’, it is permitted in this case.
 
-     see [Ranges]   (img/diagnostic/result-range-1.jpg)
-                    (img/diagnostic/result-range-2.jpg)
+     see [Range_1]  (img/diagnostic/result-range-1.jpg)
+     see [Range_2]  (img/diagnostic/result-range-2.jpg)
 
 5.  After defining ranges, hit [Next]. Once again, this will save your quiz data to this point.
     On the other hand, by clicking [Previous] you will lose all data on the current step.  Now you
     can add questions along with their choices for your quiz: 
 
-    See [Questions] (img/diagnostic/question-1.jpg)
-                    (img/diagnostic/question-2.jpg)
+    See [Question_1]    (img/diagnostic/question-1.jpg)
+        [Question_2]    (img/diagnostic/question-2.jpg)
 
     1.  Question Title
     2.  Question Text
@@ -71,7 +71,7 @@ Following is a step-by-step explanation of the authoring process:
     this quiz. You should be able to see the quiz rendered as visible to a student
     immediately:
 
-     See (img/diagnostic/preview-questions.jpg)
+     See [preview]  (img/diagnostic/preview-questions.jpg)
 
 
 Groups in Diagnostic Quiz
@@ -80,8 +80,8 @@ Groups in Diagnostic Quiz
 A new group can be simply added and attached simultaneously to a range by typing the desired
 name in the group field and clicking the ‘+’ button that appears next to it:
 
-    See [Ranges Group]  (img/diagnostic/range-group-1.jpg)
-                        (img/diagnostic/range-group-2.jpg)
+    See [Range_Group_1] (img/diagnostic/range-group-1.jpg)
+        [Range_Group_2] (img/diagnostic/range-group-2.jpg)
 
     1.  Enter the group name here
     2.  If the group doesn’t exist, a ‘+’ button will appear
