@@ -255,7 +255,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
             context,
             'studio',
             {
-                'base_asset_url':base_asset_url,
+                'base_asset_url': base_asset_url,
                 'quiz_type': self.quiz_type,
                 'block_id': block_id,
                 'results': self.results,
