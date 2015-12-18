@@ -40,7 +40,7 @@ Usage
 -----
 
    Enabling in Studio
-   ==================
+   ------------------
 
     You can enable the Diagnostic Feedback XBlocks in Studio by modifying the
     advanced settings for your course:
@@ -53,7 +53,7 @@ Usage
     4. Click **Save changes** button.
 
    Using Diagnostic Feedback
-   ==========================
+   -------------------------
 
     See [Usage Instructions](doc/Usage.md)
 
