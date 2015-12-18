@@ -239,10 +239,8 @@ function StudioCommon(runtime, element, initData) {
     // update text for group in accordion header
     if(el.hasClass('question-group')){
       if(txt) { txt = "( " + txt + " )"; }
-      el.parent().parent().parent().parent().find(sortTitleGrpSelector).text(txt);
-    } else {
-      el.parent().parent().parent().find(sortTitleGrpSelector).text(txt);
     }
+    el.parents(accordionGrpSelector).find(sortTitleGrpSelector).text(txt);
   };
 
   // tinymce methods start

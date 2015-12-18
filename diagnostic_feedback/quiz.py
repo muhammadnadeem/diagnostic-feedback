@@ -378,14 +378,6 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
         return {'success': success, 'msg': response_message}
 
     @XBlock.json_handler
-    def get_groups(self, data, suffix=''):
-        """
-        Return list of group starting with a search term
-        """
-        groups = [s for s in filter(lambda x: x.lower().startswith(data.get('term', '').lower()), self.groups)]
-        return groups
-
-    @XBlock.json_handler
     def add_group(self, data, suffix=''):
         """
         Add new group in self.groups list

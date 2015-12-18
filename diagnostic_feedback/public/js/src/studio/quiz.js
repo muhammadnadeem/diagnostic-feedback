@@ -343,7 +343,6 @@ function Quiz(runtime, element, initData) {
               studioCommon.hideAddGrpPanel(el);
               studioCommon.updateAllGroups(response.grp_name);
               studioCommon.updateAllResultGroupDropwdowns();
-              studioCommon.updateSortingGroupTxt(el, response.grp_name);
             } else {
               success = true;
               warning = false;
@@ -504,7 +503,9 @@ function Quiz(runtime, element, initData) {
         studioCommon.updateAllResultDropwdowns($(eventObject.target), grpCategories);
     });
 
-    $(questionPanel , element).on('change', resultGroupSelector, function(eventObject){
+    debugger;
+    $(editQuestionPanel , element).on('change', resultGroupSelector, function(eventObject){
+      debugger;
         eventObject.preventDefault();
         var group = $(eventObject.target).val();
         studioCommon.updateSortingGroupTxt($(eventObject.target), group);
