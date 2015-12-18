@@ -55,7 +55,7 @@ Usage
    Using Diagnostic Feedback
    -------------------------
 
-    See [Usage Instructions](doc/Usage.md)
+See [Usage Instructions](doc/Usage.md)
 
 Installation
 ------------
