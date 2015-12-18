@@ -382,6 +382,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
         """
         Add new group in self.groups list
         """
+
         success = True
         grp_name = data.get('name', '')
         if grp_name not in self.groups:
