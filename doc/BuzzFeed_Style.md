@@ -6,7 +6,7 @@ Following is a step-by-step explanation of the authoring process:
 1.  In order to author a BuzzFeed-Styled quiz, first select the ‘diagnostic-feedback’
     from the list of [Advanced] under [Add new component]:
 
-    [Step adding ‘diagnostic-feedback’](img/buzzfeed/add-buzzFeed-quiz.jpg)
+    ![Step adding ‘diagnostic-feedback’](img/buzzfeed/add-buzzFeed-quiz.jpg)
 
     Note the unit name – it should be the quiz title question.
 
@@ -15,15 +15,15 @@ Following is a step-by-step explanation of the authoring process:
     in the [Quiz Type] drop-down. Another thing to note here is that once set,
     this type cannot be changed during subsequent edits of this Quiz.
 
-    see [Type]  (img/buzzfeed/step-1.jpg)
+     ![Type]  (img/buzzfeed/step-1.jpg)
 
 3.  After adding description below [Quiz Type]. Click the [Next] button. Hitting
     ‘Next’ at any step of this wizard saves the current values. This will take you
     to the screen to define your categories (results)
 
-    see [category_1]    (img/buzzfeed/result-1.jpg),
-        [category_2]    (img/buzzfeed/result-2.jpg),
-        [category_3]    (img/buzzfeed/result-3.jpg)
+    ![category_1]    (img/buzzfeed/result-1.jpg),
+    ![category_2]    (img/buzzfeed/result-2.jpg),
+    ![category_3]    (img/buzzfeed/result-3.jpg)
 
 
     1.  Category Name (for internal use only, not visible to students)
@@ -43,8 +43,8 @@ Following is a step-by-step explanation of the authoring process:
     lose all data on the current step.  Now you can add questions along with their
     choices for your quiz:
 
-    See [Question_1]    (img/buzzfeed/question-1.jpg),
-        [Question_2]    (img/buzzfeed/question-2.jpg)
+    ![Question_1]    (img/buzzfeed/question-1.jpg),
+    ![Question_2]    (img/buzzfeed/question-2.jpg)
 
     1.  Question Title
     2.  Question Text
@@ -62,7 +62,7 @@ Following is a step-by-step explanation of the authoring process:
     authoring this quiz. You should be able to see the quiz rendered as visible
     to a student immediately: 
 
-    See [Preview] (img/buzzfeed/preview-question.jpg)
+    ![Preview] (img/buzzfeed/preview-question.jpg)
 
 Groups in BuzzFeed Quiz
 ------------------------
@@ -71,9 +71,9 @@ A new group can be simply added and attached simultaneously to a
 category by typing the desired name in the group field and clicking
 the ‘+’ button that appears next to it:
 
-See [result-group-1]    (img/buzzfeed/result-group-1.jpg),
-    [result-group-2]    (img/buzzfeed/result-group-2.jpg),
-    [result-group-3]    (img/buzzfeed/result-group-3.jpg)
+![result-group-1]    (img/buzzfeed/result-group-1.jpg),
+![result-group-2]    (img/buzzfeed/result-group-2.jpg),
+![result-group-3]    (img/buzzfeed/result-group-3.jpg)
 
     1.  Enter the group name here
     2.  If the group doesn’t exist, a ‘+’ button will appear
@@ -87,14 +87,14 @@ For the next step note that we have assigned ‘Group 1’ to ‘Monarch’ and 
 Once at the questions, we assign each question to one of the groups that we have assigned
 to categories in the previous step.
 
-See  [Group_1](img/buzzfeed/question-group-1.jpg)
+![Group_1](img/buzzfeed/question-group-1.jpg)
 
 Now you can see that only the groups that were assigned to at least one of the categories
 are visible. Groups that were n’t assigned like ‘G Test’, ‘Group 3’ and even the ‘Default Group’
 are not available for selection. This prevents assigning questions to an empty group.
 Now when we select ‘Group 1’ for QUESTION 1:
 
-See  [Group_2] (img/buzzfeed/question-group-2.jpg)
+![Group_2] (img/buzzfeed/question-group-2.jpg)
 
 The available categories are those which were assigned ‘Group 1’. This practically allows the
 author to create completely independent sub-quizzes within each quiz. A question belonging to a
@@ -103,4 +103,4 @@ multiple results, one against every single group that has been assigned to at le
 Now we can save the quiz after selecting ‘Group 2’ for ‘QUESTION 2’. This will leave us with only
 one category ‘Elfin’ for all the choices in the second question.
 
-See  [Group_3] (img/buzzfeed/question-group-3.jpg)
+![Group_3] (img/buzzfeed/question-group-3.jpg)

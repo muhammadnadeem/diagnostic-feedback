@@ -6,7 +6,7 @@ Following is a step-by-step explanation of the authoring process:
 1.  In order to author a Diagnostic quiz, first select the ‘diagnostic-feedback’
     from the list of [Advanced] under [Add new component]: 
 
-    [Step adding ‘diagnostic-feedback’](img/diagnostic/add-diagnostic-quiz.jpg)
+    ![Step adding ‘diagnostic-feedback’](img/diagnostic/add-diagnostic-quiz.jpg)
 
     Note the unit name – it should be the quiz title question.
 
@@ -15,13 +15,13 @@ Following is a step-by-step explanation of the authoring process:
     drop-down. Another thing to note here is that once set, this type cannot be changed
     during subsequent edits of this Quiz.
 
-    See [Type]  (img/diagnostic/step-1-type.jpg)
+    ![Type]  (img/diagnostic/step-1-type.jpg)
 
 3.  After adding description below [Quiz Type]. Click the [Next] button. Hitting ‘Next’
     at any step of this wizard saves the current values. This will take you to the screen
     to define your ranges (results): 
 
-    See [Range] (img/diagnostic/ranges.jpg)
+    ![Range] (img/diagnostic/ranges.jpg)
 
     1.  Range Name (for internal use only, not visible to students)
     2.  Minimum Value for Range
@@ -40,15 +40,15 @@ Following is a step-by-step explanation of the authoring process:
     the defined range but since ‘Range 1’ belongs to the group ‘Culture’ and ‘Range 3’ belongs
     to ‘Communication’, it is permitted in this case.
 
-     see [Range_1]  (img/diagnostic/result-range-1.jpg),
-     see [Range_2]  (img/diagnostic/result-range-2.jpg)
+    ![Range_1]  (img/diagnostic/result-range-1.jpg),
+    ![Range_2]  (img/diagnostic/result-range-2.jpg)
 
 5.  After defining ranges, hit [Next]. Once again, this will save your quiz data to this point.
     On the other hand, by clicking [Previous] you will lose all data on the current step.  Now you
     can add questions along with their choices for your quiz: 
 
-    See [Question_1]    (img/diagnostic/question-1.jpg),
-        [Question_2]    (img/diagnostic/question-2.jpg)
+    ![Question_1]    (img/diagnostic/question-1.jpg),
+    ![Question_2]    (img/diagnostic/question-2.jpg)
 
     1.  Question Title
     2.  Question Text
@@ -65,13 +65,13 @@ Following is a step-by-step explanation of the authoring process:
 6.  If there are more than one group defined, their questions need not to be in any order.
     You can also reorder the collapsed questions as they should appear in the quiz:
 
-    See [Questions] (img/diagnostic/question-3.jpg)
+    ![Questions] (img/diagnostic/question-3.jpg)
 
 7.  After adding all the questions with their choices, hit [Save] to finish authoring
     this quiz. You should be able to see the quiz rendered as visible to a student
     immediately:
 
-     See [preview]  (img/diagnostic/preview-questions.jpg)
+    ![preview]  (img/diagnostic/preview-questions.jpg)
 
 
 Groups in Diagnostic Quiz
@@ -80,8 +80,8 @@ Groups in Diagnostic Quiz
 A new group can be simply added and attached simultaneously to a range by typing the desired
 name in the group field and clicking the ‘+’ button that appears next to it:
 
-See [Range_Group_1] (img/diagnostic/range-group-1.jpg),
-    [Range_Group_2] (img/diagnostic/range-group-2.jpg)
+![Range_Group_1] (img/diagnostic/range-group-1.jpg),
+![Range_Group_2] (img/diagnostic/range-group-2.jpg)
 
     1.  Enter the group name here
     2.  If the group doesn’t exist, a ‘+’ button will appear
