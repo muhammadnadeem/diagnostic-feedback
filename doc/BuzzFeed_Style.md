@@ -21,8 +21,8 @@ Following is a step-by-step explanation of the authoring process:
     ‘Next’ at any step of this wizard saves the current values. This will take you
     to the screen to define your categories (results)
 
-    ![category_1]    (img/buzzfeed/result-1.jpg),
-    ![category_2]    (img/buzzfeed/result-2.jpg),
+    ![category_1]    (img/buzzfeed/result-1.jpg)
+    ![category_2]    (img/buzzfeed/result-2.jpg)
     ![category_3]    (img/buzzfeed/result-3.jpg)
 
 
@@ -43,7 +43,7 @@ Following is a step-by-step explanation of the authoring process:
     lose all data on the current step.  Now you can add questions along with their
     choices for your quiz:
 
-    ![Question_1]    (img/buzzfeed/question-1.jpg),
+    ![Question_1]    (img/buzzfeed/question-1.jpg)
     ![Question_2]    (img/buzzfeed/question-2.jpg)
 
     1.  Question Title
@@ -71,9 +71,9 @@ A new group can be simply added and attached simultaneously to a
 category by typing the desired name in the group field and clicking
 the ‘+’ button that appears next to it:
 
-![result-group-1]    (img/buzzfeed/result-group-1.jpg),
-![result-group-2]    (img/buzzfeed/result-group-2.jpg),
-![result-group-3]    (img/buzzfeed/result-group-3.jpg)
+![result-group-1]    (img/buzzfeed/result-group-1.jpg)
+![result-group-2]    (img/buzzfeed/result-group-2.jpg)
+![result-group-3]    (img/buzzfeed/result-group-3.png)
 
     1.  Enter the group name here
     2.  If the group doesn’t exist, a ‘+’ button will appear
