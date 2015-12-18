@@ -1,6 +1,5 @@
 function Quiz(runtime, element, initData) {
   // contain js related to studio quiz wizard
-
   // import related js helpers
   var customValidator = new CustomValidator(runtime, element, initData),
     common = new Common(runtime, element, initData),
@@ -38,10 +37,13 @@ function Quiz(runtime, element, initData) {
       categorySelector = '.category',
       editorSelector = '.custom-textarea',
       questionGrpSelector = '.question-group',
+      resultGroupSelector = '.result-group',
       grpError = 'group-error',
 
       accordionSelector = '.accordion',
       accordionGrpSelector = ".group",
+      openAddGroupPanelSelector = '.open-add-grp-panel',
+      closeAddGroupPanelSelector = '.close-add-grp-panel',
 
       rangesPanel = '.ranges_panel',
       addNewRangeBtn = rangesPanel + ' .add-new-range',
@@ -286,7 +288,6 @@ function Quiz(runtime, element, initData) {
       studioCommon.initiateHtmlEditor(categoriesPanelObj);
       studioCommon.refreshAccordion(categoriesPanel + " " + accordionSelector);
       studioCommon.bindSortTitleSource(categoriesPanelObj);
-      studioCommon.bindGroupAutoComplete(categoriesPanelObj);
     });
 
     $(addNewRangeBtn, element).click(function (eventObject) {
@@ -301,7 +302,20 @@ function Quiz(runtime, element, initData) {
       studioCommon.initiateHtmlEditor(rangesPanelObj);
       studioCommon.refreshAccordion(rangesPanel + " " + accordionSelector);
       studioCommon.bindSortTitleSource(rangesPanelObj);
-      studioCommon.bindGroupAutoComplete(rangesPanelObj);
+    });
+
+    $(editQuestionPanel, element).on('click', openAddGroupPanelSelector, function (eventObject) {
+      eventObject.preventDefault();
+
+      var btn = $(eventObject.currentTarget);
+      studioCommon.showAddGrpPanel(btn);
+    });
+
+    $(editQuestionPanel, element).on('click', closeAddGroupPanelSelector, function (eventObject) {
+      eventObject.preventDefault();
+
+      var btn = $(eventObject.currentTarget);
+      studioCommon.hideAddGrpPanel(btn);
     });
 
     $(editQuestionPanel, element).on('click', addNewGroupBtn, function (eventObject) {
@@ -311,7 +325,7 @@ function Quiz(runtime, element, initData) {
 
       var groupHandlerUrl = runtime.handlerUrl(element, 'add_group'),
         el = $(eventObject.currentTarget),
-        field = el.prevAll('.group-auto-complete'),
+        field = el.parent().parent().prev('.new-grp-name'),
         name = field.val();
 
       if (name){
@@ -325,7 +339,10 @@ function Quiz(runtime, element, initData) {
             if(response.success){
               success = true;
               warning = false;
-              studioCommon.updateAutoCompleteSource(response.grp_name);
+              field.val('');
+              studioCommon.hideAddGrpPanel(el);
+              studioCommon.updateAllGroups(response.grp_name);
+              studioCommon.updateAllResultGroupDropwdowns();
               studioCommon.updateSortingGroupTxt(el, response.grp_name);
             } else {
               success = true;
@@ -337,9 +354,6 @@ function Quiz(runtime, element, initData) {
               persist: false,
               msg: response.msg
             });
-
-            el.remove();
-
           },
           error: function(response) {
               console.log(response);
@@ -490,6 +504,12 @@ function Quiz(runtime, element, initData) {
         studioCommon.updateAllResultDropwdowns($(eventObject.target), grpCategories);
     });
 
+    $(questionPanel , element).on('change', resultGroupSelector, function(eventObject){
+        eventObject.preventDefault();
+        var group = $(eventObject.target).val();
+        studioCommon.updateSortingGroupTxt($(eventObject.target), group);
+    });
+
     $(questionPanel, element).on('click', deleteChoiceBtn, function (eventObject) {
       // delete question choice
 
@@ -529,11 +549,9 @@ function Quiz(runtime, element, initData) {
       msgDiv.slideUp('slow');
     });
 
-
     renderSteps();
     studioCommon.initiateHtmlEditor($step1Panel, true);
     studioCommon.bindSortTitleSources();
-    studioCommon.bindGroupAutoComplete();
 
     $('.action-cancel').click(function (eventObject) {
       // notify runtime that modal windows is going to close

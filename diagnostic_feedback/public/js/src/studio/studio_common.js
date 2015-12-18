@@ -30,7 +30,6 @@ function StudioCommon(runtime, element, initData) {
     quizTypeInputSelector = '.diagnostic-feedback input[name*="type"]',
     quizDescriptionSelector = '.diagnostic-feedback textarea[name*="description"]',
     accordionSelector = '.accordion',
-    grpAutoCompleteSelector = ".group-auto-complete",
     questionGroupFieldSelector = '.question-group',
     addNewGroupBtn = '.add-new-group',
 
@@ -41,7 +40,6 @@ function StudioCommon(runtime, element, initData) {
     accordionGrpSelector = ".group",
 
     editQuestionPanel = ".diagnostic-feedback .edit_questionnaire_panel",
-    wizardContentSelector = editQuestionPanel + " .content",
     questionPanelSelector = '.diagnostic-feedback .questions_panel',
     questionSelector = '.question',
     questionIdSelector = '.question-id',
@@ -67,7 +65,8 @@ function StudioCommon(runtime, element, initData) {
     choiceSelector = '.answer-choice',
     allResultChoicesDropdowns = '.diagnostic-feedback .answer-choice .result-choice',
     questionResultChoicesDropdowns = '.answer-choice .result-choice',
-    allGroupChoicesDropdowns = '.diagnostic-feedback .question-group',
+    allQuestionGroupChoicesDropdowns = '.diagnostic-feedback .question-group',
+    allResultGroupChoicesDropdowns = '.diagnostic-feedback .result-group',
     choiceValueSelector = 'input[name*="]value["]',
     choiceValueClsSelector = '.answer-value',
     choiceNameSelector = 'input[name*=answer]',
@@ -212,22 +211,6 @@ function StudioCommon(runtime, element, initData) {
     return combinations;
   };
 
-  commonObj.getGroups = function(request, response){
-    var groupHandlerUrl = runtime.handlerUrl(element, 'get_groups');
-
-    $.ajax({
-        type: "POST",
-        url: groupHandlerUrl,
-        data: JSON.stringify({term: request.term}),
-        success: function(data) {
-          response(data);
-        },
-        error: function(response) {
-            console.log(response);
-        }
-      });
-  };
-
   commonObj.termInStrArray = function(term, _array){
     // check if a string exists in array of strings
     var isInArray = false;
@@ -240,26 +223,16 @@ function StudioCommon(runtime, element, initData) {
     return isInArray;
   };
 
-  commonObj.parseAutoCompleteResponse = function(event, ui){
-    // show add new group button if no results found for a search term
-    var $field = $(event.target);
-    var term = $field.val(),
-      sortGrpTitle = term,
-      termInGroups = commonObj.termInStrArray(term, allGroups);
+  commonObj.showAddGrpPanel = function(btn){
+    // show add new grou panel
+    btn.parent().parent().parent().addClass('hidden');
+    btn.parent().parent().parent().prev().removeClass('hidden');
+  };
 
-    //update accordion heading for new/existing group name
-    if(!termInGroups){
-      sortGrpTitle = initData.DEFAULT_GROUP;
-    }
-    commonObj.updateSortingGroupTxt($field, sortGrpTitle);
-
-    $field.next(addNewGroupBtn).remove();
-    if((ui.content.length === 0 && term.trim() != '') || !(termInGroups)){
-      $field.after('<div class="custom-tooltip add-new-group">' +
-        '<a href="#" title="'+gettext('Create and attach new group')+'">' +
-        '<i class="icon fa fa-plus"></i></a></div>');
-    }
-
+  commonObj.hideAddGrpPanel = function(btn){
+    // show grops list dropdown
+    btn.parent().parent().parent().addClass('hidden');
+    btn.parent().parent().parent().next().removeClass('hidden');
   };
 
   commonObj.updateSortingGroupTxt = function(el, txt){
@@ -270,26 +243,6 @@ function StudioCommon(runtime, element, initData) {
     } else {
       el.parent().parent().parent().find(sortTitleGrpSelector).text(txt);
     }
-  };
-
-  commonObj.autoCompleteOnSelect = function(event, ui){
-    // update text for group in accordion header on item select
-    var $field = $(event.target);
-    $field.next(addNewGroupBtn).remove();
-    commonObj.updateSortingGroupTxt($(event.target), ui.item.value);
-  };
-
-  commonObj.bindGroupAutoComplete = function(container){
-    // bind autocomplete with all required elements in a provided container
-    var elements = typeof container !== 'undefined' ? container.find(grpAutoCompleteSelector) :
-      $(grpAutoCompleteSelector, element);
-
-    elements.autocomplete({
-      appendTo: wizardContentSelector,
-      source: commonObj.getGroups,
-      select: commonObj.autoCompleteOnSelect,
-      response: commonObj.parseAutoCompleteResponse
-    });
   };
 
   // tinymce methods start
@@ -471,22 +424,36 @@ function StudioCommon(runtime, element, initData) {
     });
   };
 
-  commonObj.updateAutoCompleteSource = function(group){
-    // add new group to autocomplete source data and
+  commonObj.updateAllGroups = function(group){
+    // add new group to allGroups variable
     allGroups.push(group);
   };
 
   commonObj.getOptionsList = function (dropdown){
+    // get array list of option text of a given dropdown
     return $(dropdown).find('option').map(function() {
       var _value = $(this).val();
       if(_value != "") { return $(this).val(); }
     }).get()
   };
 
-  commonObj.updateAllGroupDropwdowns = function () {
-    // update html of all group dropdowns to sync with groups added at step2
+  commonObj.updateAllResultGroupDropwdowns = function () {
+    // update html of all results group dropdowns to sync with new added group
+    var dropDowns = $(allResultGroupChoicesDropdowns, element);
+    $.each(dropDowns, function (i, dropdown) {
+      var selectedValue = $(dropdown).val();
+      var groupOptions = commonObj.generateGroupsHtml($(dropdown), allGroups);
 
-    var dropDowns = $(allGroupChoicesDropdowns, element);
+      $(dropdown).html(groupOptions);
+      $(dropdown).val(selectedValue);
+    });
+  };
+
+
+  commonObj.updateAllQuestionGroupDropwdowns = function () {
+    // update html of all questions group dropdowns to sync with groups added at step2
+
+    var dropDowns = $(allQuestionGroupChoicesDropdowns, element);
     $.each(dropDowns, function (i, dropdown) {
       var selectedValue = "";
       if(attachedGroups.length == 1) {
@@ -606,7 +573,7 @@ function StudioCommon(runtime, element, initData) {
         $(allChoiceValuesInputs, element).show();
       }
       commonObj.updateAttachedGroups(results);
-      commonObj.updateAllGroupDropwdowns();
+      commonObj.updateAllQuestionGroupDropwdowns();
       commonObj.initiateHtmlEditor($(questionPanelSelector, element), true);
     }
   };
@@ -701,7 +668,7 @@ function StudioCommon(runtime, element, initData) {
         $('input[name*="category[id][' + order + ']"]', element).val(id);
       }
 
-      var group = $('input[name*="category[group][' + order + ']"]', element).val(),
+      var group = $('select[name*="category[group][' + order + ']"]', element).val(),
         name = this.value,
         catOrder = $('input[name*="category[order][' + order + ']"]', element).val(),
         image = $('input[name*="category[image][' + order + ']"]', element).val(),
@@ -720,7 +687,7 @@ function StudioCommon(runtime, element, initData) {
     return $('input[name*="' + fieldName + '"]', element).map(function () {
 
       var order = $(this).attr('name').split('][')[1].replace(']', ''),
-        group = $('input[name*="range[group][' + order + ']"]', element).val(),
+        group = $('select[name*="range[group][' + order + ']"]', element).val(),
         name = this.value,
         rangeOrder = $('input[name*="range[order][' + order + ']"]', element).val(),
         minValue = $('input[name*="range[min][' + order + ']"]', element).val(),
@@ -917,6 +884,7 @@ function StudioCommon(runtime, element, initData) {
     category['order'] = order;
     category['DEFAULT_GROUP'] = initData.DEFAULT_GROUP;
     category['block_id'] = initData.block_id;
+    category['allGroups'] = allGroups;
 
     var tpl = _.template(initData.categoryTpl),
       html = tpl(category);
@@ -934,6 +902,7 @@ function StudioCommon(runtime, element, initData) {
     range['order'] = order;
     range['DEFAULT_GROUP'] = initData.DEFAULT_GROUP;
     range['block_id'] = initData.block_id;
+    range['allGroups'] = allGroups;
 
     var tpl = _.template(initData.rangeTpl),
       html = tpl(range);
