@@ -40,14 +40,14 @@ Following is a step-by-step explanation of the authoring process:
     the defined range but since ‘Range 1’ belongs to the group ‘Culture’ and ‘Range 3’ belongs
     to ‘Communication’, it is permitted in this case.
 
-     see [Range_1]  (img/diagnostic/result-range-1.jpg)
+     see [Range_1]  (img/diagnostic/result-range-1.jpg),
      see [Range_2]  (img/diagnostic/result-range-2.jpg)
 
 5.  After defining ranges, hit [Next]. Once again, this will save your quiz data to this point.
     On the other hand, by clicking [Previous] you will lose all data on the current step.  Now you
     can add questions along with their choices for your quiz: 
 
-    See [Question_1]    (img/diagnostic/question-1.jpg)
+    See [Question_1]    (img/diagnostic/question-1.jpg),
         [Question_2]    (img/diagnostic/question-2.jpg)
 
     1.  Question Title
@@ -80,8 +80,8 @@ Groups in Diagnostic Quiz
 A new group can be simply added and attached simultaneously to a range by typing the desired
 name in the group field and clicking the ‘+’ button that appears next to it:
 
-    See [Range_Group_1] (img/diagnostic/range-group-1.jpg)
-        [Range_Group_2] (img/diagnostic/range-group-2.jpg)
+See [Range_Group_1] (img/diagnostic/range-group-1.jpg),
+    [Range_Group_2] (img/diagnostic/range-group-2.jpg)
 
     1.  Enter the group name here
     2.  If the group doesn’t exist, a ‘+’ button will appear
