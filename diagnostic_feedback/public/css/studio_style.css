@@ -108,7 +108,7 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     border-radius: 2px;
     min-width: 150px;
-    height: 34px;
+    height: 31px;
 }
 
 .group-container input,
@@ -137,7 +137,9 @@
 
 .diagnostic-feedback-studio .text-help {
     font-size: 1.2rem;
-    line-height: 1.776rem;}
+    line-height: 1.776rem;
+}
+
 .group-mapping {
     border: 1px solid #403B3B;
     padding: 3px;
@@ -146,11 +148,7 @@
 }
 
 .diagnostic-feedback div.field-actions {
-    position: relative !important;
     display: inline-block;
-    top: 30%;
-    left: -4%;
-    padding: 0;
 }
 
 /* Jquery-UI overrides */
