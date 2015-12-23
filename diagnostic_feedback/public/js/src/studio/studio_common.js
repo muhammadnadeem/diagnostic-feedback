@@ -31,7 +31,6 @@ function StudioCommon(runtime, element, initData) {
     quizDescriptionSelector = '.diagnostic-feedback textarea[name*="description"]',
     accordionSelector = '.accordion',
     questionGroupFieldSelector = '.question-group',
-    addNewGroupBtn = '.add-new-group',
 
     sortTitleSelector = '.sort-title',
     sortTitleGrpSelector = '.sort-title-group',
@@ -225,14 +224,14 @@ function StudioCommon(runtime, element, initData) {
 
   commonObj.showAddGrpPanel = function(btn){
     // show add new grou panel
-    btn.parent().parent().parent().addClass('hidden');
-    btn.parent().parent().parent().prev().removeClass('hidden');
+    btn.parent().parent().addClass('hidden');
+    btn.parent().parent().prev().removeClass('hidden');
   };
 
   commonObj.hideAddGrpPanel = function(btn){
     // show grops list dropdown
-    btn.parent().parent().parent().addClass('hidden');
-    btn.parent().parent().parent().next().removeClass('hidden');
+    btn.parent().parent().addClass('hidden');
+    btn.parent().parent().next().removeClass('hidden');
   };
 
   commonObj.updateSortingGroupTxt = function(el, txt){

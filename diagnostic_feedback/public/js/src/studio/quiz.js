@@ -325,7 +325,7 @@ function Quiz(runtime, element, initData) {
 
       var groupHandlerUrl = runtime.handlerUrl(element, 'add_group'),
         el = $(eventObject.currentTarget),
-        field = el.parent().parent().prev('.new-grp-name'),
+        field = el.parent().prev('.new-grp-name'),
         name = field.val();
 
       if (name){
@@ -503,9 +503,7 @@ function Quiz(runtime, element, initData) {
         studioCommon.updateAllResultDropwdowns($(eventObject.target), grpCategories);
     });
 
-    debugger;
     $(editQuestionPanel , element).on('change', resultGroupSelector, function(eventObject){
-      debugger;
         eventObject.preventDefault();
         var group = $(eventObject.target).val();
         studioCommon.updateSortingGroupTxt($(eventObject.target), group);

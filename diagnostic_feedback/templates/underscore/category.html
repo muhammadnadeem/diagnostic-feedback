@@ -46,12 +46,13 @@
 
             <span class="group-container">
                 <span class="new-grp-container hidden" >
-                    <input type="text" placeholder="<%- gettext('Add new group') %>" class="new-grp-name" value="" />
+                    <input type="text" placeholder="<%- gettext('Create new group') %>" class="new-grp-name" value="" />
                     <div class="field-actions">
-                        <a href="#" title="'+gettext('Create and attach new group')+'">
-                            <i class="icon fa fa-save add-new-group"></i>
-                            <i class="icon fa fa-remove close-add-grp-panel"></i>
+                        <a href="#" class="add-new-group" title="<%- gettext('Click to save') %>">
+                            <i class="icon fa fa-save"></i>
                         </a>
+                        <a href="#" class="close-add-grp-panel" title="<%- gettext('Cancel') %>">
+                            <i class="icon fa fa-remove"></i>
                         </a>
                     </div>
 
@@ -67,8 +68,8 @@
                         <% }); %>
                     </select>
                     <div class="field-actions">
-                        <a class="button button-new" href="#">
-                            <i class="fa fa-plus open-add-grp-panel"></i>
+                        <a title="<%- gettext('Click to add new group') %>" class="button button-new open-add-grp-panel" href="#">
+                            <i class="fa fa-plus"></i>
                         </a>
                     </div>
                 </span>
