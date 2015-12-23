@@ -111,10 +111,13 @@
     height: 31px;
 }
 
+.group-container{
+    display: inline-block;
+}
+
 .group-container input,
 .group-container select {
-    height: 34px;
-    width: 200px;
+    width: 165px;
 }
 
 .diagnostic-feedback-studio .wizard > .actions {
