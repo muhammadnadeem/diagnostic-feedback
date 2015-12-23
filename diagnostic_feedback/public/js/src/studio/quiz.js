@@ -343,6 +343,7 @@ function Quiz(runtime, element, initData) {
               studioCommon.hideAddGrpPanel(el);
               studioCommon.updateAllGroups(response.grp_name);
               studioCommon.updateAllResultGroupDropwdowns();
+              $(el).parent().parent().next().find('select').first().val(response.grp_name).change();
             } else {
               success = true;
               warning = false;
