@@ -577,10 +577,13 @@ function StudioCommon(runtime, element, initData) {
 
   commonObj.updateFieldAttr = function (field, order) {
     // update the name/id of a single category/range filed
+    var name = field.attr('name');
 
-    var previousName = field.attr('name').split("][")[0];
-    var newName = previousName + "][" + order + "]";
-    field.attr({name: newName, id: newName});
+    if (typeof name !== typeof undefined && name !== false) {
+      var previousName = name.split("][")[0];
+      var newName = previousName + "][" + order + "]";
+      field.attr({name: newName, id: newName});
+    }
   };
 
   commonObj.updateQuestionFieldAttr = function (question, i) {
@@ -774,7 +777,7 @@ function StudioCommon(runtime, element, initData) {
     var remainingCategories = categoriesContainer.find(categorySelector);
 
     $.each(remainingCategories, function (i, category) {
-      var fields = $(category).find('input[type="text"], input[type="hidden"], textarea');
+      var fields = $(category).find('input[type="text"], select, input[type="hidden"], textarea');
 
       $(category).parent().prev().find(categoryOrderSelector).html(i + 1);
       $(category).find(categoryOrderFieldSelector).val(i);
@@ -793,7 +796,7 @@ function StudioCommon(runtime, element, initData) {
 
     var remainingRanges = rangesContainer.find(rangeSelector);
     $.each(remainingRanges, function (i, range) {
-      var fields = $(range).find('input[type="text"], input[type="number"], input[type="hidden"], textarea');
+      var fields = $(range).find('input[type="text"], select, input[type="number"], input[type="hidden"], textarea');
 
       $(range).parent().prev().find(rangeOrderSelector).html(i + 1);
       $(range).find(rangeOrderFieldSelector).val(i);
