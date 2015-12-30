@@ -55,12 +55,14 @@
 .lesson-content .diagnostic-feedback-student .wizard > .content > .body {
     width: 100%;
     height: 100%;
+    overflow: auto;
 }
 
 /*for lms*/
 .course-content .diagnostic-feedback-student .wizard > .content > .body{
     width: 85%;
     height: 75%;
+    overflow: auto;
 }
 
 .diagnostic-feedback-student .response {
