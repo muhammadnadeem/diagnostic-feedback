@@ -13,29 +13,31 @@
             <h3>{% trans "Question" %}</h3>
 
             <section class="answer-choice question-container">
-                <h3 class="question-title">{{ question.title }} </h3>
+                <div class="q-container">
+                    <h3 class="question-title">{{ question.title }} </h3>
 
-                <div class="quiz-question">{{ question.text|safe }}</div>
-                <div class="user-answers">
-                    {% for choice in question.choices %}
-                    {% if self.quiz_type == self.BUZZFEED_QUIZ_VALUE %}
-                    <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
-                           name="{{block_id}}_choice_name_{{ question.id }}"
-                           {% if question.student_choice == choice.category_id %}
-                           checked="checked"
-                           {% endif %}
-                           value="{{ choice.category_id}}"/>
-                    {% else %}
-                    <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
-                           name="{{block_id}}_choice_name_{{ question.id }}"
-                           {% if question.student_choice == choice.value %}
-                           checked="checked"
-                           {% endif %}
-                           value="{{ choice.value }}"/>
-                    {% endif %}
-                    <label for="{{block_id}}_{{question.id}}_choice_{{ forloop.counter }}">{{choice.name }}</label> <br>
-                    {% endfor %}
-                    <input type="hidden" class="question-id" value="{{ question.id }}"/>
+                    <div class="quiz-question">{{ question.text|safe }}</div>
+                    <div class="user-answers">
+                        {% for choice in question.choices %}
+                        {% if self.quiz_type == self.BUZZFEED_QUIZ_VALUE %}
+                        <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
+                               name="{{block_id}}_choice_name_{{ question.id }}"
+                               {% if question.student_choice == choice.category_id %}
+                               checked="checked"
+                               {% endif %}
+                               value="{{ choice.category_id}}"/>
+                        {% else %}
+                        <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
+                               name="{{block_id}}_choice_name_{{ question.id }}"
+                               {% if question.student_choice == choice.value %}
+                               checked="checked"
+                               {% endif %}
+                               value="{{ choice.value }}"/>
+                        {% endif %}
+                        <label for="{{block_id}}_{{question.id}}_choice_{{ forloop.counter }}">{{choice.name }}</label> <br>
+                        {% endfor %}
+                        <input type="hidden" class="question-id" value="{{ question.id }}"/>
+                    </div>
                 </div>
             </section>
             {% endfor %}
