@@ -1,7 +1,7 @@
-from .base_test import DiagnosticFeedbackBaseTest
+from .base_test import StudentBaseTest
 
 
-class StudentDiagnosticStyleTest(DiagnosticFeedbackBaseTest):
+class StudentDiagnosticStyleTest(StudentBaseTest):
 
     def test_for_single_grp_efficient_team(self):
         self.load_student_view('dg_quiz', {"mode": "standard"})

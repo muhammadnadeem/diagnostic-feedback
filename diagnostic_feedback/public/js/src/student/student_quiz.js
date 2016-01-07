@@ -207,6 +207,8 @@ function StudentQuiz(runtime, element, initData) {
     function initialize(event) {
       //If the form is reloaded and the user already have answered some of the questions,
       //he will be resumed to where he left.
+
+      resizeContentContainer();
       var completedStep = parseInt($(completedStepSelector, element).val());
 
       //log event for xblock started
@@ -247,15 +249,37 @@ function StudentQuiz(runtime, element, initData) {
 
     }
 
+    function resizeContentContainer() {
+      // resize content container
+
+      // for apros
+      var content_div = $('.lesson-content');
+      var additional_height = 60;
+      if(content_div.length == 0){
+        // for lms
+        content_div = $(".content");
+        additional_height = 120;
+      }
+
+      var q_container = $(".question-container:visible .q-container");
+      if(q_container.length == 0){
+        content_div.height($(".response_body").height() + additional_height);
+      } else {
+        content_div.height(q_container.height() + additional_height);
+      }
+    }
+
     function updateResultHtml(event, currentIndex, newIndex) {
       //If the form is reloaded and the user have answered all the questions,
       //he will be showed the result and start over button.
-        if($(visibleAnswerChoice, element).find(selectedStudentChoice).val()){
-             enableButton();
-          }
-        else{
-            disableButton();
+
+      resizeContentContainer();
+      if($(visibleAnswerChoice, element).find(selectedStudentChoice).val()){
+           enableButton();
         }
+      else{
+          disableButton();
+      }
 
       var isLast = (currentIndex == $(studentViewFormSecSelector, element).length - 1);
       if (isLast) {
@@ -325,8 +349,12 @@ function StudentQuiz(runtime, element, initData) {
         $exportProgress.html(gettext('The report is currently being generated…'));
         setTimeout(getStatus, 1000);
       } else {
-        $exportProgress.html(gettext('Report is successfully generated. Downloading…'));
-        window.location.href = response.download_url;
+        if(response.download_url){
+          $exportProgress.html(gettext('Report is successfully generated. Downloading…'));
+          window.location.href = response.download_url;
+        } else {
+          $exportProgress.html(gettext('Unable to generate report. Please contact your system administrator.'));
+        }
       }
     }
       $(choiceSelectedBtnSelector).on('change', function() {

@@ -1,7 +1,7 @@
-from .base_test import DiagnosticFeedbackBaseTest
+from .base_test import StudentBaseTest
 
 
-class StudentBuzzFeedStyleTest(DiagnosticFeedbackBaseTest):
+class StudentBuzzFeedStyleTest(StudentBaseTest):
 
     def test_for_single_group_monarch(self):
         self.load_student_view('bf_quiz', {"mode": "standard"})
