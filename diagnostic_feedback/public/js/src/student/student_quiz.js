@@ -95,7 +95,7 @@ function StudentQuiz(runtime, element, initData) {
     }
 
      function enableButton(){
-         $(nextActionSelector, element).parent().removeClass("disabled").attr("aria-" + "disabled", "false");
+         $(nextActionSelector, element).parent().removeClass("disabled").attr("aria-" + "disabled", "false");;
      }
 
     function showResult(result) {
@@ -242,7 +242,9 @@ function StudentQuiz(runtime, element, initData) {
         current_question: currentStep
       });
 
+
       return saveOrSkip(isLast, currentStep, currentIndex, newIndex);
+
     }
 
     function updateResultHtml(event, currentIndex, newIndex) {
@@ -268,6 +270,7 @@ function StudentQuiz(runtime, element, initData) {
       $form.children("div").steps("setStep", 0);
         disableButton();
     }
+
 
     function saveOrSkip(isLast, currentStep, currentIndex, newIndex) {
       common.clearErrors();
