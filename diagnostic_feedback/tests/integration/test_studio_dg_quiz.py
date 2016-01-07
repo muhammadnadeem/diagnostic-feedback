@@ -6,7 +6,7 @@ class StudentDiagnosticStyleTest(StudioBaseTest):
     def test_display_submit_false_does_not_display_submit(self):
         self.load_studio_view('create_quiz', {"mode": "standard"})
 
-        wizard = self.browser.find_element_by_css_selector("div.edit_questionnaire_panel")
+        # wizard = self.browser.find_element_by_css_selector("div.edit_questionnaire_panel")
 
         # self.wait_until_visible(wizard)
         #
