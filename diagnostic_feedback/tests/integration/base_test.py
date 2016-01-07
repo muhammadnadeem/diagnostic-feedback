@@ -19,6 +19,18 @@ class DiagnosticFeedbackBaseTest(SeleniumXBlockTest):
     """
     default_css_selector = 'div.diagnostic-feedback'
 
+    def _get_previous_button(self):
+        return self.browser.find_elements_by_xpath("//ul[@role='menu']/li")[0]
+
+    def _get_previous_button_link(self):
+        return self.browser.find_element_by_xpath("//ul[@role='menu']/li/a[@href='#previous']")
+
+    def _get_next_button(self):
+        return self.browser.find_elements_by_xpath("//ul[@role='menu']/li")[1]
+
+    def _get_next_button_link(self):
+        return self.browser.find_element_by_xpath("//ul[@role='menu']/li/a[@href='#next']")
+
     def wait_until_disabled(self, elem):
         """ Wait until the given element is disabled """
 
@@ -62,6 +74,15 @@ class DiagnosticFeedbackBaseTest(SeleniumXBlockTest):
         self.set_scenario_xml(scenario)
         return self.go_to_view("studio_view")
 
+
+class StudentBaseTest(DiagnosticFeedbackBaseTest):
+
+    def _get_startover_button(self):
+        return self.browser.find_elements_by_xpath("//ul[@role='menu']/li")[3]
+
+    def _get_startover_button_link(self):
+        return self.browser.find_element_by_xpath("//ul[@role='menu']/li/a[@href='#cancel']")
+
     def _is_any_choice_selected(self):
         selected = False
         choices = [c for c in self.browser.find_elements_by_xpath("//input[@type='radio']") if c.is_displayed()]
@@ -72,24 +93,6 @@ class DiagnosticFeedbackBaseTest(SeleniumXBlockTest):
                 break
 
         return selected
-
-    def _get_previous_button(self):
-        return self.browser.find_elements_by_xpath("//ul[@role='menu']/li")[0]
-
-    def _get_previous_button_link(self):
-        return self.browser.find_element_by_xpath("//ul[@role='menu']/li/a[@href='#previous']")
-
-    def _get_next_button(self):
-        return self.browser.find_elements_by_xpath("//ul[@role='menu']/li")[1]
-
-    def _get_next_button_link(self):
-        return self.browser.find_element_by_xpath("//ul[@role='menu']/li/a[@href='#next']")
-
-    def _get_startover_button(self):
-        return self.browser.find_elements_by_xpath("//ul[@role='menu']/li")[3]
-
-    def _get_startover_button_link(self):
-        return self.browser.find_element_by_xpath("//ul[@role='menu']/li/a[@href='#cancel']")
 
     def _get_choice(self, idx):
         return [c for c in self.browser.find_elements_by_xpath("//input[@type='radio']") if c.is_displayed()][idx]
@@ -167,3 +170,14 @@ class DiagnosticFeedbackBaseTest(SeleniumXBlockTest):
         self._get_next_button_link().click()
         if not is_last:
             self.wait_until_disabled(self._get_next_button())
+
+
+class StudioBaseTest(DiagnosticFeedbackBaseTest):
+
+    def get_step1_fields(self):
+        title = self.browser.find_element_by_css_selector("input[id*='_title']")
+
+        type = self.browser.find_element_by_css_selector("select[id*='_type']")
+        description = self.browser.find_element_by_css_selector("textarea[id*='_description']")
+
+        return title, type, description

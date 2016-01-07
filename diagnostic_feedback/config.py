@@ -48,3 +48,14 @@ studio_assets = {
         ('templates/studio/wizard.html', 0)
     ]
 }
+
+try:
+    # Used to detect if we're in the workbench so we can add missing js/css for integration testing
+    from workbench.runtime import WorkbenchRuntime
+    studio_assets['js'].insert(0, ('https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.20/tinymce.min.js', 7))
+    studio_assets['js'].insert(0, ('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js', 8))
+    studio_assets['js'].insert(0, ('https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js', 9))
+
+except ImportError:
+    WorkbenchRuntime = False
+
