@@ -253,22 +253,24 @@ function StudentQuiz(runtime, element, initData) {
       // resize content container
 
       // for apros
-      var content_div = $('.lesson-content');
       var target_height = 60;
-      if(content_div.length == 0){
+
+      if($('.lesson-content').length == 0){
         // for lms
-        content_div = $(".content");
         target_height = 120;
       }
 
       var q_container = $(".question-container:visible .q-container");
+
       if(q_container.length == 0){
+        //if final result
         target_height = $(".response_body").height() + target_height;
       } else {
+        //if question
         target_height = q_container.height() + target_height;
       }
 
-      content_div.animate({height: target_height + "px"}, 500);
+      $(".content").animate({height: target_height + "px"}, 500);
     }
 
     function updateResultHtml(event, currentIndex, newIndex) {
