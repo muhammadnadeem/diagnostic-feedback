@@ -58,4 +58,3 @@ try:
 
 except ImportError:
     WorkbenchRuntime = False
-

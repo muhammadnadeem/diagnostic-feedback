@@ -33,12 +33,4 @@ class StudentDiagnosticStyleTest(StudioBaseTest):
 
         self._get_next_button_link().click()
 
-
-
-
-
-
         pass
-
-
-
