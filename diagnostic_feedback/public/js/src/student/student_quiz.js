@@ -325,8 +325,12 @@ function StudentQuiz(runtime, element, initData) {
         $exportProgress.html(gettext('The report is currently being generated…'));
         setTimeout(getStatus, 1000);
       } else {
-        $exportProgress.html(gettext('Report is successfully generated. Downloading…'));
-        window.location.href = response.download_url;
+        if(response.download_url){
+          $exportProgress.html(gettext('Report is successfully generated. Downloading…'));
+          window.location.href = response.download_url;
+        } else {
+          $exportProgress.html(gettext('Unable to generate report. Please contact your system administrator.'));
+        }
       }
     }
       $(choiceSelectedBtnSelector).on('change', function() {
