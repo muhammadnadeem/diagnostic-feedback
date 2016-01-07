@@ -254,19 +254,21 @@ function StudentQuiz(runtime, element, initData) {
 
       // for apros
       var content_div = $('.lesson-content');
-      var additional_height = 60;
+      var target_height = 60;
       if(content_div.length == 0){
         // for lms
         content_div = $(".content");
-        additional_height = 120;
+        target_height = 120;
       }
 
       var q_container = $(".question-container:visible .q-container");
       if(q_container.length == 0){
-        content_div.height($(".response_body").height() + additional_height);
+        target_height = $(".response_body").height() + target_height;
       } else {
-        content_div.height(q_container.height() + additional_height);
+        target_height = q_container.height() + target_height;
       }
+
+      content_div.animate({height: target_height + "px"}, 500);
     }
 
     function updateResultHtml(event, currentIndex, newIndex) {
