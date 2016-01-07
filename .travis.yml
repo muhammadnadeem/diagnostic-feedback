@@ -15,6 +15,7 @@ install:
 script:
     - pep8 diagnostic_feedback --max-line-length=120
     - pylint diagnostic_feedback --disable=all --enable=function-redefined,undefined-variable,unused-variable
+    - python run_tests.py diagnostic_feedback/tests/integration/*.py
     - python run_tests.py
 notifications:
   email: false
