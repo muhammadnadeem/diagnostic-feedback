@@ -116,7 +116,3 @@ class StudentBuzzFeedStyleTest(DiagnosticFeedbackBaseTest):
 
         self.assertEqual('Monarch' in final_results[0].text, True)
         self.assertEqual('Swallowtail' in final_results[1].text, True)
-
-
-
-

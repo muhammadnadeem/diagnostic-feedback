@@ -152,4 +152,3 @@ class StudentDiagnosticStyleTest(DiagnosticFeedbackBaseTest):
     #     final_result = self.browser.find_element_by_css_selector('div.response_body').text
     #
     #     self.assertEqual('Awful' in final_result, True)
-
