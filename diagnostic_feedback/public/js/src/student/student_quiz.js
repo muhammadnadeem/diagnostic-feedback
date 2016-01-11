@@ -117,21 +117,22 @@ function StudentQuiz(runtime, element, initData) {
       return {'question_id': id, 'student_choice': studentChoice};
     }
 
-    function submitQuestionResponse(isLast, currentStep) {
+    function getQuestionEventData(choice) {
+      // get text of question and selected answer text
+      var choice = $('input[type="radio"][value="' + choice + '"]:visible'),
+        student_choice = choice.next().text(),
+        question_txt = choice.parent().prev().find('p').text();
+
+      return {'question_txt': question_txt, 'student_choice': student_choice}
+    }
+
+    function submitQuestionResponse(isLast, currentStep, newIndex) {
       // this method is called on valid submission and pass the student's selected value
 
       var answerHandlerUrl = runtime.handlerUrl(element, 'save_choice');
       var choice = getStudentChoice();
       choice['currentStep'] = currentStep;
       choice['isLast'] = isLast;  //if student given last answer of the question, this flag is true.
-
-      var event_data = {
-        event_type: '',
-        quiz_type: initData.quiz_type,
-        quiz_title: initData.quiz_title,
-        current_question: currentStep,
-        is_last_question: isLast
-      };
 
       var success = false;
       $.ajax({
@@ -144,15 +145,40 @@ function StudentQuiz(runtime, element, initData) {
 
           if (success && response.student_result) {
             //log event for quiz finish
-            event_data.event_type = 'xblock.diagnostic_feedback.quiz.finish';
+
+            var event_data = {
+              event_type: 'xblock.diagnostic_feedback.quiz.finish',
+              quiz_type: initData.quiz_type,
+              quiz_title: initData.quiz_title,
+              current_question: currentStep
+            };
+
             common.publishEvent(event_data);
             showResult(response.student_result);
           }
+
+          var qEventData = getQuestionEventData(choice.student_choice);
+
+          var event_data = {
+              event_type: '',
+              question_txt: qEventData.question_txt,
+              student_choice: qEventData.student_choice,
+              current_question: currentStep,
+              is_last_question: isLast
+          };
 
           if(success){
             //log event for question submission success
             event_data.event_type = 'xblock.diagnostic_feedback.quiz.question.submitted';
             common.publishEvent(event_data);
+
+            //log event for loading question
+            common.publishEvent({
+              event_type: 'xblock.diagnostic_feedback.quiz.question.loading',
+              current_question: newIndex,
+              is_last_question: isLast
+            });
+
           } else {
             //log event for quesiton submission error
             event_data.event_type = 'xblock.diagnostic_feedback.quiz.question.submitError';
@@ -209,15 +235,23 @@ function StudentQuiz(runtime, element, initData) {
       //he will be resumed to where he left.
 
       resizeContentContainer();
-      var completedStep = parseInt($(completedStepSelector, element).val());
-
-      //log event for xblock started
-      common.publishEvent({
+      var eventData = {
         event_type: 'xblock.diagnostic_feedback.quiz.started',
         quiz_type: initData.quiz_type,
-        quiz_title: initData.quiz_title,
-        current_question:  completedStep + 1
-      });
+        quiz_title: initData.quiz_title
+      };
+
+      var totalQuestions = $('.question-container').length;
+      var completedStep = parseInt($(completedStepSelector, element).val()) ;
+      if (completedStep == totalQuestions){
+        eventData.completed_questions = totalQuestions;
+      } else {
+        eventData.completed_questions = completedStep;
+        eventData.current_question =  completedStep + 1;
+      }
+
+      //log event for xblock started
+      common.publishEvent(eventData);
 
       if (completedStep > 0) {
         studentQuiz.movingToStep = true;
@@ -236,16 +270,14 @@ function StudentQuiz(runtime, element, initData) {
         var currentStep = currentIndex + 1;
       var isLast = (newIndex == $(studentViewFormSecSelector, element).length - 1);
 
-      //log event for loading question
-      common.publishEvent({
-        event_type: 'xblock.diagnostic_feedback.quiz.question.submit',
-        quiz_type: initData.quiz_type,
-        quiz_title: initData.quiz_title,
-        current_question: currentStep
-      });
-
-
-      return saveOrSkip(isLast, currentStep, currentIndex, newIndex);
+      var status = saveOrSkip(isLast, currentStep, currentIndex, newIndex);
+      if(status == true){
+        common.publishEvent({
+          event_type: 'xblock.diagnostic_feedback.quiz.question.loaded',
+          loaded_question: newIndex + 1
+        });
+      }
+      return status;
 
     }
 
@@ -316,21 +348,17 @@ function StudentQuiz(runtime, element, initData) {
       } else {
         if (currentIndex > newIndex) {
           // allow to move backwards without validate & save
+          common.publishEvent({
+            event_type: 'xblock.diagnostic_feedback.quiz.question.reloading',
+            reloading_question: newIndex
+          });
           return true;
         }
         var selectedChoice = $(visibleAnswerChoice, element).find(selectedStudentChoice).val();
 
         if (selectedChoice != "" && selectedChoice != undefined) {
-          return submitQuestionResponse(isLast, currentStep);
+          return submitQuestionResponse(isLast, currentStep, newIndex);
         } else {
-          //log event for question validation error
-          common.publishEvent({
-            event_type: 'xblock.diagnostic_feedback.quiz.question.error',
-            quiz_type: initData.quiz_type,
-            quiz_title: initData.quiz_title,
-            current_question: currentStep,
-            message: gettext('Please select an answer')
-          });
           common.showStudentValidationError({success: false, warning: false, msg: gettext('Please select an answer')});
           return false;
         }
