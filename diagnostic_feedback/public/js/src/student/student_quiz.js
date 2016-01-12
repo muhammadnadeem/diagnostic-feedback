@@ -173,11 +173,13 @@ function StudentQuiz(runtime, element, initData) {
             common.publishEvent(event_data);
 
             //log event for loading question
-            common.publishEvent({
-              event_type: 'xblock.diagnostic_feedback.quiz.question.loading',
-              current_question: newIndex,
-              is_last_question: isLast
-            });
+            if (!isLast) {
+              common.publishEvent({
+                event_type: 'xblock.diagnostic_feedback.quiz.question.loading',
+                question_number: newIndex + 1,
+                is_last_question: isLast
+              });
+            }
 
           } else {
             //log event for quesiton submission error
@@ -245,13 +247,16 @@ function StudentQuiz(runtime, element, initData) {
       var completedStep = parseInt($(completedStepSelector, element).val()) ;
       if (completedStep == totalQuestions){
         eventData.completed_questions = totalQuestions;
+        // log event for result loading
+        common.publishEvent({
+          event_type: 'xblock.diagnostic_feedback.quiz.result.loading'
+        });
       } else {
         eventData.completed_questions = completedStep;
         eventData.current_question =  completedStep + 1;
+        //log event for xblock started
+        common.publishEvent(eventData);
       }
-
-      //log event for xblock started
-      common.publishEvent(eventData);
 
       if (completedStep > 0) {
         studentQuiz.movingToStep = true;
@@ -272,10 +277,16 @@ function StudentQuiz(runtime, element, initData) {
 
       var status = saveOrSkip(isLast, currentStep, currentIndex, newIndex);
       if(status == true){
-        common.publishEvent({
-          event_type: 'xblock.diagnostic_feedback.quiz.question.loaded',
-          loaded_question: newIndex + 1
-        });
+        if(isLast){
+          common.publishEvent({
+            event_type: 'xblock.diagnostic_feedback.quiz.result.loaded'
+          });
+        } else {
+          common.publishEvent({
+            event_type: 'xblock.diagnostic_feedback.quiz.question.loaded',
+            loaded_question: newIndex + 1
+          });
+        }
       }
       return status;
 
