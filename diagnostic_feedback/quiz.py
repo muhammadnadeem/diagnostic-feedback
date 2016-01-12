@@ -2,7 +2,7 @@ import logging
 import json
 import copy
 from xblock.core import XBlock
-from xblock.fields import Scope, String, List, Integer, Dict
+from xblock.fields import Scope, String, List, Integer, Dict, Boolean
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from .mixins import ResourceMixin, XBlockWithTranslationServiceMixin
@@ -104,6 +104,12 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
         help=_("To control which question should be shown to student")
     )
 
+    completed = Boolean(
+        default=False,
+        scope=Scope.user_state
+        help=_("Has the student completed this quiz")
+    )
+
     @property
     def display_name_with_default(self):
         return self.title
@@ -115,6 +121,12 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
             'block_id': self.get_block_id(),
             'component_id': self.scope_ids.usage_id
         }
+
+    has_score = True
+
+    def total_questions(self):
+        """ Return total questions """
+        return len(self.questions)
 
     def get_fragment(self, context, view='studio', json_args=None):
         """
@@ -214,6 +226,12 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
         if self.questions and self.current_step:
             if len(self.questions) == self.current_step:
                 context['result'] = self.get_result()
+
+        if self.current_step == 0 and not self.completed:
+            self.runtime.publish(self, 'grade', {
+                'value': '0',
+                'max_value': self.total_questions()
+            })
 
         return self.get_fragment(
             context,
@@ -324,10 +342,18 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
                 if self.current_step < data['currentStep']:
                     self.current_step = data['currentStep']
 
+                if not self.completed:
+                    # Save the user's latest score
+                    self.runtime.publish(self, 'grade', {
+                        'value': data['currentStep'],
+                        'max_value': self.total_questions()
+                    })
+
                 # calculate feedback result if user answering last question
                 if data['isLast']:
                     student_result = self.get_result()
 
+                    self.completed = True
                     if my_api:
                         log.info("have sub_api instance")
                         # Also send to the submissions API:
