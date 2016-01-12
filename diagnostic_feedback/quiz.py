@@ -2,7 +2,7 @@ import logging
 import json
 import copy
 from xblock.core import XBlock
-from xblock.fields import Scope, String, List, Integer, Dict, Boolean
+from xblock.fields import Scope, String, List, Integer, Dict, Boolean, Float
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from .mixins import ResourceMixin, XBlockWithTranslationServiceMixin
@@ -102,6 +102,14 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
         default=0,
         scope=Scope.user_state,
         help=_("To control which question should be shown to student")
+    )
+
+    weight = Float(
+        display_name=_("Weight"),
+        help=_("Defines the maximum total grade of this question."),
+        default=1,
+        scope=Scope.content,
+        enforce_type=True
     )
 
     completed = Boolean(
