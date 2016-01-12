@@ -106,7 +106,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
 
     completed = Boolean(
         default=False,
-        scope=Scope.user_state
+        scope=Scope.user_state,
         help=_("Has the student completed this quiz")
     )
 
