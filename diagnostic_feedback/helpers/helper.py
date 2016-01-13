@@ -26,8 +26,6 @@ class MainHelper(object):
         elif step == 3:
             questions = Question.filter_question(data, quiz.quiz_type)
             quiz.questions = questions
-            quiz.weight = len(questions)
-
         else:
             pass
 
