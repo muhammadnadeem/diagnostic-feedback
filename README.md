@@ -1,5 +1,5 @@
 Diagnostic Feedback
---------------------
+---------------------
 
 This repository provides Diagnostic Feedback Authoring XBlock.
 
