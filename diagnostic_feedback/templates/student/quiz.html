@@ -1,0 +1,67 @@
+{% load i18n %}
+<div class="diagnostic-feedback diagnostic-feedback-student">
+    {% if user_is_staff %} <a href="#" class="export_data">{% trans "Download Data" %}</a><span class="export_progress"></span> {% endif %}
+    {% if questions %}
+    <div class="msg"><h3></h3></div>
+    <form class="student_view_form">
+
+        <h3 class="quiz-description">{{self.description|safe}}</h3>
+
+        <div class="question-div">
+            <input type="hidden" name="{{block_id}}_completed_step" class="completed_step" value="{{self.current_step}}">
+            {% for question in questions %}
+            <h3>{% trans "Question" %}</h3>
+
+            <section class="answer-choice question-container">
+                <div class="q-container">
+                    <h3 class="question-title">{{ question.title }} </h3>
+
+                    <div class="quiz-question">{{ question.text|safe }}</div>
+                    <div class="user-answers">
+                        {% for choice in question.choices %}
+                        {% if self.quiz_type == self.BUZZFEED_QUIZ_VALUE %}
+                        <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
+                               name="{{block_id}}_choice_name_{{ question.id }}"
+                               {% if question.student_choice == choice.category_id %}
+                               checked="checked"
+                               {% endif %}
+                               value="{{ choice.category_id}}"/>
+                        {% else %}
+                        <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
+                               name="{{block_id}}_choice_name_{{ question.id }}"
+                               {% if question.student_choice == choice.value %}
+                               checked="checked"
+                               {% endif %}
+                               value="{{ choice.value }}"/>
+                        {% endif %}
+                        <label for="{{block_id}}_{{question.id}}_choice_{{ forloop.counter }}">{{choice.name }}</label> <br>
+                        {% endfor %}
+                        <input type="hidden" class="question-id" value="{{ question.id }}"/>
+                    </div>
+                </div>
+            </section>
+            {% endfor %}
+
+            <h3>Result</h3>
+            <section class="response" class="question-container">
+                <div class="response_body">
+                    {% if result %}
+                        {{result.html_body|safe}}
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </form>
+    {% else %}
+    <div class="wrapper-xblock-message xblock-validation-messages"
+         data-locator="block-v1:edX+DemoX+Demo_Course+type@problem-builder+block@377b15c71a784ecf97ecdefbdff14540">
+        <div class="xblock-message validation has-errors ">
+            <p class="error"><i class="icon fa fa-exclamation-circle"></i>
+                {% trans "Please add questions." %}
+            </p>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+

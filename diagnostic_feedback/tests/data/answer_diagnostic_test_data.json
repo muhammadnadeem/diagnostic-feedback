@@ -1,0 +1,30 @@
+{
+    "valid_data": {
+        "student_choice": "12.0",
+        "isLast": "",
+        "question_id": "",
+        "currentStep" : "1"
+    },
+
+    "missing_choice": {
+        "student_choice": "",
+        "isLast": "",
+        "question_id": "",
+        "currentStep" : "1"
+    },
+
+    "missing_id": {
+          "student_choice": "5.0",
+          "isLast": "",
+          "question_id": "",
+          "currentStep" : "1"
+        },
+
+    "missing_step": {
+          "student_choice": "5.0",
+          "isLast": "",
+          "question_id": "",
+          "currentStep" : ""
+        }
+
+}
