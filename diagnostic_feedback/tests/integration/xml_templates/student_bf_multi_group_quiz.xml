@@ -1,0 +1,150 @@
+<diagnostic-feedback
+    url_name="buzzfeed-style-quiz"
+    display_name="Buzzfeed Style Quiz"
+    title="What Kind of Butterfly are you?"
+    quiz_type="BFQ"
+    description="This is test buzzfeed quiz"
+    results="[
+        {
+            'order': '0',
+            'id': '1',
+            'name': 'Monarch',
+            'group': 'Default Group',
+            'internal_description': '',
+            'image': '',
+            'html_body': 'Congratulations! You are a Monarch! The monarchs are a worldwide family of about 3500 species
+                that appear to be sister to the rest of the true butterflies. The clubs on the tips of the antennae
+                are usually hooked. Our California monarchs fall into two or three subfamilies: the spread-wing
+                skippers (Pyrginae), the folded-wing skippers (Hesperiinae), and the Heteropterinae.'
+        },
+        {
+            'order': '1',
+            'id': '2',
+            'name': 'Swallowtail',
+            'group': 'Default Group',
+            'internal_description': '',
+            'image': '',
+            'html_body': 'Congratulations! You are a Swallowtail! The monarchs are a worldwide family of about 3500 species
+                that appear to be sister to the rest of the true butterflies. The clubs on the tips of the antennae
+                are usually hooked. Our California monarchs fall into two or three subfamilies: the spread-wing
+                skippers (Pyrginae), the folded-wing skippers (Hesperiinae), and the Heteropterinae.'
+        },
+        {
+            'order': '2',
+            'id': '3',
+            'name': 'Elfin',
+            'group': 'Default Group',
+            'internal_description': '',
+            'image': '',
+            'html_body': 'Congratulations! You are a Elfin! The monarchs are a worldwide family of about 3500 species
+                that appear to be sister to the rest of the true butterflies. The clubs on the tips of the antennae
+                are usually hooked. Our California monarchs fall into two or three subfamilies: the spread-wing
+                skippers (Pyrginae), the folded-wing skippers (Hesperiinae), and the Heteropterinae.'
+        },
+        {
+            'order': '3',
+            'id': '4',
+            'name': 'Monarch',
+            'group': 'Group 2',
+            'internal_description': '',
+            'image': '',
+            'html_body': 'Congratulations! You are a Monarch! The monarchs are a worldwide family of about 3500 species
+                that appear to be sister to the rest of the true butterflies. The clubs on the tips of the antennae
+                are usually hooked. Our California monarchs fall into two or three subfamilies: the spread-wing
+                skippers (Pyrginae), the folded-wing skippers (Hesperiinae), and the Heteropterinae.'
+        },
+        {
+            'order': '4',
+            'id': '5',
+            'name': 'Swallowtail',
+            'group': 'Group 2',
+            'internal_description': '',
+            'image': '',
+            'html_body': 'Congratulations! You are a Swallowtail! The monarchs are a worldwide family of about 3500 species
+                that appear to be sister to the rest of the true butterflies. The clubs on the tips of the antennae
+                are usually hooked. Our California monarchs fall into two or three subfamilies: the spread-wing
+                skippers (Pyrginae), the folded-wing skippers (Hesperiinae), and the Heteropterinae.'
+        },
+        {
+            'order': '5',
+            'id': '6',
+            'name': 'Elfin',
+            'group': 'Group 2',
+            'internal_description': '',
+            'image': '',
+            'html_body': 'Congratulations! You are a Elfin! The monarchs are a worldwide family of about 3500 species
+                that appear to be sister to the rest of the true butterflies. The clubs on the tips of the antennae
+                are usually hooked. Our California monarchs fall into two or three subfamilies: the spread-wing
+                skippers (Pyrginae), the folded-wing skippers (Hesperiinae), and the Heteropterinae.'
+        }
+    ]"
+    questions="[
+        {
+            'id': '1',
+            'title': 'Size',
+            'text': 'What size are you? (Default Group Question)',
+            'group': 'Default Group',
+            'choices': [
+                {name: 'Small', category_id: '1'},
+                {name: 'Medium', category_id: '2'},
+                {name: 'Large', category_id: '3'}
+            ]
+        },
+        {
+            'id': '2',
+            'title': 'Color',
+            'text': 'What color are you? (Default Group Question)',
+            'group': 'Default Group',
+            'choices': [
+                {name: 'Orange', category_id: '1'},
+                {name: 'Black', category_id: '2'},
+                {name: 'Yellow', category_id: '3'},
+                {name: 'Blue', category_id: '1'}
+            ]
+        },
+        {
+            'id': '3',
+            'title': 'Eat',
+            'text': 'What do you eat? (Default Group Question)',
+            'group': 'Default Group',
+            'choices': [
+                {name: 'Flowers', category_id: '1'},
+                {name: 'Fruit', category_id: '2'}
+            ]
+        },
+        {
+            'id': '4',
+            'title': 'Size',
+            'text': 'What size are you? (Group 2)',
+            'group': 'Group 2',
+            'choices': [
+                {name: 'Small', category_id: '4'},
+                {name: 'Medium', category_id: '5'},
+                {name: 'Large', category_id: '6'}
+            ]
+        },
+        {
+            'id': '5',
+            'title': 'Color',
+            'text': 'What color are you? (Group 2)',
+            'group': 'Group 2',
+            'choices': [
+                {name: 'Orange', category_id: '4'},
+                {name: 'Black', category_id: '5'},
+                {name: 'Yellow', category_id: '6'},
+                {name: 'Blue', category_id: '4'}
+            ]
+        },
+        {
+            'id': '6',
+            'title': 'Eat',
+            'text': 'What do you eat? (Group 2)',
+            'group': 'Group 2',
+            'choices': [
+                {name: 'Flowers', category_id: '4'},
+                {name: 'Fruit', category_id: '5'}
+            ]
+        }
+    ]"
+>
+</diagnostic-feedback>

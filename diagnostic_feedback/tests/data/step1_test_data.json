@@ -1,0 +1,38 @@
+{
+    "missing_step":{
+        "step":"",
+        "title":"Quiz 1",
+        "type":"BFQ",
+        "description" : "Test description"
+    },
+    "missing_title":{
+        "step":1,
+        "title":"",
+        "type":"BFQ",
+        "description" : "Test description"
+    },
+    "invalid_type":{
+        "step":1,
+        "title":"Quiz 1",
+        "type":"MCQ",
+        "description" : "Test description"
+    },
+    "missing_title_type":{
+        "step":1,
+        "title":"",
+        "type":"",
+        "description" : "Test description"
+    },
+    "missing_description":{
+        "step":1,
+        "title":"Quiz 1",
+        "type":"BFQ",
+        "description" : ""
+    },
+    "valid_data":{
+        "step":1,
+        "title":"Test",
+        "type":"DG",
+        "description" : "Test description"
+    }
+}

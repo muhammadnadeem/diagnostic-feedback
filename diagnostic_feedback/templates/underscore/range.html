@@ -1,0 +1,95 @@
+<div class='group'>
+    <h3>
+        <span class="range-order"><%- order + 1 %>
+        </span>
+        <span class="sort-title">
+            <% if (!name) { %>
+                <%- gettext('Untitled') %>
+            <% } else { %>
+                <%- name %>
+            <% } %>
+        </span>
+        ( <span class="sort-title-group">
+            <% if (!group) { %>
+                <%- DEFAULT_GROUP %>
+            <% } else { %>
+                 <%- group %>
+            <% }%>
+        </span> )
+        <span class="action-button">
+           <a href="#" data-tooltip="<%- gettext( 'Delete Range') %>" class="delete-range delete-button action-button">
+                <i class="icon fa fa-trash-o"></i>
+                <span class="sr"><% gettext( 'Delete') %></span>
+            </a>
+        </span>
+    </h3>
+    <div>
+        <div class="range">
+            <input type="hidden" id="<%- block_id %>_range[order][<%- order %>]"
+                   name="<%- block_id %>_range[order][<%- order %>]"
+                   class="skip-validation" value="<%- order %>" />
+
+            <input placeholder="<%- gettext( 'Range Name') %>" type="text"
+                   id="<%- block_id %>_range[name][<%- order %>]"
+                   name="<%- block_id %>_range[name][<%- order %>]"
+                   class="required sort-title-source" required value="<%- name %>"/>
+
+            <input placeholder="<%- gettext( 'Range Min') %>" type="number" step="0.1"
+                   id="<%- block_id %>_range[min][<%- order %>]"
+                   name="<%- block_id %>_range[min][<%- order %>]" class="required" required
+                   value="<%- min_value %>"/>
+
+            <input placeholder="<%- gettext( 'Range Max') %>" type="number" step="0.1"
+                   id="<%- block_id %>_range[max][<%- order %>]"
+                   name="<%- block_id %>_range[max][<%- order %>]" class="required" required
+                   value="<%- max_value %>"/>
+            <input placeholder="<%- gettext( 'Image URL') %> (e.g. /static/img15.jpg)"
+                   class="image-url"
+                   type="text"
+                   id="<%- block_id %>_range[image][<%- order %>]"
+                   name="<%- block_id %>_range[image][<%- order %>]" value="<%- image %>">
+
+            <span class="group-container">
+                <span class="new-grp-container hidden" >
+                    <input type="text" placeholder="<%- gettext('Create new group') %>" class="new-grp-name" value="" />
+                    <div class="field-actions">
+                        <a href="#" class="add-new-group" title="<%- gettext('Click to save') %>">
+                            <i class="icon fa fa-save"></i>
+                        </a>
+                        <a href="#" class="close-add-grp-panel" title="<%- gettext('Cancel') %>">
+                            <i class="icon fa fa-remove"></i>
+                        </a>
+                    </div>
+
+                </span>
+                <span class="existing-grps-list">
+                    <select id="<%- block_id %>_range[group][<%- order %>]"
+                            name="<%- block_id %>_range[group][<%- order %>]"
+                            class="result-group" >
+                        <% _.each(allGroups, function(c_group) { %>
+                            <option value="<%- c_group %>" <% if(c_group == group) { %>
+                                    selected="selected" <% } %> ><%- c_group %></option>
+
+                        <% }); %>
+                    </select>
+                    <div class="field-actions">
+                        <a title="<%- gettext('Click to add new group') %>" class="button button-new open-add-grp-panel" href="#">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                </span>
+
+            </span>
+
+            <input placeholder="<%- gettext( 'Notes for author; not shown to students') %>"
+                   class="internal-description" type="text"
+                   id="<%- block_id %>_range[internal_description][<%- order %>]"
+                   name="<%- block_id %>_range[internal_description][<%- order %>]"
+                   value="<%- internal_description %>">
+
+            <textarea class="custom-textarea" placeholder="<%- gettext( 'Html Body') %>"
+                      id="<%- block_id %>_range[html_body][<%- order %>]"
+                      name="<%- block_id %>_range[html_body][<%- order %>]"><%- html_body %></textarea>
+        </div>
+    </div>
+</div>
