@@ -85,8 +85,7 @@ class StudentBaseTest(DiagnosticFeedbackBaseTest):
 
     def _is_any_choice_selected(self):
         selected = False
-        # choices = [c for c in self.browser.find_elements_by_xpath("//input[@type='radio']") if c.is_displayed()]
-        choices = self.browser.find_elements_by_xpath("//section[contains(@class, 'current')]//input[@type='radio']")
+        choices = [c for c in self.browser.find_elements_by_xpath("//input[@type='radio']") if c.is_displayed()]
 
         for choice in choices:
             if choice.is_selected():
@@ -96,8 +95,7 @@ class StudentBaseTest(DiagnosticFeedbackBaseTest):
         return selected
 
     def _get_choice(self, idx):
-        # return [c for c in self.browser.find_elements_by_xpath("//input[@type='radio']") if c.is_displayed()][idx]
-        return self.browser.find_elements_by_xpath("//section[contains(@class, 'current')]//input[@type='radio']")[idx]
+        return [c for c in self.browser.find_elements_by_xpath("//input[@type='radio']") if c.is_displayed()][idx]
 
     def _verify_question(self, question_order, next_btn, back_btn, choice_idx):
 
