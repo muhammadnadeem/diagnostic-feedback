@@ -19,7 +19,7 @@
 }
 
 .diagnostic-feedback-student .question-container {
-    border: solid 4px #DDD;
+    /*border: solid 4px #DDD;*/
     height: 80%;
     width: 85%;
 }
