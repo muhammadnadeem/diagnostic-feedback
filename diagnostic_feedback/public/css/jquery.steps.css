@@ -271,7 +271,7 @@
 .diagnostic-feedback .wizard > .content {
     display: block;
     margin: 0.5em;
-
+    min-height: 17em;
     overflow-y: scroll;
     position: relative;
     width: auto;
@@ -310,9 +310,4 @@
     color: #8a1f11;
     display: inline-block;
     margin-left: 1.5em;
-}
-
-/*for lms*/
-.course-content .diagnostic-feedback .wizard > .content {
-    min-height: 25em;
 }
