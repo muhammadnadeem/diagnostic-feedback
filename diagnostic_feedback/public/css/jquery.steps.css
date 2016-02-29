@@ -271,7 +271,7 @@
 .diagnostic-feedback .wizard > .content {
     display: block;
     margin: 0.5em;
-    min-height: 19em;
+
     overflow-y: scroll;
     position: relative;
     width: auto;
@@ -281,6 +281,7 @@
     border-radius: 5px;
 }
 
+/*for studio*/
 .diagnostic-feedback-studio .wizard > .content {
     min-height: 19em;
 }
@@ -309,4 +310,9 @@
     color: #8a1f11;
     display: inline-block;
     margin-left: 1.5em;
+}
+
+/*for lms*/
+.course-content .diagnostic-feedback .wizard > .content {
+    min-height: 19em;
 }
