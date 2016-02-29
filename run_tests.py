@@ -22,6 +22,8 @@ if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "workbench.settings")
     # Configure a range of ports in case the default port of 8081 is in use
     os.environ.setdefault("DJANGO_LIVE_TEST_SERVER_ADDRESS", "localhost:8081-8099")
+    os.environ.setdefault("SELENIUM_BROWSER", "firefox")
+
 
     try:
         os.mkdir('var')

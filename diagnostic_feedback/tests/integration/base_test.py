@@ -1,5 +1,4 @@
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 from xblock.fields import String
 from xblockutils.base_test import SeleniumXBlockTest
 from xblockutils.resources import ResourceLoader
@@ -110,9 +109,7 @@ class StudentBaseTest(DiagnosticFeedbackBaseTest):
         self.assertEqual(next_btn.get_attribute('class'), 'disabled')
 
         choice = self._get_choice(choice_idx)
-
-        ActionChains(self.browser).click(choice).perform()
-        # choice.click()
+        choice.click()
         self.assertEqual(self._is_any_choice_selected(), True)
 
         if question_order == 0:
