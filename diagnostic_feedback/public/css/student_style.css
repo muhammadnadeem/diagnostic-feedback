@@ -33,21 +33,17 @@
     padding: 20px;
 }
 
-.diagnostic-feedback-student .user-answers > input {
-	/*margin-right: -25px;*/
-	vertical-align: top;
-	margin-top: 3px;
-}
-
 .diagnostic-feedback-student .user-answers > input,
 .diagnostic-feedback-student .user-answers > label {
-    display: inline-block;
+    display: inline;
 }
 
 .diagnostic-feedback-student .user-answers > label {
-    padding-left: 30px;
-    margin-bottom: 10px;
-    line-height: normal;
+    font-size: 1em;
+}
+
+.diagnostic-feedback-student .validation-error-message {
+    color: red !important;
 }
 
 .diagnostic-feedback-student .result{
