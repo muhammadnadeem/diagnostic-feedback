@@ -271,7 +271,6 @@
 .diagnostic-feedback .wizard > .content {
     display: block;
     margin: 0.5em;
-    min-height: 19em;
     overflow-y: scroll;
     position: relative;
     width: auto;
