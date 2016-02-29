@@ -34,7 +34,7 @@
 }
 
 .diagnostic-feedback-student .user-answers > input {
-	margin-right: -25px;
+	/*margin-right: -25px;*/
 	vertical-align: top;
 	margin-top: 3px;
 }
