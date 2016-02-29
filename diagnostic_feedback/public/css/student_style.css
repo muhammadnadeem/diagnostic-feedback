@@ -11,7 +11,7 @@
 }
 
 .diagnostic-feedback-student .wizard > .content {
-    overflow-y: hidden
+    overflow: hidden
 }
 
 .diagnostic-feedback-student .quiz-question {
@@ -33,17 +33,21 @@
     padding: 20px;
 }
 
+.diagnostic-feedback-student .user-answers > input {
+	margin-right: -25px;
+	vertical-align: top;
+	margin-top: 3px;
+}
+
 .diagnostic-feedback-student .user-answers > input,
 .diagnostic-feedback-student .user-answers > label {
-    display: inline;
+    display: inline-block;
 }
 
 .diagnostic-feedback-student .user-answers > label {
-    font-size: 1em;
-}
-
-.diagnostic-feedback-student .validation-error-message {
-    color: red !important;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    line-height: normal;
 }
 
 .diagnostic-feedback-student .result{
@@ -64,5 +68,6 @@
 /*for lms*/
 .course-content .diagnostic-feedback-student .wizard > .content > .body{
     width: 85%;
-    height: 75%;
+    height: 100%;
+    border: none;
 }

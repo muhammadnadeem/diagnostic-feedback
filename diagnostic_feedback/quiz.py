@@ -401,7 +401,7 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
             msg = self._('Group already exist.')
             success = False
 
-        return {'success': success, 'msg': msg, 'grp_name': grp_name}
+        return {'success': success, 'msg': msg, 'group_name': grp_name}
 
     @XBlock.json_handler
     def publish_event(self, data, suffix=''):

@@ -63,7 +63,7 @@ class ExportDataBlock(XBlock, SubmittingXBlockMixin):
         if not self.last_export_result or self.last_export_result['error'] is not None:
             return None
         try:
-            from lms.djangoapps.instructor_task.models import ReportStore
+            from instructor_task.models import ReportStore
             report_store = ReportStore.from_config(config_name='GRADES_DOWNLOAD')
             course_key = getattr(self.scope_ids.usage_id, 'course_key', None)
             return dict(report_store.links_for(course_key)).get(self.last_export_result['report_filename'])

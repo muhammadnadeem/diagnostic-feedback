@@ -31,10 +31,6 @@
     margin: 10px 0 10px 0;
 }
 
-.diagnostic-feedback-studio .question-field > input {
-    width: 500px;
-}
-
 .diagnostic-feedback-studio .question-txt-editor {
     width: 660px;
     margin-left: 0px;
@@ -221,6 +217,14 @@
     border: 1px solid #aaaaaa;
     background: #ffffff;
     color: #222222;
+}
+
+.diagnostic-feedback-studio .wrapper-comp-settings .list-input.settings-list input {
+    width: 73%;
+}
+
+.diagnostic-feedback-studio .answer-txt, .diagnostic-feedback-studio .question-title {
+    width: 70%;
 }
 
 /* end */
