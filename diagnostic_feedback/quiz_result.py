@@ -101,7 +101,7 @@ class QuizResultMixin(object):
         else:
             results = self.get_diagnostic_result()
 
-        final_html = ''
+        final_html = '<hr>'
         student_results = []
         for result in results:
             student_results.append(result['name'])
