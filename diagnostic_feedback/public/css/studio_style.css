@@ -181,6 +181,11 @@
     margin: 0;
 }
 
+.diagnostic-feedback-studio .ui-accordion .ui-accordion-header  .action-button .copy-button{
+    float: left;
+    margin-right: 5px;
+}
+
 .diagnostic-feedback-studio  .ui-accordion .ui-accordion-header .ui-icon {
     left: 1.1em;
 }

@@ -34,9 +34,14 @@ function Quiz(runtime, element, initData) {
             addNewCategoryBtn = categoriesPanel + ' .add-new-category',
             addNewGroupBtn = '.add-new-group',
             deleteCategoryBtn = '.delete-category',
+            copyCategoryBtn = '.copy-category',
+            copyRangeBtn = '.copy-range',
+            copyQuestionBtn = '.copy-question',
             categoryDiv = '.category',
             editorTextArea = '.custom-textarea',
+            questionTitle = '.question-title',
             questionGroup = '.question-group',
+            questionTxt = '.question-txt',
             resultGroup = '.result-group',
             groupError = 'group-error',
 
@@ -60,7 +65,26 @@ function Quiz(runtime, element, initData) {
             deleteChoiceBtn = '.delete-choice',
             choiceDiv = '.answer-choice',
             toolTip = '.diagnostic-feedback .custom-tooltip',
-            closeMsgBtn = '.close_msg';
+            closeMsgBtn = '.close_msg',
+            accordionHeader = '.ui-accordion-header',
+            accordionContent = '.ui-accordion-content',
+
+            categoryNameField = 'input[name*="category[name]"]',
+            categoryImageField = 'input[name*="category[image]"]',
+            categoryGroupField = 'select[name*="category[group]"]',
+            categoryInternalDescField = 'input[name*="category[internal_description]"]',
+            categoryHtmlBodyField = 'textarea[name*="category[html_body]"]',
+
+            rangeNameField = 'input[name*="range[name]"]',
+            rangeMinField = 'input[name*="range[min]"]',
+            rangeMaxField = 'input[name*="range[max]"]',
+            rangeImageField = 'input[name*="range[image]"]',
+            rangeGroupField = 'select[name*="range[group]"]',
+            rangeInternalDescField = 'input[name*="range[internal_description]"]',
+            rangeHtmlBodyField = 'textarea[name*="range[html_body]"]',
+            choiceValueByClass = '.answer-value',
+            choiceResult = '.result-choice',
+            choiceNameByClass = '.answer-txt';
 
         function renderSteps() {
             // render all steps html as XBlock studio view load
@@ -290,6 +314,29 @@ function Quiz(runtime, element, initData) {
             studioCommon.bindSortTitleSource(categoriesPanelObj);
         });
 
+        $(categoriesPanel, element).on('click', copyCategoryBtn, function (eventObject) {
+            // copy a category
+
+            eventObject.preventDefault();
+            var link = $(eventObject.currentTarget),
+                categoriesPanelObj = $(categoriesPanel, element),
+                existingCategories = categoriesPanelObj.find(categoryDiv).length,
+                currentCategoryContainer = link.parents(accordionHeader).nextAll(accordionContent);
+
+            var category = {
+                id: '',
+                name: currentCategoryContainer.find(categoryNameField).val(),
+                image: currentCategoryContainer.find(categoryImageField).val(),
+                group: currentCategoryContainer.find(categoryGroupField).val(),
+                internal_description: currentCategoryContainer.find(categoryInternalDescField).val(),
+                html_body: currentCategoryContainer.find(categoryHtmlBodyField).val()
+            };
+            studioCommon.renderSingleCategory(existingCategories, category);
+            studioCommon.initiateHtmlEditor(categoriesPanelObj);
+            studioCommon.refreshAccordion(categoriesPanel + " " + accordion);
+            studioCommon.bindSortTitleSource(categoriesPanelObj);
+        });
+
         $(addNewRangeBtn, element).click(function (eventObject) {
             // Add new range template to page
 
@@ -299,6 +346,31 @@ function Quiz(runtime, element, initData) {
                 rangesPanelObj = $(rangesPanel, element);
 
             studioCommon.renderSingleRange(existingRanges);
+            studioCommon.initiateHtmlEditor(rangesPanelObj);
+            studioCommon.refreshAccordion(rangesPanel + " " + accordion);
+            studioCommon.bindSortTitleSource(rangesPanelObj);
+        });
+
+        $(rangesPanel, element).on('click', copyRangeBtn, function (eventObject) {
+            // copy a range
+
+            eventObject.preventDefault();
+            var link = $(eventObject.currentTarget),
+                rangesPanelObj = $(rangesPanel, element),
+                existingRanges = rangesPanelObj.find(rangeDiv).length,
+                currentRangeContainer = link.parents(accordionHeader).nextAll(accordionContent);
+
+            var _range = {
+                name: currentRangeContainer.find(rangeNameField).val(),
+                min_value: currentRangeContainer.find(rangeMinField).val(),
+                max_value: currentRangeContainer.find(rangeMaxField).val(),
+                image: currentRangeContainer.find(rangeImageField).val(),
+                group: currentRangeContainer.find(rangeGroupField).val(),
+                internal_description: currentRangeContainer.find(rangeInternalDescField).val(),
+                html_body: currentRangeContainer.find(rangeHtmlBodyField).val()
+            };
+
+            studioCommon.renderSingleRange(existingRanges, _range);
             studioCommon.initiateHtmlEditor(rangesPanelObj);
             studioCommon.refreshAccordion(rangesPanel + " " + accordion);
             studioCommon.bindSortTitleSource(rangesPanelObj);
@@ -369,11 +441,43 @@ function Quiz(runtime, element, initData) {
             // Add new question template to page
 
             eventObject.preventDefault();
-
             var link = $(eventObject.currentTarget),
                 existingQuestions = link.prev().find(accordionGroup).length;
 
             studioCommon.renderSingleQuestion(existingQuestions);
+            studioCommon.initiateHtmlEditor($(questionPanel, element));
+            studioCommon.refreshAccordion(questionPanel + " " + accordion);
+            studioCommon.bindSortTitleSource($(questionPanel, element));
+        });
+
+        $(step3Panel, element).on('click', copyQuestionBtn, function (eventObject) {
+            // copy a question
+
+            eventObject.preventDefault();
+            var link = $(eventObject.currentTarget),
+                rangesPanelObj = $(rangesPanel, element),
+                existingQuestions = link.parents(accordion).find(accordionGroup).length,
+                currentQuestionContainer = link.parents(accordionHeader).nextAll(accordionContent);
+
+            var question = {
+                id: '',
+                title: currentQuestionContainer.find(questionTitle).val(),
+                text: currentQuestionContainer.find(questionTxt).val(),
+                group: currentQuestionContainer.find(questionGroup).val(),
+                choices: []
+            };
+
+            var answerChoicesInputs = $(currentQuestionContainer).find(choiceNameByClass);
+            $.each(answerChoicesInputs, function (j, choice) {
+                var answerChoice = {
+                    'name': $(choice).val(),
+                    'value': $(choice).nextAll(choiceValueByClass).first().val(),
+                    'category_id': $(choice).nextAll(choiceResult).val()
+                };
+                question['choices'].push(answerChoice);
+            });
+
+            studioCommon.renderSingleQuestion(existingQuestions, question);
             studioCommon.initiateHtmlEditor($(questionPanel, element));
             studioCommon.refreshAccordion(questionPanel + " " + accordion);
             studioCommon.bindSortTitleSource($(questionPanel, element));
