@@ -761,8 +761,8 @@ function StudioCommon(runtime, element, initData) {
             $.each(answerChoicesInputs, function (j, choice) {
                 var answerChoice = {
                     'choice_txt': $(choice).val(),
-                    'choice_value': $(choice).nextAll(choiceValueByClass).first().val(),
-                    'choice_category': $(choice).nextAll(choiceResult).val()
+                    'choice_value': $(choice).parent().nextAll(choiceValueByClass).first().val(),
+                    'choice_category': $(choice).parent().nextAll(choiceResult).val()
                 };
                 questionObj['choices'].push(answerChoice);
             });
@@ -875,7 +875,7 @@ function StudioCommon(runtime, element, initData) {
     };
 
 
-    commonObj.renderSingleCategory = function (order, category) {
+    commonObj.renderSingleCategory = function (order, category, returnHtml) {
         //Render html for a single category
 
         if (typeof category === 'undefined') {
@@ -893,11 +893,14 @@ function StudioCommon(runtime, element, initData) {
 
         var tpl = _.template(initData.categoryTpl),
             html = tpl(category);
-
-        $(categoriesPanel).find(accordionEl).append(html);
+        if (returnHtml){
+            return html;
+        } else {
+            $(categoriesPanel).find(accordionEl).append(html);
+        }
     };
 
-    commonObj.renderSingleRange = function (order, range) {
+    commonObj.renderSingleRange = function (order, range, returnHtml) {
         //Render html for a single range
 
         if (typeof range === 'undefined') {
@@ -920,7 +923,11 @@ function StudioCommon(runtime, element, initData) {
         var tpl = _.template(initData.rangeTpl),
             html = tpl(range);
 
-        $(rangesPanel).find(accordionEl).append(html);
+        if (returnHtml){
+            return html;
+        } else {
+            $(rangesPanel).find(accordionEl).append(html);
+        }
     };
 
 
@@ -953,7 +960,7 @@ function StudioCommon(runtime, element, initData) {
         }
     };
 
-    commonObj.renderSingleQuestion = function (order, question) {
+    commonObj.renderSingleQuestion = function (order, question, returnHtml) {
         //Render html for a single question
         if (typeof question === 'undefined') {
             question = {
@@ -986,7 +993,11 @@ function StudioCommon(runtime, element, initData) {
         var tpl = _.template(initData.questionTpl),
             html = tpl(question);
 
-        $(questionPanel).find(accordionEl).append(html);
+        if (returnHtml){
+            return html;
+        } else {
+            $(questionPanel).find(accordionEl).append(html);
+        }
     };
 
     commonObj.renderCategories = function () {

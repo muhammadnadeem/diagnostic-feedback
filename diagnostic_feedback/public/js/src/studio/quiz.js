@@ -331,10 +331,14 @@ function Quiz(runtime, element, initData) {
                 internal_description: currentCategoryContainer.find(categoryInternalDescField).val(),
                 html_body: currentCategoryContainer.find(categoryHtmlBodyField).val()
             };
-            studioCommon.renderSingleCategory(existingCategories, category);
+            // get rendered html to append right next to copied category
+            var html = studioCommon.renderSingleCategory(existingCategories, category, true);
+            $(html).insertAfter(currentCategoryContainer.parent());
+
             studioCommon.initiateHtmlEditor(categoriesPanelObj);
             studioCommon.refreshAccordion(categoriesPanel + " " + accordion);
             studioCommon.bindSortTitleSource(categoriesPanelObj);
+            studioCommon.processCategories(categoriesPanelObj)
         });
 
         $(addNewRangeBtn, element).click(function (eventObject) {
@@ -369,11 +373,14 @@ function Quiz(runtime, element, initData) {
                 internal_description: currentRangeContainer.find(rangeInternalDescField).val(),
                 html_body: currentRangeContainer.find(rangeHtmlBodyField).val()
             };
+            // get rendered html to append right next to copied range
+            var html = studioCommon.renderSingleRange(existingRanges, _range, true);
+            $(html).insertAfter(currentRangeContainer.parent());
 
-            studioCommon.renderSingleRange(existingRanges, _range);
             studioCommon.initiateHtmlEditor(rangesPanelObj);
             studioCommon.refreshAccordion(rangesPanel + " " + accordion);
             studioCommon.bindSortTitleSource(rangesPanelObj);
+            studioCommon.processRanges(rangesPanelObj);
         });
 
         $(editQuestionPanel, element).on('click', openAddGroupPanel, function (eventObject) {
@@ -455,7 +462,7 @@ function Quiz(runtime, element, initData) {
 
             eventObject.preventDefault();
             var link = $(eventObject.currentTarget),
-                rangesPanelObj = $(rangesPanel, element),
+                questionPanelObj = $(questionPanel, element),
                 existingQuestions = link.parents(accordion).find(accordionGroup).length,
                 currentQuestionContainer = link.parents(accordionHeader).nextAll(accordionContent);
 
@@ -471,16 +478,20 @@ function Quiz(runtime, element, initData) {
             $.each(answerChoicesInputs, function (j, choice) {
                 var answerChoice = {
                     'name': $(choice).val(),
-                    'value': $(choice).nextAll(choiceValueByClass).first().val(),
-                    'category_id': $(choice).nextAll(choiceResult).val()
+                    'value': $(choice).parent().nextAll(choiceValueByClass).first().val(),
+                    'category_id': $(choice).parent().nextAll(choiceResult).val()
                 };
                 question['choices'].push(answerChoice);
             });
+            debugger;
+            //get html for rendered question to append right next to copied question
+            var html = studioCommon.renderSingleQuestion(existingQuestions, question, true);
+            $(html).insertAfter(currentQuestionContainer.parent());
 
-            studioCommon.renderSingleQuestion(existingQuestions, question);
-            studioCommon.initiateHtmlEditor($(questionPanel, element));
+            studioCommon.initiateHtmlEditor(questionPanelObj);
             studioCommon.refreshAccordion(questionPanel + " " + accordion);
-            studioCommon.bindSortTitleSource($(questionPanel, element));
+            studioCommon.bindSortTitleSource(questionPanelObj);
+            studioCommon.processQuestions(questionPanelObj);
         });
 
         $(questionPanel, element).on('click', addNewChoiceBtn, function (eventObject) {
@@ -488,13 +499,15 @@ function Quiz(runtime, element, initData) {
 
             eventObject.preventDefault();
             var link = $(eventObject.currentTarget),
-                group = link.parent(questionDiv).find(questionGroup).val(),
+                questionContainer = link.parent(questionDiv),
+                group = questionContainer.find(questionGroup).val(),
                 existingQuestions = link.parents(accordionGroup).prevAll(accordionGroup).length,
                 existingChoices = link.prev().find(choiceDiv).length;
 
             var choiceHtml = studioCommon.renderSingleChoice(existingQuestions, existingChoices, undefined, false, group);
 
             link.prev('ol').append(choiceHtml);
+            studioCommon.initiateHtmlEditor(questionContainer, element);
         });
 
         $(categoriesPanel, element).on('click', deleteCategoryBtn, function (eventObject) {

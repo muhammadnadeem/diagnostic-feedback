@@ -23,8 +23,7 @@
 
 .diagnostic-feedback-studio .answer-choice,
 .diagnostic-feedback-studio .add-new-choice {
-
-    margin: 10px 40px;
+    margin: 10px 85px;
 }
 
 .diagnostic-feedback-studio .question-field {
@@ -34,6 +33,10 @@
 .diagnostic-feedback-studio .question-txt-editor {
     width: 660px;
     margin-left: 0px;
+}
+
+.diagnostic-feedback-studio .answer-txt-editor {
+    width: 575px;
 }
 
 .diagnostic-feedback-studio .range > input,
@@ -78,6 +81,11 @@
     margin-right: 10px;
 }
 
+.diagnostic-feedback-studio .answer-choice  .delete-choice {
+    margin: -20px -85px 0 0;
+    float: right;
+}
+
 .diagnostic-feedback-studio .answer-choice {
     list-style: upper-alpha;
 }
@@ -105,6 +113,20 @@
     border-radius: 2px;
     min-width: 150px;
     height: 31px;
+}
+
+.diagnostic-feedback-studio .answer-choice > .result-choice,
+.diagnostic-feedback-studio .answer-choice > .answer-value {
+    float: right;
+    min-width: 190px;
+}
+
+.diagnostic-feedback-studio .answer-choice > .result-choice {
+    margin: -31px -35px 0 0;
+}
+
+.diagnostic-feedback-studio .answer-choice > .answer-value {
+    margin: -33px -45px 0 0;
 }
 
 .group-container{
@@ -228,7 +250,7 @@
     width: 73%;
 }
 
-.diagnostic-feedback-studio .answer-txt, .diagnostic-feedback-studio .question-title {
+.diagnostic-feedback-studio .question-title {
     width: 70%;
 }
 
