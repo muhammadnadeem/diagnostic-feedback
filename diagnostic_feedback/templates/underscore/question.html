@@ -11,6 +11,11 @@
         </span>
         <span class="sort-title-group"></span>
         <span class="action-button">
+            <a href="#" data-tooltip="<%- gettext('Copy Question') %>" class="copy-question copy-button action-button">
+                <i class="icon fa fa-copy"></i>
+                <span class="sr"><%- gettext('Copy') %></span>
+            </a>
+
             <a href="#" data-tooltip="<%- gettext('Delete Question') %>" class="delete-question delete-button action-button">
                 <i class="icon fa fa-trash-o"></i>
                 <span class="sr"><%- gettext('Delete') %></span>
@@ -54,12 +59,13 @@
             <ol type="A">
                 <% _.each(choices, function(choice) {  %>
                 <li class="answer-choice">
-                    <input placeholder="<%- gettext('Choice Text') %>" type="text"
-                           id="<%- block_id %>_question[<%- order %>]answer[<%- choice.c_order %>]"
-                           name="<%- block_id %>_question[<%- order %>]answer[<%- choice.c_order %>]"
-                           class="required answer-txt" required
-                           value="<%- choice.name %>"/>
-
+                    <div class="answer-txt-editor">
+                        <input placeholder="<%- gettext('Choice Text') %>" type="text"
+                               id="<%- block_id %>_question[<%- order %>]answer[<%- choice.c_order %>]"
+                               name="<%- block_id %>_question[<%- order %>]answer[<%- choice.c_order %>]"
+                               class="required answer-txt custom-textarea" required
+                               value="<%- choice.name %>"/>
+                    </div>
 
                     <% if(choice.quiz_type == choice.BUZZFEED_QUIZ_VALUE || choice.quiz_type == ""){ %>
                         <select id="<%- block_id %>_question[<%- order %>]category[<%- choice.c_order %>]"

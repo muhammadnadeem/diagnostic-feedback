@@ -20,21 +20,21 @@
                     <div class="user-answers">
                         {% for choice in question.choices %}
                         {% if self.quiz_type == self.BUZZFEED_QUIZ_VALUE %}
-                        <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
+                        <input type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
                                name="{{block_id}}_choice_name_{{ question.id }}"
                                {% if question.student_choice == choice.category_id %}
                                checked="checked"
                                {% endif %}
                                value="{{ choice.category_id}}"/>
                         {% else %}
-                        <input class="required" required type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
+                        <input type="radio" id="{{block_id}}_{{ question.id }}_choice_{{ forloop.counter }}"
                                name="{{block_id}}_choice_name_{{ question.id }}"
                                {% if question.student_choice == choice.value %}
                                checked="checked"
                                {% endif %}
                                value="{{ choice.value }}"/>
                         {% endif %}
-                        <label for="{{block_id}}_{{question.id}}_choice_{{ forloop.counter }}">{{choice.name }}</label> <br>
+                        <label for="{{block_id}}_{{question.id}}_choice_{{ forloop.counter }}">{{choice.name|safe }}</label> <br>
                         {% endfor %}
                         <input type="hidden" class="question-id" value="{{ question.id }}"/>
                     </div>
