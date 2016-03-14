@@ -34,7 +34,7 @@
                                {% endif %}
                                value="{{ choice.value }}"/>
                         {% endif %}
-                        <label for="{{block_id}}_{{question.id}}_choice_{{ forloop.counter }}">{{choice.name }}</label> <br>
+                        <label for="{{block_id}}_{{question.id}}_choice_{{ forloop.counter }}">{{choice.name|safe }}</label> <br>
                         {% endfor %}
                         <input type="hidden" class="question-id" value="{{ question.id }}"/>
                     </div>

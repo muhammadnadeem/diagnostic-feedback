@@ -834,6 +834,17 @@ function StudioCommon(runtime, element, initData) {
         commonObj.initiateHtmlEditor($(questionPanel, element));
     };
 
+    commonObj.processChoices = function (answersContainer) {
+        // rename all remaining choices fields of specific question
+        var remainingChoices = answersContainer.find(choiceDiv);
+        $.each(remainingChoices, function (j, choice) {
+            commonObj.updateChoiceFieldAttr(choice, j);
+        });
+
+        // re-attach text editor after field renaming
+        commonObj.initiateHtmlEditor(answersContainer.find('ol'));
+    };
+
     commonObj.createAccordion = function (_id, type) {
         // attach jquery-accordion with an element
         $(_id)

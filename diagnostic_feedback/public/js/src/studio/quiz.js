@@ -335,7 +335,8 @@ function Quiz(runtime, element, initData) {
             var html = studioCommon.renderSingleCategory(existingCategories, category, true);
             $(html).insertAfter(currentCategoryContainer.parent());
 
-            studioCommon.initiateHtmlEditor(categoriesPanelObj);
+            //remove all tinymce binding
+            studioCommon.destroyAllEditors(categoriesPanelObj);
             studioCommon.refreshAccordion(categoriesPanel + " " + accordion);
             studioCommon.bindSortTitleSource(categoriesPanelObj);
             studioCommon.processCategories(categoriesPanelObj)
@@ -377,7 +378,8 @@ function Quiz(runtime, element, initData) {
             var html = studioCommon.renderSingleRange(existingRanges, _range, true);
             $(html).insertAfter(currentRangeContainer.parent());
 
-            studioCommon.initiateHtmlEditor(rangesPanelObj);
+            //remove all tinymce binding
+            studioCommon.destroyAllEditors(rangesPanelObj);
             studioCommon.refreshAccordion(rangesPanel + " " + accordion);
             studioCommon.bindSortTitleSource(rangesPanelObj);
             studioCommon.processRanges(rangesPanelObj);
@@ -483,15 +485,18 @@ function Quiz(runtime, element, initData) {
                 };
                 question['choices'].push(answerChoice);
             });
-            debugger;
+
             //get html for rendered question to append right next to copied question
             var html = studioCommon.renderSingleQuestion(existingQuestions, question, true);
             $(html).insertAfter(currentQuestionContainer.parent());
 
-            studioCommon.initiateHtmlEditor(questionPanelObj);
+            //remove all tinymce binding
+            studioCommon.destroyAllEditors(questionPanelObj);
             studioCommon.refreshAccordion(questionPanel + " " + accordion);
             studioCommon.bindSortTitleSource(questionPanelObj);
             studioCommon.processQuestions(questionPanelObj);
+            //update text of accordion header with group name
+            studioCommon.updateSortingGroupTxt(link.parents(accordionGroup).next().find(questionGroup), question.group);
         });
 
         $(questionPanel, element).on('click', addNewChoiceBtn, function (eventObject) {
@@ -505,9 +510,9 @@ function Quiz(runtime, element, initData) {
                 existingChoices = link.prev().find(choiceDiv).length;
 
             var choiceHtml = studioCommon.renderSingleChoice(existingQuestions, existingChoices, undefined, false, group);
-
-            link.prev('ol').append(choiceHtml);
-            studioCommon.initiateHtmlEditor(questionContainer, element);
+            var choicesContainer = link.prev('ol');
+            choicesContainer.append(choiceHtml);
+            studioCommon.initiateHtmlEditor(choicesContainer, element);
         });
 
         $(categoriesPanel, element).on('click', deleteCategoryBtn, function (eventObject) {
@@ -601,7 +606,7 @@ function Quiz(runtime, element, initData) {
                     var question = $(btn).parents(accordionGroup);
 
                     // remove all tinymce binding before deleting question html
-                    studioCommon.destroyEditor($(question).find(editorTextArea));
+                    studioCommon.destroyAllEditors(questionsContainer);
 
                     //remove question html from DOM
                     question.remove();
@@ -647,14 +652,13 @@ function Quiz(runtime, element, initData) {
             } else {
                 //ask for confirmation before delete action
                 if (studioCommon.confirmAction(gettext('Are you sure to delete this choice?'))) {
+                    // remove all tinymce binding before deleting choice html
+                    studioCommon.destroyAllEditors(answersContainer.find('ol'));
+
                     //remove choice html from DOM
                     $(btn).parent(choiceDiv).remove();
 
-                    // rename all remaining choices fields of specific question
-                    var remainingChoices = answersContainer.find(choiceDiv);
-                    $.each(remainingChoices, function (j, choice) {
-                        studioCommon.updateChoiceFieldAttr(choice, j);
-                    });
+                    studioCommon.processChoices(answersContainer);
                 }
             }
         });

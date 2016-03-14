@@ -36,7 +36,8 @@
 }
 
 .diagnostic-feedback-studio .answer-txt-editor {
-    width: 575px;
+    width: 350px;
+    display: inline-block;
 }
 
 .diagnostic-feedback-studio .range > input,
@@ -82,7 +83,8 @@
 }
 
 .diagnostic-feedback-studio .answer-choice  .delete-choice {
-    margin: -20px -85px 0 0;
+    margin-top: 5px;
+    margin-right: 35px;
     float: right;
 }
 
@@ -117,16 +119,8 @@
 
 .diagnostic-feedback-studio .answer-choice > .result-choice,
 .diagnostic-feedback-studio .answer-choice > .answer-value {
-    float: right;
+    vertical-align: top;
     min-width: 190px;
-}
-
-.diagnostic-feedback-studio .answer-choice > .result-choice {
-    margin: -31px -35px 0 0;
-}
-
-.diagnostic-feedback-studio .answer-choice > .answer-value {
-    margin: -33px -45px 0 0;
 }
 
 .group-container{
