@@ -1,6 +1,7 @@
 import logging
 import json
 import copy
+from webob import Response
 from xblock.core import XBlock
 from xblock.fields import Scope, String, List, Integer, Dict, Boolean, Float
 from xblock.fragment import Fragment
@@ -12,6 +13,7 @@ from .validators import Validator
 from .sub_api import my_api
 from .data_tool import ExportDataBlock
 from datetime import datetime
+
 
 log = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
@@ -238,6 +240,35 @@ class QuizBlock(ResourceMixin, QuizResultMixin, ExportDataBlock, XBlockWithTrans
                 'quiz_type': self.quiz_type,
                 'quiz_title': self.title
             }
+        )
+
+    def student_view_data(self, context=None):
+        """
+        Returns a JSON representation of the Diagnostic Feedback Xblock, that
+        can be retrieved using Course Block API.
+        """
+        return {
+            'quiz_type': self.quiz_type,
+            'quiz_title': self.title,
+            'questions': self.questions,
+        }
+
+    @XBlock.handler
+    def student_view_user_state(self, data, suffix=''):
+        """
+        Returns a JSON representation of the student data for Diagnostic Feedback Xblock
+        """
+        response = {
+            'student_choices': self.student_choices,
+            'student_result': self.student_result,
+            'current_step': self.current_step,
+            'completed': self.completed,
+        }
+
+        return Response(
+            json.dumps(response),
+            content_type='application/json',
+            charset='utf8'
         )
 
     def get_attached_groups(self):
